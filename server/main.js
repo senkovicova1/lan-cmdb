@@ -11,5 +11,5 @@ import {
   ItemsCollection
 } from '/imports/api/itemsCollection';
 import {
-  ItemCategoriesCollection
-} from '/imports/api/itemCategoriesCollection';
+  CategoriesCollection
+} from '/imports/api/categoriesCollection';

@@ -7,8 +7,7 @@ import {
 import UserForm from './userForm';
 
 import {
-  listAllPasswords,
-  listPasswordsInFolderStart
+  getGoToLink
 } from "/imports/other/navigationLinks";
 
 export default function EditUserContainer( props ) {
@@ -27,11 +26,14 @@ export default function EditUserContainer( props ) {
         profile: data
       }
     });
-    history.push(`${listPasswordsInFolderStart}all`);
+    history.push(getGoToLink("listItemsInCategory", {categoryID: "all-categories", companyID: "all-companies"} ));
   };
 
+  const onCancel = () => {
+    history.push(getGoToLink("listItemsInCategory", {categoryID: "all-categories", companyID: "all-companies"} ));
+  }
 
   return (
-        <UserForm {...user} onSubmit={editUser} onCancel={() => props.history.push(`${listPasswordsInFolderStart}all`)}/>
+        <UserForm {...user} onSubmit={editUser} onCancel={onCancel}/>
   );
 };

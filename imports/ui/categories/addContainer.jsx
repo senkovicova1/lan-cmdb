@@ -1,21 +1,21 @@
 import React from 'react';
 
 import {
-  ItemCategoriesCollection
-} from '/imports/api/itemCategoriesCollection';
+  CategoriesCollection
+} from '/imports/api/categoriesCollection';
 
-import ItemCategoryForm from './itemCategoryForm';
+import CategoryForm from './form';
 
 import {
   getGoToLink
 } from "/imports/other/navigationLinks";
 
-export default function AddItemCategoryContainer( props ) {
+export default function AddCategoryContainer( props ) {
 
   const {history} = props;
 
   const addNew = ( name,  descriptionNote, backupNote, monitoringNote) => {
-    ItemCategoriesCollection.insert( {
+    CategoriesCollection.insert( {
       name,
       descriptionNote,
       backupNote,
@@ -25,7 +25,7 @@ export default function AddItemCategoryContainer( props ) {
         console.log(console.error());
         cancel();
       } else {
-        history.push(getGoToLink("listItemsInCategory", {itemCategoryID: _id, companyID: "all-companies"}));
+        history.push(getGoToLink("listItemsInCategory", {categoryID: _id, companyID: "all-companies"}));
       }
     } );
   }
@@ -35,6 +35,6 @@ export default function AddItemCategoryContainer( props ) {
   }
 
   return (
-        <ItemCategoryForm title={"Add item category"} onSubmit={addNew} onCancel={cancel}/>
+        <CategoryForm title={"Add item category"} onSubmit={addNew} onCancel={cancel}/>
   );
 };

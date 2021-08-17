@@ -6,23 +6,23 @@ export const getLink = (address) => {
     case "currentUserEdit":
       return "/user";
       break;
-    case "addItemCategory":
-      return "/item-categories/add";
+    case "addCategory":
+      return "/categories/add";
       break;
-    case "editItemCategory":
-      return `/:itemCategoryID/edit`;
+    case "editCategory":
+      return `/:categoryID/edit`;
       break;
     case "listItemsInCategory":
-      return `/:companyID/:itemCategoryID/list`;
+      return `/:companyID/:categoryID/list`;
       break;
     case "addItem":
-      return `/:companyID/:itemCategoryID/add-item`;
+      return `/:companyID/:categoryID/add-item`;
       break;
     case "editItem":
-      return `/:companyID/:itemCategoryID/:itemID/edit`;
+      return `/:companyID/:categoryID/:itemID/edit`;
       break;
     case "viewItem":
-      return `/:companyID/:itemCategoryID/:itemID/view`;
+      return `/:companyID/:categoryID/:itemID/view`;
       break;
     default:
       return `/all-companies/all-categories/list`;
@@ -31,7 +31,7 @@ export const getLink = (address) => {
 }
 
 export const getGoToLink = (address, arguments) => {
-  const {itemID, itemCategoryID, companyID} = arguments ? arguments : {};
+  const {itemID, categoryID, companyID} = arguments ? arguments : {};
   switch (address) {
     case "login":
       return "/login";
@@ -39,23 +39,23 @@ export const getGoToLink = (address, arguments) => {
     case "currentUserEdit":
       return "/user";
       break;
-    case "addItemCategory":
-      return "/item-categories/add";
+    case "addCategory":
+      return "/categories/add";
       break;
-    case "editItemCategory":
-      return `/${itemCategoryID}/edit`;
+    case "editCategory":
+      return `/${categoryID}/edit`;
       break;
     case "listItemsInCategory":
-      return `/${companyID}/${itemCategoryID}/list`;
+      return `/${companyID}/${categoryID}/list`;
       break;
     case "addItem":
-      return `/${companyID}/${itemCategoryID}/add-item`;
+      return `/${companyID}/${categoryID}/add-item`;
       break;
     case "editItem":
-      return `/${companyID}/${itemCategoryID}/${itemID}/edit`;
+      return `/${companyID}/${categoryID}/${itemID}/edit`;
       break;
     case "viewItem":
-      return `/${companyID}/${itemCategoryID}/${itemID}/view`;
+      return `/${companyID}/${categoryID}/${itemID}/view`;
       break;
     default:
       return `/all-companies/all-categories/list`;

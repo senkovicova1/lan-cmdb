@@ -2,13 +2,13 @@ import {
   createSlice
 } from '@reduxjs/toolkit'
 
-export const itemCategoriesSlice = createSlice( {
-  name: 'itemCategories',
+export const categoriesSlice = createSlice( {
+  name: 'categories',
   initialState: {
     value: [],
   },
   reducers: {
-    setItemCategories: ( state, action ) => {
+    setCategories: ( state, action ) => {
       // Redux Toolkit allows us to write "mutating" logic in reducers. It
       // doesn't actually mutate the state because it uses the Immer library,
       // which detects changes to a "draft state" and produces a brand new
@@ -20,7 +20,7 @@ export const itemCategoriesSlice = createSlice( {
 
 // Action creators are generated for each case reducer function
 export const {
-  setItemCategories
-} = itemCategoriesSlice.actions
+  setCategories
+} = categoriesSlice.actions
 
-export default itemCategoriesSlice.reducer
+export default categoriesSlice.reducer

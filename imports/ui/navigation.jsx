@@ -10,19 +10,18 @@ import {
 
 import { useDispatch, useSelector } from 'react-redux';
 import { setCompanies } from '../redux/companiesSlice';
-import { setItemCategories } from '../redux/itemCategoriesSlice';
-/*import { setPasswords } from '../redux/passwordsSlice';*/
+import { setCategories } from '../redux/categoriesSlice';
+import { setItems } from '../redux/itemsSlice';
 import { setUsers } from '../redux/usersSlice';
 import {
   CompaniesCollection
 } from '/imports/api/companiesCollection';
 import {
-  ItemCategoriesCollection
-} from '/imports/api/itemCategoriesCollection';
-/*
+  CategoriesCollection
+} from '/imports/api/categoriesCollection';
 import {
-  PasswordsCollection
-} from '/imports/api/passwordsCollection';*/
+  ItemsCollection
+} from '/imports/api/itemsCollection';
 import {
   useTracker
 } from 'meteor/react-meteor-data';
@@ -30,13 +29,17 @@ import {
 import Reroute from './reroute';
 import Header from './header';
 import Login from './login';
-import ItemCategoryAdd from './itemCategories/addItemCategoryContainer';
-import ItemCategoryEdit from './itemCategories/editItemCategoryContainer';
+import CategoryAdd from './categories/addContainer';
+import CategoryEdit from './categories/editContainer';
+import ItemAdd from './items/addContainer';
+import ItemEdit from './items/editContainer';
+import ItemsList from './items/list';
+import ItemView from './items/view';
+import EditUserContainer from './users/editUserContainer';
 /*import FolderList from './folders/folderList';
 import FolderEdit from './folders/editFolderContainer';
 import PasswordList from './passwords/passwordList';
 import PasswordHistoryList from './passwords/passwordHistoryList';
-import EditUserContainer from './users/editUserContainer';
 import PasswordAdd from './passwords/addPasswordContainer';
 import PasswordEdit from './passwords/editPasswordContainer';
 import PasswordView from './passwords/passwordView';*/
@@ -82,30 +85,28 @@ export default function MainPage( props ) {
   }, [companies]);
 
 
-  const itemCategories = useTracker( () => ItemCategoriesCollection.find( {} ).fetch() );
-
+  const categories = useTracker( () => CategoriesCollection.find( {} ).fetch() );
   useEffect(() => {
-    if (itemCategories.length > 0){
+    if (categories.length > 0){
       dispatch(
-        setItemCategories(
+        setCategories(
           [
           {label: "All categories", value: "all-categories"},
-          ...itemCategories.map(itemCategory => ({...itemCategory, label: itemCategory.name, value: itemCategory._id}))
+          ...categories.map(category => ({...category, label: category.name, value: category._id}))
           ]
         )
       );
     }
-  }, [itemCategories]);
+  }, [categories]);
 
-  /*
-  const savedFolderIds = folders.map(folder => folder._id);
-  const passwords = useTracker( () => PasswordsCollection.find( { folder:  { $in: savedFolderIds} } ).fetch() );
+  const companiesIds = companies.map(company => company._id);
+  const items = useTracker( () => ItemsCollection.find( { company:  { $in: companiesIds} } ).fetch() );
   useEffect(() => {
-    if (passwords.length > 0){
-      dispatch(setPasswords(passwords));
+    if (items.length > 0){
+      dispatch(setItems(items));
     }
-  }, [ passwords ]);
-*/
+  }, [items]);
+
   const users = useTracker( () => Meteor.users.find( {} ).fetch() );
   useEffect(() => {
     dispatch(
@@ -144,8 +145,8 @@ export default function MainPage( props ) {
             "/",
             getLink("login"),
             getLink("currentUserEdit"),
-            getLink("addItemCategory"),
-            getLink("editItemCategory"),
+            getLink("addCategory"),
+            getLink("editCategory"),
             getLink("listItemsInCategory"),
             getLink("addItem"),
             getLink("editItem"),
@@ -165,15 +166,24 @@ export default function MainPage( props ) {
             <Route path={["/", getLink("login")]} component={Login} />
           </Content>
         }
-        currentUser &&
+        {
+          currentUser &&
           <Content>
             <div style={{height: "100%", position: "relative"}}>
 
             <Route
               exact
-              path={getLink("addItemCategory")}
+              path={getLink("currentUserEdit")}
               render={(props) => (
-                <ItemCategoryAdd
+                <EditUserContainer {...props} />
+              )}
+              />
+
+            <Route
+              exact
+              path={getLink("addCategory")}
+              render={(props) => (
+                <CategoryAdd
                   {...props}
                   />
               )}
@@ -181,106 +191,32 @@ export default function MainPage( props ) {
 
               <Route
                 exact
-                path={getLink("editItemCategory")}
+                path={getLink("editCategory")}
                 render={(props) => (
-                  <ItemCategoryEdit
+                  <CategoryEdit
                     {...props}
                     />
                 )}
                 />
 
+                <Route exact path={getLink("addItem")} component={ItemAdd}/>
+                <Route exact path={getLink("editItem")} component={ItemEdit}/>
+
+                  <Route
+                    exact
+                    path={[getLink("listItemsInCategory"), getLink()]}
+                    render={(props) => (
+                      <ItemsList
+                        {...props}
+                        search={search}
+                        />
+                    )}
+                  />
+
+                <Route exact path={getLink("viewItem")} component={ItemView}/>
           </div>
         </Content>
-{/*
-              <Route
-                exact
-                path={deletedFolders}
-                render={(props) => (
-                  <FolderList {...props} active={false} search={search} />
-                )}
-                />
-
-              <Route exact path={editFolder} component={FolderEdit} />
-
-              <Route
-                exact
-                path={["/", listAllPasswords, listPasswordsInFolder]}
-                render={(props) => (
-                  <PasswordList
-                    {...props}
-                    search={search}
-                    active={true}
-                    />
-                )}
-                />
-
-              <Route
-                exact
-                path={listDeletedPasswordsInFolder}
-                render={(props) => (
-                  <PasswordList
-                    {...props}
-                    search={search}
-                    active={false}
-                    />
-                )}
-                />
-
-              <Route
-                exact
-                path={editCurrentUser}
-                render={(props) => (
-                  <EditUserContainer {...props} />
-                )}
-                />
-
-              <Route
-                exact
-                path={addPassword}
-                render={(props) => (
-                  <PasswordAdd
-                    {...props}
-                    revealPassword={revealPassword}
-                    />
-                )}
-                />
-
-              <Route
-                exact
-                path={editPassword}
-                render={(props) => (
-                  <PasswordEdit
-                    {...props}
-                    revealPassword={revealPassword}
-                    />
-                )}
-                />
-
-              <Route
-                exact
-                path={[viewPassword, viewPreviousPassword]}
-                render={(props) => (
-                  <PasswordView
-                    {...props}
-                    revealPassword={revealPassword}
-                    />
-                )}
-                />
-
-              <Route
-                exact
-                path={passwordHistory}
-                render={(props) => (
-                  <PasswordHistoryList
-                    {...props}
-                    search={search}
-                    />
-                )}
-                />
-
-            </div>
-          </Content>
-        */}
+      }
       </BrowserRouter>
     </div>
   );

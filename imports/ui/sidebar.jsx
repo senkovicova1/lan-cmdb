@@ -25,55 +25,46 @@ import {
 getGoToLink
 } from "/imports/other/navigationLinks";
 
-
-//import moment from 'moment';
-
-
-/*import {
-  useTracker
-} from 'meteor/react-meteor-data';*/
-
-
 export default function Menu( props ) {
 
   const {
     match,
     history,
+    location,
     closeSelf
   } = props;
 
   const companyID = match.params.companyID;
-  const itemCategoryID = match.params.itemCategoryID;
+  const categoryID = match.params.categoryID;
 
-  //const userId = Meteor.userId();
-  // const user = useTracker( () => Meteor.user() );
   const companies = useSelector((state) => state.companies.value);
-  const itemCategories = useSelector((state) => state.itemCategories.value);
+  const categories = useSelector((state) => state.categories.value);
 
   const [ companyAdd, setCompanyAdd ] = useState(false);
   const [ companyEdit, setCompanyEdit ] = useState(false);
   const [ selectedCompany, setSelectedCompany ] = useState({});
 
-  const [ selectedItemCategory, setSelectedItemCategory ] = useState({});
+  const [ selectedCategory, setSelectedCategory ] = useState({});
 
   const toggleCompanyAdd = () => {setCompanyAdd(!companyAdd);};
   const toggleCompanyEdit = () => {setCompanyEdit(!companyEdit);};
 
   useEffect(() => {
-    if (companies.length > 0){
+    if (companies.length > 0 && companyID){
       setSelectedCompany(companies.find(company => company.value === companyID));
     } else {
       setSelectedCompany({label: "All companies", value: "all-companies"});
     }
-  }, [companies, companyID]);
+  }, [location.pathname, companies, companyID]);
 
   useEffect(() => {
-    if (itemCategories.length > 0){
-      setSelectedItemCategory(itemCategories.find(itemCategory => itemCategory.value === itemCategoryID));
+    if (categories.length > 0 && categoryID){
+      setSelectedCategory(categories.find(category => category.value === categoryID));
     } else {
-      setSelectedItemCategory({label: "All categories", value: "all-categories"});
+      setSelectedCategory({label: "All categories", value: "all-categories"});
     }
-  }, [itemCategories, itemCategoryID]);
+  }, [location.pathname, categories, categoryID]);
+
 
   return (
     <Sidebar>
@@ -83,30 +74,31 @@ export default function Menu( props ) {
         value={selectedCompany}
         onChange={(e) => {
           setSelectedCompany(e);
-          history.push(getGoToLink("listItemsInCategory", {companyID: e.value, itemCategoryID}));
+          history.push(getGoToLink("listItemsInCategory", {companyID: e.value, categoryID}));
         }}
         options={{label: "All companies", value: "all-companies"}, [...companies]}
         />
 
       {
-        itemCategories.map(itemCategory =>  (
-          <div className="nav" key={itemCategory.value}>
+        categories.map(category =>  (
+          <div className="nav" key={category.value}>
             <NavLink
-              style={itemCategory.value === "all-categories" ? {width: "100%"} : {}}
-              key={itemCategory.value}
-              to={getGoToLink("listItemsInCategory", {companyID, itemCategoryID: itemCategory.value})}
+              className={category.value === categoryID ? "active" : ""}
+              style={category.value === "all-categories" ? {width: "100%"} : {}}
+              key={category.value}
+              to={getGoToLink("listItemsInCategory", {companyID: selectedCompany?.value, categoryID: category.value})}
               onClick={() => {
                 if (/Mobi|Android/i.test(navigator.userAgent)) {
                   closeSelf();
                 }
               }}
               >
-              <span>{itemCategory.label}</span>
+              <span>{category.label}</span>
             </NavLink>
             {
-              itemCategory.value !== "all-categories" &&
+              category.value !== "all-categories" &&
             <LinkButton
-              onClick={(e) => {e.preventDefault(); history.push(getGoToLink("editItemCategory", {itemCategoryID: itemCategory.value}))}}
+              onClick={(e) => {e.preventDefault(); history.push(getGoToLink("editCategory", {categoryID: category.value}))}}
               >
               <img
                 className="icon"
@@ -118,6 +110,46 @@ export default function Menu( props ) {
           </div>
           ))
       }
+
+{
+  companyID !== "all-companies" &&
+    categoryID !== "all-categories" &&
+      <NavLink
+        style={{width: "100%"}}
+        key={"add-item"}
+        to={getGoToLink("addItem", {companyID, categoryID})}
+        onClick={() => {
+          if (/Mobi|Android/i.test(navigator.userAgent)) {
+            closeSelf();
+          }
+        }}
+        >
+        <img
+          className="icon"
+          src={PlusIcon}
+          alt=""
+          />
+        Item
+      </NavLink>
+    }
+
+      <NavLink
+        style={{width: "100%"}}
+        key={"add-item-category"}
+        to={getGoToLink("addCategory")}
+        onClick={() => {
+          if (/Mobi|Android/i.test(navigator.userAgent)) {
+            closeSelf();
+          }
+        }}
+        >
+        <img
+          className="icon"
+          src={PlusIcon}
+          alt=""
+          />
+        Item Category
+      </NavLink>
 
       <LinkButton
         onClick={(e) => {e.preventDefault(); toggleCompanyAdd()}}
@@ -144,23 +176,6 @@ export default function Menu( props ) {
           Company
         </span>
       </LinkButton>
-
-      <NavLink
-        key={"add-item-category"}
-        to={getGoToLink("addItemCategory")}
-        onClick={() => {
-          if (/Mobi|Android/i.test(navigator.userAgent)) {
-            closeSelf();
-          }
-        }}
-        >
-        <img
-          className="icon"
-          src={PlusIcon}
-          alt=""
-          />
-        Item Category
-      </NavLink>
 
       <Modal isOpen={companyAdd} toggle={toggleCompanyAdd}>
         <ModalBody>

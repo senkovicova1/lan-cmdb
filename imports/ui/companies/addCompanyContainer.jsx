@@ -33,7 +33,7 @@ export default function AddCompanyContainer( props ) {
       if (error){
         console.log(console.error());
       } else {
-        props.history.push(getGoToLink("listItemsInCategory", {companyID: _id, itemCategoryID: "all-categories"}));
+        props.history.push(getGoToLink("listItemsInCategory", {companyID: _id, categoryID: "all-categories"}));
       }
     } );
     closeSelf();

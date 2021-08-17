@@ -171,7 +171,8 @@ export default function WebHeader( props ) {
         }
         <h1 onClick={(e) => props.history.push(`${listPasswordsInFolderStart}all`)}>{title}</h1>
       </section>
-          {/*
+
+          {
             currentUser &&
           <SearchSection>
             <LinkButton
@@ -207,94 +208,26 @@ export default function WebHeader( props ) {
     </SearchSection>
   }
 
-<section className="header-section" style={{justifyContent: "flex-end"}}>
-      {
-        match.params.passwordID &&
-        !location.pathname.includes("history") &&
-        !location.pathname.includes("edit") &&
-        <LinkButton
-          onClick={(e) => {
-            e.preventDefault();
-            toggleRevealPassword();
-          }}
-          >
-        <img className="icon" src={EyeIcon} alt="reveal pass" />
-        </LinkButton>
-      }
-      {
-        match.params.passwordID &&
-        !location.pathname.includes("history") &&
-        passwordCanBeEdited &&
-        <LinkButton
-          onClick={(e) => {
-            e.preventDefault();
-            togglePopover();
-          }}
-          >
-          <img className="icon" src={MenuIcon2} alt="menu icon" />
-        </LinkButton>
-      }
-      {
-        match.params.passwordID &&
-        !location.pathname.includes("history") &&
-        passwordCanBeEdited &&
-        popoverOpen &&
-        <Popover>
+      <section className="header-section" style={{justifyContent: "flex-end"}}>
+        {
+          currentUser &&
           <LinkButton
+            font="white"
             onClick={(e) => {
               e.preventDefault();
-              togglePopover();
-              removePassword();
+              history.push(getGoToLink("currentUserEdit"));
             }}
             >
-            <img className="basic-icon" src={DeleteIcon} alt="delete" />
-            Delete
+            {
+              avatar &&
+            <img className="avatar" src={avatar} alt="assignedAvatar" />
+            }
+            {
+              !avatar &&
+              <img className="icon" src={UserIcon} alt="assignedAvatar" />
+            }
           </LinkButton>
-        </Popover>
-      }
-
-      {
-        currentUser &&
-        !match.params.passwordID &&
-        <LinkButton
-          font="white"
-          onClick={(e) => {
-            e.preventDefault();
-            history.push(editCurrentUser);
-          }}
-          >
-          {
-            avatar &&
-          <img className="avatar" src={avatar} alt="assignedAvatar" />
-          }
-          {
-            !avatar &&
-            <img className="icon" src={UserIcon} alt="assignedAvatar" />
-          }
-        </LinkButton>
-      }
-
-      {
-        folderID &&
-        currentUser &&
-        folderCanBeEdited &&
-        !location.pathname.includes("edit") &&
-        !location.pathname.includes("password") &&
-        !match.params.passwordID &&
-        <LinkButton
-          font="white"
-          onClick={(e) => {
-            e.preventDefault();
-            history.push(`${editFolderStart}${folderID}`);
-          }}
-          >
-          <img
-            className="icon"
-            src={SettingsIcon}
-            alt="Settings icon not found"
-            />
-        </LinkButton>
-      }
+        }
 
       {
         currentUser &&
@@ -302,7 +235,7 @@ export default function WebHeader( props ) {
           font="white"
           onClick={(e) => {
             e.preventDefault();
-            props.history.push(login);
+            props.history.push(getGoToLink("login"));
             logout();
           }}
           >
@@ -312,8 +245,8 @@ export default function WebHeader( props ) {
             alt="Logout icon not found"
             />
         </LinkButton>
+      }
     </section>
-    */  }
 
       {
         openSidebar &&
