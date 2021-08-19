@@ -31,7 +31,11 @@ export default function UserForm( props ) {
   const [ name, setName ] = useState( "" );
   const [ surname, setSurname ] = useState( "" );
   const [ email, setEmail ] = useState( "" );
-  const [ avatar, setAvatar ] = useState( {name: "", buffer: null, img: null} );
+  const [ avatar, setAvatar ] = useState( {
+    name: "",
+    buffer: null,
+    img: null
+  } );
   const [ password1, setPassword1 ] = useState( '' );
   const [ password2, setPassword2 ] = useState( '' );
 
@@ -49,11 +53,20 @@ export default function UserForm( props ) {
       setSurname( "" );
     }
     if ( profile?.avatar ) {
-      const img = uint8ArrayToImg(profile.avatar);
-      setAvatar( {name: "", buffer: profile.avatar, img} );
+      const img = uint8ArrayToImg( profile.avatar );
+      setAvatar( {
+        name: "",
+        buffer: profile.avatar,
+        img
+      } );
     } else {
-      setAvatar( {name: "", buffer: null, img: null} );
+      setAvatar( {
+        name: "",
+        buffer: null,
+        img: null
+      } );
     }
+    setErrors( [] );
   }, [ profile ] );
 
   return (
@@ -191,10 +204,10 @@ export default function UserForm( props ) {
         </section>
       }
 
-        {
-          errorMessage &&
-          <p>{errorMessage}</p>
-        }
+      {
+        errorMessage &&
+        <p>{errorMessage}</p>
+      }
       <ButtonCol>
         {onCancel &&
           <FullButton colour="grey" onClick={(e) => {e.preventDefault(); onCancel()}}>Back</FullButton>

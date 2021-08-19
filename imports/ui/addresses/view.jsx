@@ -7,8 +7,6 @@ import {
   useSelector
 } from 'react-redux';
 
-import AddressesList from '/imports/ui/addresses/list';
-
 import {
   PencilIcon,
   BackIcon
@@ -116,10 +114,6 @@ export default function ItemView( props ) {
           disabled={true}
           value={company ? company.name : "No company"}
           />
-      </section>
-
-      <section>
-        <AddressesList {...props}/>
       </section>
 
       <section  className="row-notes">

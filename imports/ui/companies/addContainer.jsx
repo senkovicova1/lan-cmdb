@@ -4,7 +4,7 @@ import {
   CompaniesCollection
 } from '/imports/api/companiesCollection';
 
-import CompanyForm from './companyForm';
+import CompanyForm from './form';
 
 import {
   getGoToLink
@@ -12,9 +12,11 @@ import {
 
 export default function AddCompanyContainer( props ) {
 
-  const { closeSelf } = props;
+  const {
+    closeSelf
+  } = props;
 
-  const addNew = ( name,  DPH,  ICO,  DIC,  IC_DPH,  country,  city,  street,  ZIP,  email,  phone,  description,  users) => {
+  const addNew = ( name, DPH, ICO, DIC, IC_DPH, country, city, street, ZIP, email, phone, description, users ) => {
     CompaniesCollection.insert( {
       name,
       DPH,
@@ -29,11 +31,14 @@ export default function AddCompanyContainer( props ) {
       phone,
       description,
       users
-    }, (error, _id) => {
-      if (error){
-        console.log(console.error());
+    }, ( error, _id ) => {
+      if ( error ) {
+        console.log( console.error() );
       } else {
-        props.history.push(getGoToLink("listItemsInCategory", {companyID: _id, categoryID: "all-categories"}));
+        props.history.push( getGoToLink( "listItemsInCategory", {
+          companyID: _id,
+          categoryID: "all-categories"
+        } ) );
       }
     } );
     closeSelf();
@@ -44,6 +49,6 @@ export default function AddCompanyContainer( props ) {
   }
 
   return (
-        <CompanyForm title={"Add company"} onSubmit={addNew} onCancel={cancel}/>
+    <CompanyForm title={"Add company"} onSubmit={addNew} onCancel={cancel}/>
   );
 };

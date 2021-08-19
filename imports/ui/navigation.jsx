@@ -7,12 +7,16 @@ import {
   Route,
   BrowserRouter
 } from 'react-router-dom';
-
+import {
+  useTracker
+} from 'meteor/react-meteor-data';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCompanies } from '../redux/companiesSlice';
-import { setCategories } from '../redux/categoriesSlice';
-import { setItems } from '../redux/itemsSlice';
-import { setUsers } from '../redux/usersSlice';
+
+import { setCompanies } from '/imports/redux/companiesSlice';
+import { setCategories } from '/imports/redux/categoriesSlice';
+import { setItems } from '/imports/redux/itemsSlice';
+import { setAddresses } from '/imports/redux/addressesSlice';
+import { setUsers } from '/imports/redux/usersSlice';
 import {
   CompaniesCollection
 } from '/imports/api/companiesCollection';
@@ -23,8 +27,8 @@ import {
   ItemsCollection
 } from '/imports/api/itemsCollection';
 import {
-  useTracker
-} from 'meteor/react-meteor-data';
+  AddressesCollection
+} from '/imports/api/addressesCollection';
 
 import Reroute from './reroute';
 import Header from './header';
@@ -36,14 +40,6 @@ import ItemEdit from './items/editContainer';
 import ItemsList from './items/list';
 import ItemView from './items/view';
 import EditUserContainer from './users/editUserContainer';
-/*import FolderList from './folders/folderList';
-import FolderEdit from './folders/editFolderContainer';
-import PasswordList from './passwords/passwordList';
-import PasswordHistoryList from './passwords/passwordHistoryList';
-import PasswordAdd from './passwords/addPasswordContainer';
-import PasswordEdit from './passwords/editPasswordContainer';
-import PasswordView from './passwords/passwordView';*/
-
 
 import {
   uint8ArrayToImg
@@ -122,6 +118,15 @@ export default function MainPage( props ) {
     );
   }, [users]);
 
+
+    const itemsIds = items.map(item => item._id);
+    const addresses = useTracker( () => AddressesCollection.find( { item: {$in: itemsIds}} ).fetch() );
+    useEffect(() => {
+      if (addresses.length > 0){
+        dispatch(setAddresses(addresses));
+      }
+    }, [addresses]);
+
   const [ search, setSearch ] = useState( "" );
   const [ openSidebar, setOpenSidebar ] = useState( false );
 
@@ -162,7 +167,7 @@ export default function MainPage( props ) {
           )}
           />
         {!currentUser &&
-          <Content>
+          <Content style={{paddingLeft: "250px", paddingRight: "250px"}}>
             <Route path={["/", getLink("login")]} component={Login} />
           </Content>
         }

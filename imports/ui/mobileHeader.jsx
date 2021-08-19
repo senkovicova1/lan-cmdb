@@ -1,39 +1,36 @@
 import React, {
   useState,
-  useEffect,
   useMemo,
-  useCallback
 } from 'react';
 import {
   Link
 } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-
-import { useDispatch } from 'react-redux';
-//import { setFolders } from '../redux/foldersSlice';
-
-import { SettingsIcon, BackIcon, MenuIcon, LogoutIcon, DeleteIcon, CloseIcon, SearchIcon, LeftArrowIcon,  MenuIcon2, UserIcon } from  "/imports/other/styles/icons";
+import {
+  useDispatch
+} from 'react-redux';
+import {
+  useTracker
+} from 'meteor/react-meteor-data';
 
 import Menu from './sidebar';
 
 import {
-  useTracker
-} from 'meteor/react-meteor-data';
-/*
-import {
-  PasswordsCollection
-} from '/imports/api/passwordsCollection';*/
-import {
-  uint8ArrayToImg
-} from '/imports/other/helperFunctions';
+  MenuIcon,
+  LogoutIcon,
+  CloseIcon,
+  SearchIcon,
+  LeftArrowIcon,
+  UserIcon
+} from "/imports/other/styles/icons";
 import {
   MobilePageHeader as PageHeader,
   LinkButton,
-  FullButton,
   Input,
-  Popover
-} from '../other/styles/styledComponents';
+} from '/imports/other/styles/styledComponents';
 
+import {
+  uint8ArrayToImg
+} from '/imports/other/helperFunctions';
 import {
   getGoToLink
 } from "/imports/other/navigationLinks";
@@ -53,149 +50,70 @@ export default function MobileHeader( props ) {
 
   const currentUser = useTracker( () => Meteor.user() );
   const logout = () => {
-    //dispatch(setFolders([]));
+    dispatch( setCompanies( [] ) );
+    dispatch( setItems( [] ) );
     Meteor.logout();
   }
-/*
-  const folderID = match.params.folderID;
-  const folders = useSelector((state) => state.folders.value);
-  const passwordID = match.params.passwordID;
-  const passwords = useSelector((state) => state.passwords.value);*/
 
-  const [ openSidebar, setOpenSidebar ] = useState(false);
-  const [ openSearch, setOpenSearch ] = useState(false);
-  const [ title, setTitle ] = useState("LanPass");
-/*
+  const [ openSidebar, setOpenSidebar ] = useState( false );
+  const [ openSearch, setOpenSearch ] = useState( false );
+  const [ title, setTitle ] = useState( "CMDB" );
 
-  useEffect(() => {
-    if (location.pathname === deletedFolders) {
-        setTitle("Deleted folders");
-    } else if (location.pathname.includes("password-add")) {
-      setTitle("Add password");
-    } else if (!folderID) {
-      setTitle("LanPass");
-    } else if (location.pathname.includes("history")) {
-      setTitle("Password history");
-    } else if (location.pathname.includes("version")) {
-      let password = passwords.find(password => password._id === passwordID);
-      if (password) {
-        setTitle(`Version from ${moment.unix(password.updatedDate).format("D.M.YYYY HH:mm:ss")}`);
-      } else {
-        setTitle("LanPass");
-      }
-    } else {
-      let folder = folders.find(folder => folder._id === folderID);
-      if (folder) {
-        setTitle(folder.name);
-      } else {
-        setTitle("LanPass");
-      }
-    }
-  }, [folderID, location.pathname, folders]);
-*/
-  const avatar = useMemo(() => {
-    if (!currentUser || !currentUser.profile.avatar){
+  const avatar = useMemo( () => {
+    if ( !currentUser || !currentUser.profile.avatar ) {
       return null;
     }
-    return uint8ArrayToImg(currentUser.profile.avatar);
-  }, [currentUser]);
+    return uint8ArrayToImg( currentUser.profile.avatar );
+  }, [ currentUser ] );
 
-/*    const goBackInPage = useCallback(() => {
-      switch (match.path) {
-        case folders:
-          break;
-        case addFolder:
-          history.goBack();
-          break;
-        case editFolder:
-          history.push(`/folders/list/${match.params.folderID}`);
-          break;
-        case listPasswordsInFolder:
-          history.push(`/folders`);
-          break;
-
-        case listDeletedPasswordsInFolder:
-          history.push(`/folders/list/${match.params.folderID}`);
-          break;
-        case deletedFolders:
-          history.push(`/folders`);
-          break;
-        case editCurrentUser:
-          history.goBack();
-          break;
-        case addPassword:
-          history.goBack();
-          break;
-
-        case editPassword:
-          history.push(`/folders/list/${match.params.folderID}`);
-          break;
-        case viewPassword:
-          history.push(`/folders/list/${match.params.folderID}`);
-          break;
-        case viewPreviousPassword:
-          history.goBack();
-          break;
-        case passwordHistory:
-          history.goBack();
-          break;
-        default:
-          history.goBack();
-
-      }
-    }, [match.path, match.params, history]);
-*/
-    const searchVisible = !openSearch &&  currentUser;
-/*
-    const folderCanBeEdited = folders.find(folder => folder._id === folderID)?.users.find(user => user._id === currentUser._id).level === 0;
-    const passwordCanBeEdited = passwordID ? folders.find(folder => folder._id === folderID)?.users.find(user => user._id === currentUser._id).level <= 0 : false;*/
+  const searchVisible = !openSearch && currentUser;
 
   return (
     <PageHeader>
-        {
-          currentUser &&
-          <LinkButton
-            font="white"
-            onClick={(e) => {
-              e.preventDefault();
-              setOpenSidebar(!openSidebar);
-              setParentOpenSidebar(!openSidebar)
-            }}
-            >
-            <img
-              className="icon"
-              src={MenuIcon}
-              alt="Menu icon not found"
-              />
-          </LinkButton>
-        }
-        {
-          !openSearch &&
-          <h1 onClick={(e) => history.push(getGoToLink())}>{title}</h1>
-        }
+      {
+        currentUser &&
+        <LinkButton
+          font="white"
+          onClick={(e) => {
+            e.preventDefault();
+            setOpenSidebar(!openSidebar);
+            setParentOpenSidebar(!openSidebar)
+          }}
+          >
+          <img
+            className="icon"
+            src={MenuIcon}
+            alt="Menu icon not found"
+            />
+        </LinkButton>
+      }
+      {
+        !openSearch &&
+        <h1 onClick={(e) => history.push(getGoToLink())}>{title}</h1>
+      }
 
-      {/*
+      {
         openSearch &&
         currentUser &&
-          <LinkButton
-            font="white"
-            onClick={(e) => {
-              e.preventDefault();
-              setSearch("");
-              setOpenSearch(false);
-            }}
-            >
-            <img
-              className="icon"
-              src={LeftArrowIcon}
-              alt="Left arrow icon not found"
-              />
-          </LinkButton>
-        }
-          {
-            openSearch &&
-            currentUser &&
-          <div className="search-section">
+        <LinkButton
+          font="white"
+          onClick={(e) => {
+            e.preventDefault();
+            setSearch("");
+            setOpenSearch(false);
+          }}
+          >
+          <img
+            className="icon"
+            src={LeftArrowIcon}
+            alt="Left arrow icon not found"
+            />
+        </LinkButton>
+      }
+      {
+        openSearch &&
+        currentUser &&
+        <div className="search-section">
           <Input
             placeholder="Search"
             value={search}
@@ -220,7 +138,7 @@ export default function MobileHeader( props ) {
             alt="Close icon not found"
             />
         </LinkButton>
-  }
+      }
 
       {
         !openSearch &&
@@ -242,64 +160,18 @@ export default function MobileHeader( props ) {
       }
 
       {
-        match.params.passwordID &&
-        !location.pathname.includes("history") &&
-        !location.pathname.includes("edit") &&
-        <LinkButton
-          onClick={(e) => {
-            e.preventDefault();
-            toggleRevealPassword();
-          }}
-          >
-        <img className="icon" src={EyeIcon} alt="reveal pass" />
-        </LinkButton>
-      }
-      {
-        match.params.passwordID &&
-        !location.pathname.includes("history") &&
-        passwordCanBeEdited &&
-        <LinkButton
-          onClick={(e) => {
-            e.preventDefault();
-            togglePopover();
-          }}
-          >
-          <img className="icon" src={MenuIcon2} alt="menu icon" />
-        </LinkButton>
-      }
-
-      {
-        match.params.passwordID &&
-        !location.pathname.includes("history") &&
-        passwordCanBeEdited &&
-        popoverOpen &&
-        <Popover>
-          <LinkButton
-            onClick={(e) => {
-              e.preventDefault();
-              togglePopover();
-              removePassword();
-            }}
-            >
-            <img className="basic-icon" src={DeleteIcon} alt="delete" />
-            Delete
-          </LinkButton>
-        </Popover>
-      }
-
-      {
         currentUser &&
         !match.params.passwordID &&
         <LinkButton
           font="white"
           onClick={(e) => {
             e.preventDefault();
-            history.push(editCurrentUser);
+            history.push(getGoToLink("currentUserEdit"));
           }}
           >
           {
             avatar &&
-          <img className="avatar" src={avatar} alt="assignedAvatar" />
+            <img className="avatar" src={avatar} alt="assignedAvatar" />
           }
           {
             !avatar &&
@@ -309,34 +181,12 @@ export default function MobileHeader( props ) {
       }
 
       {
-        folderID &&
-        currentUser &&
-        folderCanBeEdited &&
-        !location.pathname.includes("edit") &&
-        !location.pathname.includes("password") &&
-        !match.params.passwordID &&
-        <LinkButton
-          font="white"
-          onClick={(e) => {
-            e.preventDefault();
-            history.push(`${editFolderStart}${folderID}`);
-          }}
-          >
-          <img
-            className="icon"
-            src={SettingsIcon}
-            alt="Settings icon not found"
-            />
-        </LinkButton>
-      }
-
-      {
         currentUser &&
         <LinkButton
           font="white"
           onClick={(e) => {
             e.preventDefault();
-            history.push(login);
+            history.push(getGoToLink("login"));
             logout();
           }}
           >
@@ -346,7 +196,7 @@ export default function MobileHeader( props ) {
             alt="Logout icon not found"
             />
         </LinkButton>
-      */}
+      }
 
       {
         openSidebar &&

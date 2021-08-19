@@ -1,7 +1,7 @@
 import React, {
   useMemo,
+  useEffect
 } from 'react';
-
 import {
   useSelector
 } from 'react-redux';
@@ -23,10 +23,32 @@ export default function EditItemContainer( props ) {
     history,
     revealPassword
   } = props;
+//http://localhost:3000/oCFTzJ7pSS4yWLDDS/Ti9JKqbWGZS3FJYtP/2SZx3HDvx6Mpz5Bja/edit
+  const userId = Meteor.userId();
 
   const itemID = match.params.itemID;
-  const companyID = match.params.companyID;
   const categoryID = match.params.categoryID;
+
+  const companyID = match.params.companyID;
+  const companies = useSelector( ( state ) => state.companies.value );
+  const company = useMemo( () => {
+    if ( companies.length > 0 ) {
+      return companies.find( company => company._id === companyID );
+    }
+    return null;
+  }, [ companies, companyID ] );
+
+useEffect(() => {
+  if (companyID !== "all-companies" && company){
+    const userCannotEditItem = company.users.find(user => user._id === userId).level > 1;
+    if (userCannotEditItem){
+      history.push(getGoToLink());
+    }
+  }
+  if (!company){
+    history.push(getGoToLink());
+  }
+}, [company, companyID, userId]);
 
   const items = useSelector( ( state ) => state.items.value );
   const item = useMemo( () => {
@@ -59,12 +81,23 @@ export default function EditItemContainer( props ) {
     } );
   }
 
+  const removeItem = () => {
+    if ( window.confirm( "Are you sure you want to remove this item?" ) ) {
+      ItemsCollection.remove( {
+        _id: itemID
+      } );
+      history.push( getGoToLink( "listItemsInCategory", {
+        companyID,
+        categoryID,
+      } ) );
+    }
+  };
+
   const close = () => {
     history.goBack();
   }
 
-
   return (
-    <ItemForm {...props} {...item} onSubmit={editItem} onCancel={close} />
+    <ItemForm {...props} {...item} onSubmit={editItem} onRemove={removeItem} onCancel={close} />
   );
 };

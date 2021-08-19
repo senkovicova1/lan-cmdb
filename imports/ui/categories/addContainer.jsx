@@ -12,29 +12,34 @@ import {
 
 export default function AddCategoryContainer( props ) {
 
-  const {history} = props;
+  const {
+    history
+  } = props;
 
-  const addNew = ( name,  descriptionNote, backupNote, monitoringNote) => {
+  const addNew = ( name, descriptionNote, backupNote, monitoringNote ) => {
     CategoriesCollection.insert( {
       name,
       descriptionNote,
       backupNote,
       monitoringNote
-    }, (error, _id) => {
-      if (error){
-        console.log(console.error());
+    }, ( error, _id ) => {
+      if ( error ) {
+        console.log( console.error() );
         cancel();
       } else {
-        history.push(getGoToLink("listItemsInCategory", {categoryID: _id, companyID: "all-companies"}));
+        history.push( getGoToLink( "listItemsInCategory", {
+          categoryID: _id,
+          companyID: "all-companies"
+        } ) );
       }
     } );
   }
 
   const cancel = () => {
-    history.push(getGoToLink())
+    history.push( getGoToLink() );
   }
 
   return (
-        <CategoryForm title={"Add item category"} onSubmit={addNew} onCancel={cancel}/>
+    <CategoryForm title={"Add item category"} onSubmit={addNew} onCancel={cancel}/>
   );
 };

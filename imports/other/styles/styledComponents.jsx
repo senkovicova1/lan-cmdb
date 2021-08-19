@@ -220,8 +220,8 @@ export const Content = styled.main `
     }
   }
   @media all and (min-width: 1300px) {
-    padding-left: calc(50vw - 400px);
-    padding-right: calc(50vw - 400px);
+    padding-left: 270px;
+    padding-right: 20px;
     margin: 0px;
     overflow-y: overlay;
   }
@@ -278,13 +278,30 @@ export const Sidebar = styled.section `
       margin: 0px;
       padding: 0px 15px 0px 0px;
       display: none;
+      width: 41px;
+      img.icon{
+        filter: invert(32%) sepia(81%) saturate(4601%) hue-rotate(210deg) brightness(80%) contrast(101%);
+      }
     }
 
     a.active + button {
       background-color: ${basicBlueColour}22 !important;
       display: flex;
     }
+  }
 
+  label.selector-name{
+    height: 3em;
+    line-height: 3em;
+    width: 100%;
+    font-weight: 300;
+    font-size: 0.8em;
+    padding: 0px 15px;
+    img.icon{
+      height: 1em;
+      margin-right: 0.6em;
+      filter: invert(0);
+    }
   }
 
 `;
@@ -421,6 +438,44 @@ export const List = styled.section `
 
   &>table>tbody>tr>td{
     padding: 0px ${inputOffset};
+    p{
+      margin: 0px;
+      line-height: 2em;
+    }
+  }
+
+`;
+
+
+export const AddressList = styled.section `
+  width: 100%;
+  padding: 0px;
+
+  &>table{
+    width: 100%;
+    tr{
+      line-height: 2.5em;
+    }
+  }
+
+  &>table>thead>tr>th{
+    font-weight: 400;
+      padding: 0px ${inputOffset};
+  }
+
+  &>table>tbody>tr{
+    background-color: white;
+    border-bottom: 1px solid ${backgroundColour};
+    color: #7d7d7d;
+  }
+
+  &>table>tbody>tr:hover{
+   cursor: pointer;
+  }
+
+  &>table>tbody>tr>td{
+    padding: 0px ${inputOffset};
+      font-weight: 400;
   }
 
 `;
@@ -473,7 +528,7 @@ section {
       font-size: 1.5em;
     }
 
-    div{
+    div.flex{
       display: flex;
       img{
         margin: 0px;
@@ -518,14 +573,28 @@ section {
           }
         }
       }
-      div.main{
+    }
+  }
+
+  section.row-notes{
+    div.text{
+      padding: 0px !important;
+      @media all and (max-width: 799px), @media handheld  {
         display: block;
-        width: 170%;
+      }
+      @media all and (min-width: 800px){
+        display: flex;
+      }
+      width: 100%;
+
+      div.main{
+        padding-right: 1em;
+        min-width: 66%;
       }
 
       div.note{
         background-color: #fff10026;
-        padding: 1em !important;
+        padding: 1.5em !important;
       }
     }
   }
@@ -578,7 +647,7 @@ background-color: white !important;
 outline: none !important;
 border: 1px solid #d6d6d6;
 width: 100%;
-height: 6em;
+height: 8em;
 padding-left: 0.4em;
 
 &:focus{
@@ -592,7 +661,7 @@ background-color: transparent !important;
 outline: none !important;
 border: none;
 width: 100%;
-height: 6em;
+height: 8em;
 padding-left: 0px;
 
 &:hover{

@@ -69,6 +69,7 @@ export const selectStyle = {
   menu: base => ( {
     ...base,
     zIndex: 50,
+    display: "block !important"
   } ),
 };
 
@@ -76,11 +77,11 @@ export const invisibleSelectStyle = {
   container: ( base, state ) => ( {
     ...base,
     width: '-webkit-fill-available',
-    height: "3em",
+    height: "2.5em",
+    padding: "0px 15px",
   } ),
   control: ( base, state ) => ( {
     ...base,
-    minHeight: 30,
     backgroundColor: 'transparent',
     border: state.isFocused ? "0px solid #0078d4" : "0px solid #d6d6d6",
     width: '100%',
@@ -89,7 +90,7 @@ export const invisibleSelectStyle = {
   dropdownIndicator: base => ( {
     ...base,
     padding: 4,
-    paddingRight: "7px",
+    paddingRight: "0px",
   } ),
   clearIndicator: base => ( {
     ...base,
@@ -123,9 +124,9 @@ export const invisibleSelectStyle = {
   } ),
   valueContainer: base => ( {
     ...base,
-    padding: '0px 6px',
+    padding: '0px',
     borderRadius: 0,
-    font: '2em Segoe UI',
+    font: '1em Segoe UI',
     color: '#333',
   } ),
   input: base => ( {

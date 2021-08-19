@@ -1,31 +1,35 @@
 import React, {
   useState,
   useEffect,
+  useMemo
 } from 'react';
 import moment from 'moment';
-import { useSelector } from 'react-redux';
+import {
+  useSelector
+} from 'react-redux';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 import {
   Form,
   TitleInput,
-  Input,
   Textarea,
   ButtonCol,
   FullButton,
-} from "../../other/styles/styledComponents";
+} from "/imports/other/styles/styledComponents";
 
 export default function ItemForm( props ) {
 
   const {
     title,
-   _id: itemId,
+    _id: itemId,
     name: itemName,
     description: itemDescription,
     backupDescription: itemBackupDescription,
     monitoringDescription: itemMonitoringDescription,
     match,
-    history,
     onSubmit,
+    onRemove,
     onCancel,
   } = props;
 
@@ -33,6 +37,14 @@ export default function ItemForm( props ) {
 
   const companyID = match.params.companyID;
   const categoryID = match.params.categoryID;
+
+  const categories = useSelector( ( state ) => state.categories.value );
+  const category = useMemo( () => {
+    if ( categories.length > 0 ) {
+      return categories.find( category => category._id === categoryID );
+    }
+    return {};
+  }, [ categories, categoryID ] );
 
   const [ name, setName ] = useState( "" );
   const [ description, setDescription ] = useState( "" );
@@ -60,7 +72,7 @@ export default function ItemForm( props ) {
     } else {
       setMonitoringDescription( "" );
     }
-}, [ itemName, itemDescription, itemBackupDescription,itemMonitoringDescription] );
+  }, [ itemName, itemDescription, itemBackupDescription, itemMonitoringDescription ] );
 
   return (
     <Form>
@@ -79,55 +91,77 @@ export default function ItemForm( props ) {
           />
       </section>
 
-      <section>
+      <section  className="row-notes">
         <label htmlFor="description">Description</label>
-        <Textarea
-          id="description"
-          name="description"
-          type="text"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          />
+        <div className="text">
+          <div className="main">
+                <CKEditor
+                    editor={ClassicEditor}
+                    data={description}
+                    onChange={(event, editor) => {
+                        setDescription(editor.getData());
+                    }}
+                />
+              </div>
+              <div className="note">
+            {category.descriptionNote ? category.descriptionNote : "No description noe"}
+          </div>
+        </div>
       </section>
 
-      <section>
-        <label htmlFor="backupDescription">Backup note</label>
-        <Textarea
-          id="backupDescription"
-          name="backupDescription"
-          type="text"
-          value={backupDescription}
-          onChange={(e) => setBackupDescription(e.target.value)}
-          />
+      <section  className="row-notes">
+        <label >Backup tasks description</label>
+        <div className="text">
+          <div className="main">
+              <Textarea
+                id="backupDescription"
+                name="backupDescription"
+                type="text"
+                value={backupDescription}
+                onChange={(e) => setBackupDescription(e.target.value)}
+                />
+            </div>
+          <div className="note" >
+            {category.backupNote ? category.backupNote : "No backup note"}
+          </div>
+        </div>
       </section>
 
-      <section>
-        <label htmlFor="monitoringDescription">Monitoring note</label>
-        <Textarea
-          id="monitoringDescription"
-          name="monitoringDescription"
-          type="text"
-          value={monitoringDescription}
-          onChange={(e) => setMonitoringDescription(e.target.value)}
-          />
+      <section  className="row-notes">
+        <label htmlFor="description">Monitoring  description</label>
+        <div className="text">
+          <div className="main">
+              <Textarea
+                id="monitoringDescription"
+                name="monitoringDescription"
+                type="text"
+                value={monitoringDescription}
+                onChange={(e) => setMonitoringDescription(e.target.value)}
+                />
+            </div>
+          <div className="note">
+            {category.monitoringNote ? category.monitoringNote : "No monitoring note"}
+          </div>
+        </div>
       </section>
 
       <ButtonCol>
         <FullButton colour="grey" onClick={(e) => {e.preventDefault(); onCancel()}}>Cancel</FullButton>
+        {onRemove && <FullButton colour="red" onClick={(e) => {e.preventDefault(); onRemove()}}>Delete</FullButton>}
         <FullButton
           colour=""
           disabled={name.length === 0}
           onClick={(e) => {e.preventDefault(); onSubmit(
-              name,
-              description,
-              backupDescription,
-              monitoringDescription,
-              moment().unix(),
-              userId,
-              categoryID,
-              companyID,
-              moment().unix(),
-              userId,
+            name,
+            description,
+            backupDescription,
+            monitoringDescription,
+            moment().unix(),
+            userId,
+            categoryID,
+            companyID,
+            moment().unix(),
+            userId,
           );}}
           >
           Save

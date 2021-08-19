@@ -1,26 +1,8 @@
 import React, {
   useState,
-  useMemo,
   useEffect,
 } from 'react';
 
-import Select from 'react-select';
-
-import {
-  selectStyle
-} from '../../other/styles/selectStyles';
-
-import {
-  DeleteIcon
-} from "/imports/other/styles/icons";
-import {
-  countries
-} from "/imports/other/constants";
-
-import {
-  uint8ArrayToImg,
-  isEmail
-} from '../../other/helperFunctions';
 
 import {
   useSelector
@@ -35,6 +17,14 @@ import {
   UserEntry,
   Textarea
 } from "../../other/styles/styledComponents";
+
+import {
+  countries
+} from "/imports/other/constants";
+import {
+  uint8ArrayToImg,
+  isEmail
+} from '/imports/other/helperFunctions';
 
 export default function CategoryForm( props ) {
 
@@ -80,119 +70,103 @@ export default function CategoryForm( props ) {
     }
   }, [ categoryName, categoryDescriptionNote, categoryBackupNote, categoryMonitoringNote ] );
 
-  return ( <
-      Form >
+  return (
+    <Form>
 
-      <
-      h1 > {
-        title
-      } < /h1>
+      <h1> {title} </h1>
 
-      <
-      section >
-      <
-      label htmlFor = "name" > Name < /label> <
-      Input id = "name"
-      name = "name"
-      type = "text"
-      placeholder = "Enter name"
-      value = {
-        name
-      }
-      onChange = {
-        ( e ) => setName( e.target.value )
-      }
-      /> < /
-      section >
+      <section>
+        <label htmlFor="name">
+          Name
+        </label>
+        <Input
+          id="name"
+          name="name"
+          type="text"
+          placeholder="Enter name"
+          value={name}
+          onChange={(e) => setName( e.target.value )}
+          />
+      </section>
 
-      <
-      section >
-      <
-      label htmlFor = "descriptionNote" > Description note < /label> <
-      Textarea id = "descriptionNote"
-      name = "descriptionNote"
-      type = "text"
-      value = {
-        descriptionNote
-      }
-      onChange = {
-        ( e ) => setDescriptionNote( e.target.value )
-      }
-      /> < /
-      section >
+      <section>
+        <label htmlFor="descriptionNote">
+          Description note
+        </label>
+        <Textarea
+          id="descriptionNote"
+          name="descriptionNote"
+          type="text"
+          value={descriptionNote}
+          onChange={(e) => setDescriptionNote( e.target.value )}
+          />
+      </section>
 
-      <
-      section >
-      <
-      label htmlFor = "backupNote" > Backup note < /label> <
-      Textarea id = "backupNote"
-      name = "backupNote"
-      type = "text"
-      value = {
-        backupNote
-      }
-      onChange = {
-        ( e ) => setBackupNote( e.target.value )
-      }
-      /> < /
-      section >
+      <section>
+        <label htmlFor="backupNote">
+          Backup note
+        </label>
+        <Textarea
+          id="backupNote"
+          name="backupNote"
+          type="text"
+          value={backupNote}
+          onChange={(e) => setBackupNote( e.target.value )}
+          />
+      </section>
 
-      <
-      section >
-      <
-      label htmlFor = "monitoringNote" > Monitoring note < /label> <
-      Textarea id = "monitoringNote"
-      name = "monitoringNote"
-      type = "text"
-      value = {
-        monitoringNote
-      }
-      onChange = {
-        ( e ) => setMonitoringNote( e.target.value )
-      }
-      /> < /
-      section >
+      <section>
+        <label htmlFor="monitoringNote" >
+          Monitoring note
+        </label>
+        <Textarea
+          id="monitoringNote"
+          name="monitoringNote"
+          type="text"
+          value={monitoringNote}
+          onChange={(e) => setMonitoringNote( e.target.value )}
+          />
+      </section>
 
-      <
-      ButtonCol >
-      <
-      FullButton colour = "grey"
-      onClick = {
-        ( e ) => {
-          e.preventDefault();
-          onCancel();
+      <ButtonCol>
+        <FullButton
+          colour="grey"
+          onClick={(e) => {
+            e.preventDefault();
+            onCancel();
+          }}
+          >
+          Cancel
+        </FullButton>
+        {
+          onRemove &&
+          <FullButton
+            colour="red"
+            onClick={(e) => {
+              e.preventDefault();
+              onRemove();
+            }}
+            >
+            Delete
+          </FullButton>
         }
-      } > Cancel < /FullButton> {
-      onRemove &&
-      <
-      FullButton colour = "red"
-      onClick = {
-        ( e ) => {
-          e.preventDefault();
-          onRemove();
-        }
-      } > Delete < /FullButton>
-    } <
-    FullButton colour = ""
-  disabled = {
-    name.length === 0
-  }
-  onClick = {
-      ( e ) => {
-        e.preventDefault();
-        onSubmit(
-          name,
-          descriptionNote,
-          backupNote,
-          monitoringNote
-        );
-      }
-    } >
-    Save <
-    /FullButton> < /
-    ButtonCol >
+        <FullButton
+          colour=""
+          disabled={name.length === 0}
+          onClick={(e) => {
+            e.preventDefault();
+            onSubmit(
+              name,
+              descriptionNote,
+              backupNote,
+              monitoringNote
+            );
+          }}
+          >
+          Save
+        </FullButton>
+      </ButtonCol>
 
-    <
-    /Form>
+    </Form>
 );
 };

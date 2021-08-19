@@ -14,7 +14,7 @@ import Loader from "../other/loadingScreen";
 import AddUser from '../users/userForm';
 
 import {
-  listPasswordsInFolderStart
+  getGoToLink
 } from "/imports/other/navigationLinks";
 
 export default function SignInForm( props ) {
@@ -27,7 +27,7 @@ export default function SignInForm( props ) {
     setShowLoading(true);
     setErrorMessage("");
     createUser( name, surname, avatar, email, password );
-    history.push(`${listPasswordsInFolderStart}all`);
+    history.push(getGoToLink());
   };
 
   const createUser = ( name, surname, avatar, email, password ) => {

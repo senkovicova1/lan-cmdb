@@ -1,5 +1,6 @@
 import React, {
   useState,
+  useMemo,
   useEffect
 } from 'react';
 import { NavLink } from 'react-router-dom';
@@ -10,13 +11,13 @@ import {
 } from 'reactstrap';
 import Select from 'react-select';
 
-import AddCompany from '/imports/ui/companies/addCompanyContainer';
-import EditCompany from '/imports/ui/companies/editCompanyContainer';
+import AddCompany from '/imports/ui/companies/addContainer';
+import EditCompany from '/imports/ui/companies/editContainer';
 
 import {
-  selectStyle
+  invisibleSelectStyle
 } from '/imports/other/styles/selectStyles';
-import { PlusIcon, SettingsIcon } from  "/imports/other/styles/icons";
+import { PlusIcon, SettingsIcon, FolderIcon, FilterIcon } from  "/imports/other/styles/icons";
 import {
   Sidebar,
   LinkButton
@@ -33,6 +34,8 @@ export default function Menu( props ) {
     location,
     closeSelf
   } = props;
+
+  const userId = Meteor.userId();
 
   const companyID = match.params.companyID;
   const categoryID = match.params.categoryID;
@@ -65,12 +68,26 @@ export default function Menu( props ) {
     }
   }, [location.pathname, categories, categoryID]);
 
+  const sortedCategories = useMemo(() => {
+    return [...categories].sort((c1, c2) => c1.label > c2.label ? 1 : -1);
+  }, [categories]);
+
+  const userCanAddItems = selectedCompany?.users?.find(user => user._id === userId).level <= 1;
 
   return (
     <Sidebar>
 
+      <label className="selector-name">
+        <img
+          className="icon"
+          src={FolderIcon}
+          alt=""
+          />
+        Company
+      </label>
+
       <Select
-        styles={selectStyle}
+        styles={invisibleSelectStyle}
         value={selectedCompany}
         onChange={(e) => {
           setSelectedCompany(e);
@@ -79,8 +96,19 @@ export default function Menu( props ) {
         options={{label: "All companies", value: "all-companies"}, [...companies]}
         />
 
+      <hr />
+
+              <label className="selector-name">
+                <img
+                  className="icon"
+                  src={FilterIcon}
+                  alt=""
+                  />
+                Category
+              </label>
+
       {
-        categories.map(category =>  (
+        sortedCategories.map(category =>  (
           <div className="nav" key={category.value}>
             <NavLink
               className={category.value === categoryID ? "active" : ""}
@@ -110,9 +138,10 @@ export default function Menu( props ) {
           </div>
           ))
       }
-
+<hr />
 {
-  companyID !== "all-companies" &&
+    userCanAddItems &&
+    companyID !== "all-companies" &&
     categoryID !== "all-categories" &&
       <NavLink
         style={{width: "100%"}}
@@ -156,6 +185,7 @@ export default function Menu( props ) {
         >
         <img
           className="icon"
+          style={{marginRight: "0.6em"}}
           src={PlusIcon}
           alt=""
           />
@@ -169,6 +199,7 @@ export default function Menu( props ) {
         >
         <img
           className="icon"
+          style={{marginRight: "0.6em"}}
           src={SettingsIcon}
           alt=""
           />
