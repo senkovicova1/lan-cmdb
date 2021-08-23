@@ -18,7 +18,7 @@ import {
   AddressesCollection
 } from '/imports/api/addressesCollection';
 
-import { PlusIcon, DeleteIcon } from  "/imports/other/styles/icons";
+import { PlusIcon, DeleteIcon, PencilIcon } from  "/imports/other/styles/icons";
 import {
   AddressList,
   LinkButton
@@ -79,13 +79,13 @@ export default function AddressesList( props ) {
                 <th>DNS</th>
               <th>VLAN</th>
               <th>Note</th>
-              <th width="20px"></th>
+              <th width="60px"></th>
             </tr>
           </thead>
           <tbody>
             {
               addressesInItem.map((address) => (
-                <tr key={address._id} onClick={(e) => {e.preventDefault(); toggleAddressEdit(address._id);}}>
+                <tr key={address._id}>
                   <td>{address.nic}</td>
                   <td>{address.ip}</td>
                   <td>{address.mask}</td>
@@ -93,7 +93,17 @@ export default function AddressesList( props ) {
                   <td>{address.dns}</td>
                   <td>{address.vlan}</td>
                   <td>{address.note}</td>
-                  <td>
+                  <td style={{display: "flex"}}>
+                    <LinkButton
+                      onClick={(e) => {e.preventDefault(); toggleAddressEdit(address._id);}}
+                      >
+                      <img
+                        className="icon"
+                        style={{marginRight: "0.6em"}}
+                        src={PencilIcon}
+                        alt=""
+                        />
+                    </LinkButton>
                     <LinkButton
                       onClick={(e) => {e.preventDefault(); removeAddress(address._id)}}
                       >

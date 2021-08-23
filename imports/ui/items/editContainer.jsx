@@ -21,9 +21,8 @@ export default function EditItemContainer( props ) {
   const {
     match,
     history,
-    revealPassword
   } = props;
-//http://localhost:3000/oCFTzJ7pSS4yWLDDS/Ti9JKqbWGZS3FJYtP/2SZx3HDvx6Mpz5Bja/edit
+
   const userId = Meteor.userId();
 
   const itemID = match.params.itemID;

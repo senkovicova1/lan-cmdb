@@ -125,9 +125,12 @@ export default function ItemView( props ) {
       <section  className="row-notes">
         <label htmlFor="description">Description</label>
         <div className="text">
-          <div className="main" dangerouslySetInnerHTML={{
+          <div
+            className="main"
+            dangerouslySetInnerHTML={{
               __html: item.description ? item.description : "No description",
-          }}>
+          }}
+          >
           </div>
           <div className="note">
             {category.descriptionNote ? category.descriptionNote : "No description noe"}
@@ -138,8 +141,12 @@ export default function ItemView( props ) {
       <section  className="row-notes">
         <label >Backup tasks description</label>
         <div className="text">
-          <div className="main">
-            {item.backupDescription ? item.backupDescription : "No backup description"}
+          <div
+            className="main"
+          dangerouslySetInnerHTML={{
+            __html: item.backupDescription ? item.backupDescription : "No backup description",
+        }}
+        >
           </div>
           <div className="note">
             {category.backupNote ? category.backupNote : "No backup note"}
@@ -150,8 +157,12 @@ export default function ItemView( props ) {
       <section  className="row-notes">
         <label htmlFor="description">Monitoring  description</label>
         <div className="text">
-          <div className="main">
-            {item.monitoringDescription ? item.monitoringDescription : "No monitoring description"}
+          <div
+            className="main"
+        dangerouslySetInnerHTML={{
+          __html: item.monitoringDescription ? item.monitoringDescription : "No monitoring description",
+      }}
+      >
           </div>
           <div className="note">
             {category.monitoringNote ? category.monitoringNote : "No monitoring note"}

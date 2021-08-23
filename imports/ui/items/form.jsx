@@ -99,6 +99,8 @@ export default function ItemForm( props ) {
                     editor={ClassicEditor}
                     data={description}
                     onChange={(event, editor) => {
+                      console.log(event);
+                      console.log(editor);
                         setDescription(editor.getData());
                     }}
                 />
@@ -113,13 +115,13 @@ export default function ItemForm( props ) {
         <label >Backup tasks description</label>
         <div className="text">
           <div className="main">
-              <Textarea
-                id="backupDescription"
-                name="backupDescription"
-                type="text"
-                value={backupDescription}
-                onChange={(e) => setBackupDescription(e.target.value)}
-                />
+            <CKEditor
+                editor={ClassicEditor}
+                data={backupDescription}
+                onChange={(event, editor) => {
+                    setBackupDescription(editor.getData());
+                }}
+            />
             </div>
           <div className="note" >
             {category.backupNote ? category.backupNote : "No backup note"}
@@ -131,13 +133,13 @@ export default function ItemForm( props ) {
         <label htmlFor="description">Monitoring  description</label>
         <div className="text">
           <div className="main">
-              <Textarea
-                id="monitoringDescription"
-                name="monitoringDescription"
-                type="text"
-                value={monitoringDescription}
-                onChange={(e) => setMonitoringDescription(e.target.value)}
-                />
+            <CKEditor
+                editor={ClassicEditor}
+                data={monitoringDescription}
+                onChange={(event, editor) => {
+                    setMonitoringDescription(editor.getData());
+                }}
+            />
             </div>
           <div className="note">
             {category.monitoringNote ? category.monitoringNote : "No monitoring note"}

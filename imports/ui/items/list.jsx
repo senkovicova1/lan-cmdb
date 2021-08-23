@@ -58,7 +58,7 @@ export default function ItemsList( props ) {
   const ipsOfItem = (itemId) => {
       let addressesInItem = addresses.filter(addr => addr.item === itemId);
       if (addressesInItem.length > 0){
-          return <span>{addressesInItem.map(addr => <p>{addr.ip}</p>)}</span>;
+          return <span>{addressesInItem.map(addr => <p key={addr.ip}>{addr.ip}</p>)}</span>;
       }
       return (<p></p>);
   };

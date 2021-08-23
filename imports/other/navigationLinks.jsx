@@ -15,6 +15,18 @@ export const getLink = (address) => {
     case "listItemsInCategory":
       return `/:companyID/:categoryID/list`;
       break;
+    case "schemeView":
+      return `/:companyID/scheme/view`;
+      break;
+    case "schemeDraw":
+      return `/:companyID/scheme/draw`;
+      break;
+    case "schemeEdit":
+      return `/:companyID/scheme/edit`;
+      break;
+      case "diagram":
+      return `/:companyID/diagram/draw`;
+      break;
     case "addItem":
       return `/:companyID/:categoryID/add-item`;
       break;
@@ -47,6 +59,15 @@ export const getGoToLink = (address, arguments) => {
       break;
     case "listItemsInCategory":
       return `/${companyID}/${categoryID}/list`;
+      break;
+    case "schemeView":
+      return `/${companyID}/scheme/view`;
+      break;
+    case "schemeDraw":
+      return `/${companyID}/scheme/draw`;
+      break;
+    case "schemeEdit":
+      return `/${companyID}/scheme/edit`;
       break;
     case "addItem":
       return `/${companyID}/${categoryID}/add-item`;

@@ -35,3 +35,14 @@ body {
     left: 0 !important;
   }
 }
+
+.modal-dialog.scheme>.modal-content{
+  width: 90vw;
+  left: -24vw;
+  height: 90vh;
+}
+
+.modal-dialog.scheme>.modal-content>.modal-body{
+  overflow-x: scroll;
+  overflow-y: scroll;
+}

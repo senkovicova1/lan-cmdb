@@ -38,7 +38,7 @@ export default function Menu( props ) {
   const userId = Meteor.userId();
 
   const companyID = match.params.companyID;
-  const categoryID = match.params.categoryID;
+  const categoryID = match.params.categoryID !== "undefined" ? match.params.categoryID : "all-categories";
 
   const companies = useSelector((state) => state.companies.value);
   const categories = useSelector((state) => state.categories.value);
@@ -97,6 +97,41 @@ export default function Menu( props ) {
         />
 
       <hr />
+
+      {
+        selectedCompany.value !== "all-companies" &&
+        <NavLink
+          className={location.pathname.includes("scheme") ? "active" : ""}
+          style={{width: "100%"}}
+          key={"scheme"}
+          to={getGoToLink("schemeView", {companyID: selectedCompany.value})}
+          onClick={() => {
+            if (/Mobi|Android/i.test(navigator.userAgent)) {
+              closeSelf();
+            }
+          }}
+          >
+          <span>Schema</span>
+        </NavLink>
+      }
+
+      {
+        selectedCompany.value !== "all-companies" &&
+        <NavLink
+          className={location.pathname.includes("diagram") ? "active" : ""}
+          style={{width: "100%"}}
+          key={"diagram"}
+          to={getGoToLink("diagram", {companyID: selectedCompany.value})}
+          onClick={() => {
+            if (/Mobi|Android/i.test(navigator.userAgent)) {
+              closeSelf();
+            }
+          }}
+          >
+          <span>Diagram</span>
+        </NavLink>
+      }
+
 
               <label className="selector-name">
                 <img

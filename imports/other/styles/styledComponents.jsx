@@ -49,6 +49,23 @@ export const MainPage = styled.div `
     height: 32px;
     border-radius: 50px;
   }
+
+  img.scheme{
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    border-radius: 0px;
+    margin: 0px;
+    cursor: zoom-in;
+  }
+
+  img.enlarged-scheme{
+    width: 200%;
+    height: auto;
+    border-radius: 0px;
+    margin: 0px;
+    cursor: zoom-in;
+  }
 `;
 
 export const MobilePageHeader = styled.header `
@@ -469,10 +486,6 @@ export const AddressList = styled.section `
     color: #7d7d7d;
   }
 
-  &>table>tbody>tr:hover{
-   cursor: pointer;
-  }
-
   &>table>tbody>tr>td{
     padding: 0px ${inputOffset};
       font-weight: 400;
@@ -588,13 +601,27 @@ section {
       width: 100%;
 
       div.main{
-        padding-right: 1em;
+        @media all and (max-width: 799px), @media handheld  {
+          padding-right: 0em;
+          margin-bottom: 1em;
+        }
+        @media all and (min-width: 800px){
+          padding-right: 1em;
+        }
         min-width: 66%;
+        img {
+          width: auto;
+          max-width: 500px;
+          height: auto;
+          max-height: 500px;
+          border-radius: 0px;
+        }
       }
 
       div.note{
         background-color: #fff10026;
         padding: 1.5em !important;
+        height: fit-content;
       }
     }
   }
@@ -630,6 +657,19 @@ padding-left: 0px;
 `;
 
 export const TitleInput = styled.input `
+background-color: white;
+padding-left: 7px;
+outline: none !important;
+font-size: 1.5em;
+border: none;
+width: ${(props) => props.width ? props.width : "auto"};
+height: 2.5em !important;
+
+&:hover{
+  cursor: default;
+}
+
+`;export const TitleInputView = styled.input `
 background-color: transparent !important;
 outline: none !important;
 font-size: 1.5em;
@@ -656,7 +696,6 @@ padding-left: 0.4em;
 `;
 
 export const ViewTextarea = styled.textarea `
-
 background-color: transparent !important;
 outline: none !important;
 border: none;

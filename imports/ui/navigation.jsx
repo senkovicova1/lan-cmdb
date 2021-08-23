@@ -35,6 +35,9 @@ import Header from './header';
 import Login from './login';
 import CategoryAdd from './categories/addContainer';
 import CategoryEdit from './categories/editContainer';
+import SchemeView from './schemes/view';
+import SchemeDraw from './schemes/drawScheme';
+import SchemeEdit from './schemes/editContainer';
 import ItemAdd from './items/addContainer';
 import ItemEdit from './items/editContainer';
 import ItemsList from './items/list';
@@ -153,6 +156,9 @@ export default function MainPage( props ) {
             getLink("addCategory"),
             getLink("editCategory"),
             getLink("listItemsInCategory"),
+            getLink("schemeView"),
+            getLink("schemeDraw"),
+            getLink("schemeEdit"),
             getLink("addItem"),
             getLink("editItem"),
             getLink("viewItem"),
@@ -219,6 +225,10 @@ export default function MainPage( props ) {
                   />
 
                 <Route exact path={getLink("viewItem")} component={ItemView}/>
+
+                <Route exact path={getLink("schemeView")} component={SchemeView}/>
+                <Route exact path={getLink("schemeDraw")} component={SchemeDraw}/>
+                <Route exact path={getLink("schemeEdit")} component={SchemeEdit}/>
           </div>
         </Content>
       }
