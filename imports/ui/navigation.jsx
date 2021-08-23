@@ -132,7 +132,7 @@ export default function MainPage( props ) {
 
   const [ search, setSearch ] = useState( "" );
   const [ openSidebar, setOpenSidebar ] = useState( false );
-
+  
   return (
     <div style={{height: "100vh"}}>
       <BrowserRouter>

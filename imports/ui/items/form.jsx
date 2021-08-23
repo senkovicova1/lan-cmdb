@@ -74,6 +74,16 @@ export default function ItemForm( props ) {
     }
   }, [ itemName, itemDescription, itemBackupDescription, itemMonitoringDescription ] );
 
+
+  const editors = document.getElementsByClassName("ck-file-dialog-button");
+  console.log(editors);
+  const b = Array.from(editors).forEach((item, i) => {
+    item.id = i;
+  });
+
+  console.log(document.getElementsByClassName("ck-file-dialog-button"));
+
+
   return (
     <Form>
 
@@ -99,8 +109,6 @@ export default function ItemForm( props ) {
                     editor={ClassicEditor}
                     data={description}
                     onChange={(event, editor) => {
-                      console.log(event);
-                      console.log(editor);
                         setDescription(editor.getData());
                     }}
                 />
