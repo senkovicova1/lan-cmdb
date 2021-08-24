@@ -85,7 +85,7 @@ export default function WebHeader( props ) {
               />
           </LinkButton>
         }
-        <h1 onClick={(e) => props.history.push(`${listPasswordsInFolderStart}all`)}>{title}</h1>
+        <h1 onClick={(e) => props.history.push(getGoToLink())}>{title}</h1>
       </section>
 
       {

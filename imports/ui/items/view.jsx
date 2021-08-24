@@ -7,6 +7,10 @@ import {
   useSelector
 } from 'react-redux';
 
+import {
+  ImagesCollection
+} from '/imports/api/imagesCollection';
+
 import AddressesList from '/imports/ui/addresses/list';
 
 import {
@@ -22,6 +26,9 @@ import {
 import {
   getGoToLink
 } from "/imports/other/navigationLinks";
+import {
+  addImagesToText
+} from '../../other/helperFunctions';
 
 export default function ItemView( props ) {
 
@@ -128,7 +135,7 @@ export default function ItemView( props ) {
           <div
             className="main"
             dangerouslySetInnerHTML={{
-              __html: item.description ? item.description : "No description",
+              __html: item.description ? addImagesToText(item.description) : "No description",
           }}
           >
           </div>
@@ -144,7 +151,7 @@ export default function ItemView( props ) {
           <div
             className="main"
           dangerouslySetInnerHTML={{
-            __html: item.backupDescription ? item.backupDescription : "No backup description",
+            __html: item.backupDescription ? addImagesToText(item.backupDescription) : "No backup description",
         }}
         >
           </div>
@@ -160,7 +167,7 @@ export default function ItemView( props ) {
           <div
             className="main"
         dangerouslySetInnerHTML={{
-          __html: item.monitoringDescription ? item.monitoringDescription : "No monitoring description",
+          __html: item.monitoringDescription ? addImagesToText(item.monitoringDescription) : "No monitoring description",
       }}
       >
           </div>

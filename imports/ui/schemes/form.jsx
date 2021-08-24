@@ -9,6 +9,8 @@ import {
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
+import CKEditorWithFileUpload from '/imports/ui/other/ckeditorWithFileUpload';
+
 import {
   Form,
   Input,
@@ -16,8 +18,9 @@ import {
   FullButton,
 } from "/imports/other/styles/styledComponents";
 import {
-  uint8ArrayToImg
-} from '../../other/helperFunctions.js';
+  uint8ArrayToImg,
+  addImagesToText
+} from '../../other/helperFunctions';
 
 export default function SchemeForm( props ) {
 
@@ -58,11 +61,17 @@ export default function SchemeForm( props ) {
       } );
     }
     if ( schemeDescription ) {
-      setDescription( schemeDescription );
+      setDescription( addImagesToText(schemeDescription) );
     } else {
       setDescription( "" );
     }
   }, [ schemePicture, schemeDescription ] );
+
+    const editors = document.getElementsByClassName("ck-file-dialog-button");
+
+    if (editors[0]){
+      editors[0].id = "ckeditor-file-upload-button-scheme";
+    }
 
   return (
     <Form>
@@ -98,16 +107,13 @@ export default function SchemeForm( props ) {
           </div>
         </section>
 
-      <section  className="row-notes">
-        <label htmlFor="description">Description</label>
-          <CKEditor
-              editor={ClassicEditor}
-              data={description}
-              onChange={(event, editor) => {
-                  setDescription(editor.getData());
-              }}
-          />
-      </section>
+        <CKEditorWithFileUpload
+          title={"Description"}
+            text={description}
+            setText={setDescription}
+            note={false}
+            buttonId={"ckeditor-file-upload-button-scheme"}
+            />
 
       <ButtonCol>
         <FullButton colour="grey" onClick={(e) => {e.preventDefault(); onCancel()}}>Cancel</FullButton>

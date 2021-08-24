@@ -25,8 +25,9 @@ import {
   getGoToLink
 } from "/imports/other/navigationLinks";
 import {
-  uint8ArrayToImg
-} from '/imports/other/helperFunctions.js';
+  uint8ArrayToImg,
+  addImagesToText
+} from '/imports/other/helperFunctions';
 
 export default function schemeView( props ) {
 
@@ -38,10 +39,13 @@ export default function schemeView( props ) {
   const userId = Meteor.userId();
 
   const [ enlargeScheme, setEnlargeScheme ] = useState( false );
-
   const enlargeSchemeToggle = () => {
-    console.log("ENL");
     setEnlargeScheme(!enlargeScheme);
+  }
+
+  const [ historyView, setHistoryView ] = useState( false );
+  const historyViewToggle = () => {
+    setHistoryView(!historyView);
   }
 
   const companyID = match.params.companyID;
@@ -54,7 +58,6 @@ export default function schemeView( props ) {
   }, [ companies, companyID ] );
 
   useEffect(() => {
-    console.log("HI");
     if (companyID !== "all-companies" && company){
       const userCannotView = !company.users.find(user => user._id === userId);
       if (userCannotView){
@@ -76,7 +79,17 @@ export default function schemeView( props ) {
   return (
     <Form>
 
-      <h1>Scheme</h1>
+      <div style={{display: "flex", justifyContent: "space-between"}}>
+      <h1>
+        Scheme
+      </h1>
+      <LinkButton
+        style={{alignSelf: "flex-end"}}
+        onClick={(e) => {e.preventDefault(); historyViewToggle();}}
+        >
+        History
+      </LinkButton>
+    </div>
 
         {
           scheme &&
@@ -104,15 +117,32 @@ export default function schemeView( props ) {
 
         <Modal className="scheme" isOpen={enlargeScheme} toggle={enlargeSchemeToggle}>
           <ModalBody>
-            <img className="enlarged-scheme" width="200%" src={scheme} alt="scheme"/>
+            <img className="enlarged-scheme" width="100%" src={scheme} alt="scheme"/>
           </ModalBody>
         </Modal>
+
+        {
+          historyView &&
+          <div
+            style={{
+              position: "absolute",
+              right: "0px",
+              top: 0,
+              height: "-webkit-fill-available",
+              width: "250px",
+              minHeight: "100px",
+              backgroundColor: "red",
+            }}
+            >
+
+          </div>
+        }
 
       <section>
         <label htmlFor="description">Description</label>
           <div
             dangerouslySetInnerHTML={{
-              __html: company.scheme?.description ? company.scheme.description : "No description",
+              __html: company.scheme?.description ? addImagesToText(company.scheme.description) : "No description",
           }}
           >
         </div>

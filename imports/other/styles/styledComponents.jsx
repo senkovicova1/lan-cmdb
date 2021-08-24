@@ -60,7 +60,7 @@ export const MainPage = styled.div `
   }
 
   img.enlarged-scheme{
-    width: 200%;
+    width: 100%;
     height: auto;
     border-radius: 0px;
     margin: 0px;
@@ -547,8 +547,15 @@ section {
         margin: 0px;
       }
     }
+    img:not(.scheme) {
+      width: auto;
+      max-width: 500px;
+      height: auto;
+      max-height: 500px;
+      border-radius: 0px;
+    }
 
-    img {
+    img.icon {
       width:32px;
       height: 32px;
       border-radius: 50px;
@@ -609,13 +616,7 @@ section {
           padding-right: 1em;
         }
         min-width: 66%;
-        img {
-          width: auto;
-          max-width: 500px;
-          height: auto;
-          max-height: 500px;
-          border-radius: 0px;
-        }
+
       }
 
       div.note{

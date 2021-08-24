@@ -115,32 +115,14 @@ export default function Menu( props ) {
         </NavLink>
       }
 
-      {
-        selectedCompany.value !== "all-companies" &&
-        <NavLink
-          className={location.pathname.includes("diagram") ? "active" : ""}
-          style={{width: "100%"}}
-          key={"diagram"}
-          to={getGoToLink("diagram", {companyID: selectedCompany.value})}
-          onClick={() => {
-            if (/Mobi|Android/i.test(navigator.userAgent)) {
-              closeSelf();
-            }
-          }}
-          >
-          <span>Diagram</span>
-        </NavLink>
-      }
-
-
-              <label className="selector-name">
-                <img
-                  className="icon"
-                  src={FilterIcon}
-                  alt=""
-                  />
-                Category
-              </label>
+      <label className="selector-name">
+        <img
+          className="icon"
+          src={FilterIcon}
+          alt=""
+          />
+        Category
+      </label>
 
       {
         sortedCategories.map(category =>  (

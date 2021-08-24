@@ -6,7 +6,7 @@ import React, {
 import {
   isEmail,
   uint8ArrayToImg
-} from '../../other/helperFunctions.js';
+} from '../../other/helperFunctions';
 
 import {
   Form,

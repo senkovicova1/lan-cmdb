@@ -10,6 +10,8 @@ import {
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
+import CKEditorWithFileUpload from '/imports/ui/other/ckeditorWithFileUpload';
+
 import {
   Form,
   TitleInput,
@@ -17,6 +19,9 @@ import {
   ButtonCol,
   FullButton,
 } from "/imports/other/styles/styledComponents";
+import {
+  addImagesToText
+} from '/imports/other/helperFunctions';
 
 export default function ItemForm( props ) {
 
@@ -58,17 +63,17 @@ export default function ItemForm( props ) {
       setName( "" );
     }
     if ( itemDescription ) {
-      setDescription( itemDescription );
+      setDescription( addImagesToText(itemDescription) );
     } else {
       setDescription( "" );
     }
     if ( itemBackupDescription ) {
-      setBackupDescription( itemBackupDescription );
+      setBackupDescription( addImagesToText(itemBackupDescription) );
     } else {
       setBackupDescription( "" );
     }
     if ( itemMonitoringDescription ) {
-      setMonitoringDescription( itemMonitoringDescription );
+      setMonitoringDescription( addImagesToText(itemMonitoringDescription) );
     } else {
       setMonitoringDescription( "" );
     }
@@ -76,13 +81,9 @@ export default function ItemForm( props ) {
 
 
   const editors = document.getElementsByClassName("ck-file-dialog-button");
-  console.log(editors);
-  const b = Array.from(editors).forEach((item, i) => {
-    item.id = i;
+  Array.from(editors).forEach((item, i) => {
+    item.id = `ckeditor-file-upload-button-${i}`;
   });
-
-  console.log(document.getElementsByClassName("ck-file-dialog-button"));
-
 
   return (
     <Form>
@@ -101,59 +102,29 @@ export default function ItemForm( props ) {
           />
       </section>
 
-      <section  className="row-notes">
-        <label htmlFor="description">Description</label>
-        <div className="text">
-          <div className="main">
-                <CKEditor
-                    editor={ClassicEditor}
-                    data={description}
-                    onChange={(event, editor) => {
-                        setDescription(editor.getData());
-                    }}
-                />
-              </div>
-              <div className="note">
-            {category.descriptionNote ? category.descriptionNote : "No description noe"}
-          </div>
-        </div>
-      </section>
+      <CKEditorWithFileUpload
+        title={"Description"}
+          text={description}
+          setText={setDescription}
+          note={category.descriptionNote ? category.descriptionNote : "No description note"}
+          buttonId={"ckeditor-file-upload-button-0"}
+          />
 
-      <section  className="row-notes">
-        <label >Backup tasks description</label>
-        <div className="text">
-          <div className="main">
-            <CKEditor
-                editor={ClassicEditor}
-                data={backupDescription}
-                onChange={(event, editor) => {
-                    setBackupDescription(editor.getData());
-                }}
-            />
-            </div>
-          <div className="note" >
-            {category.backupNote ? category.backupNote : "No backup note"}
-          </div>
-        </div>
-      </section>
+          <CKEditorWithFileUpload
+            title={"Backup tasks description"}
+              text={backupDescription}
+              setText={setBackupDescription}
+              note={category.backupNote ? category.backupNote : "No backup note"}
+              buttonId={"ckeditor-file-upload-button-1"}
+              />
 
-      <section  className="row-notes">
-        <label htmlFor="description">Monitoring  description</label>
-        <div className="text">
-          <div className="main">
-            <CKEditor
-                editor={ClassicEditor}
-                data={monitoringDescription}
-                onChange={(event, editor) => {
-                    setMonitoringDescription(editor.getData());
-                }}
-            />
-            </div>
-          <div className="note">
-            {category.monitoringNote ? category.monitoringNote : "No monitoring note"}
-          </div>
-        </div>
-      </section>
+              <CKEditorWithFileUpload
+                title={"Monitoring  description"}
+                  text={monitoringDescription}
+                  setText={setMonitoringDescription}
+                  note={category.monitoringNote ? category.monitoringNote : "No monitoring note"}
+                  buttonId={"ckeditor-file-upload-button-2"}
+                  />
 
       <ButtonCol>
         <FullButton colour="grey" onClick={(e) => {e.preventDefault(); onCancel()}}>Cancel</FullButton>

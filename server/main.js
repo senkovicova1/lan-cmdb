@@ -16,3 +16,6 @@ import {
 import {
   CategoriesCollection
 } from '/imports/api/categoriesCollection';
+import {
+  ImagesCollection
+} from '/imports/api/imagesCollection';

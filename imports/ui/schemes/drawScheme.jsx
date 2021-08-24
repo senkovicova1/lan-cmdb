@@ -27,7 +27,7 @@ import {
 } from "/imports/other/navigationLinks";
 import {
   uint8ArrayToImg
-} from '/imports/other/helperFunctions.js';
+} from '/imports/other/helperFunctions';
 
 
 const initialSchema = createSchema({
