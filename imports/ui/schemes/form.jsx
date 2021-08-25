@@ -6,6 +6,7 @@ import React, {
 import {
   useSelector
 } from 'react-redux';
+import moment from 'moment';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
@@ -26,8 +27,9 @@ export default function SchemeForm( props ) {
 
   const {
     title,
-    picture: schemePicture,
+    diagram: schemeDiagram,
     description: schemeDescription,
+    createdDate,
     match,
     onSubmit,
     onRemove,
@@ -38,7 +40,7 @@ export default function SchemeForm( props ) {
 
   const companyID = match.params.companyID;
 
-  const [ picture, setPicture ] = useState(  {
+  const [ diagram, setDiagram ] = useState(  {
     name: "",
     buffer: null,
     img: null
@@ -46,15 +48,15 @@ export default function SchemeForm( props ) {
   const [ description, setDescription ] = useState( "" );
 
   useEffect( () => {
-    if ( schemePicture ) {
-      const img = uint8ArrayToImg( schemePicture );
-      setPicture( {
+    if ( schemeDiagram ) {
+      const img = uint8ArrayToImg( schemeDiagram );
+      setDiagram( {
         name: "",
-        buffer: schemePicture,
+        buffer: schemeDiagram,
         img
       } );
     } else {
-      setPicture(  {
+      setDiagram(  {
         name: "",
         buffer: null,
         img: null
@@ -65,7 +67,7 @@ export default function SchemeForm( props ) {
     } else {
       setDescription( "" );
     }
-  }, [ schemePicture, schemeDescription ] );
+  }, [ schemeDiagram, schemeDescription ] );
 
     const editors = document.getElementsByClassName("ck-file-dialog-button");
 
@@ -82,15 +84,15 @@ export default function SchemeForm( props ) {
           <label htmlFor="scheme">Scheme</label>
           <div>
             {
-              picture.img &&
-              <img className="scheme" src={picture.img} alt="scheme"/>
+              diagram.img &&
+              <img className="scheme" src={diagram.img} alt="scheme"/>
             }
             <Input
               id="scheme"
               name="scheme"
               style={{display: "block"}}
               type="file"
-              value={picture.name}
+              value={diagram.name}
               onChange={(e) =>  {
                 e.persist();
                 var file = e.target.files[0];
@@ -99,7 +101,7 @@ export default function SchemeForm( props ) {
                 reader.onload = function(event){
                   var buffer = new Uint8Array(reader.result);
                   const img = uint8ArrayToImg(buffer);
-                  setPicture({name: e.target.value, buffer, img});
+                  setDiagram({name: e.target.value, buffer, img});
                 }
                 reader.readAsArrayBuffer(file);
               }}
@@ -120,8 +122,9 @@ export default function SchemeForm( props ) {
         <FullButton
           colour=""
           onClick={(e) => {e.preventDefault(); onSubmit(
-            picture.buffer,
+            diagram.buffer,
             description,
+            moment().unix()
           );}}
           >
           Save

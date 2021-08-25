@@ -57,10 +57,14 @@ useEffect(() => {
     return {};
   }, [ items, itemID ] );
 
-  const editItem = ( name, description, backupDescription, monitoringDescription, updatedDate, updatedBy ) => {
+  const editItem = ( name, status, placement, installationDate, expirationDate, description, backupDescription, monitoringDescription, updatedDate, updatedBy ) => {
     ItemsCollection.update( itemID, {
       $set: {
         name,
+        status,
+        placement,
+        installationDate,
+        expirationDate,
         description,
         backupDescription,
         monitoringDescription,

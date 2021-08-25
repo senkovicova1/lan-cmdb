@@ -17,6 +17,7 @@ import { setCategories } from '/imports/redux/categoriesSlice';
 import { setItems } from '/imports/redux/itemsSlice';
 import { setAddresses } from '/imports/redux/addressesSlice';
 import { setUsers } from '/imports/redux/usersSlice';
+import { setSchemes } from '/imports/redux/schemesSlice';
 import {
   CompaniesCollection
 } from '/imports/api/companiesCollection';
@@ -29,6 +30,9 @@ import {
 import {
   AddressesCollection
 } from '/imports/api/addressesCollection';
+import {
+  SchemesCollection
+} from '/imports/api/schemesCollection';
 
 import Reroute from './reroute';
 import Header from './header';
@@ -121,6 +125,12 @@ export default function MainPage( props ) {
     );
   }, [users]);
 
+  const schemes = useTracker( () => SchemesCollection.find( { company:  { $in: companiesIds} } ).fetch() );
+  useEffect(() => {
+    if (schemes.length > 0){
+      dispatch(setSchemes(schemes));
+    }
+  }, [schemes]);
 
     const itemsIds = items.map(item => item._id);
     const addresses = useTracker( () => AddressesCollection.find( { item: {$in: itemsIds}} ).fetch() );
@@ -132,7 +142,7 @@ export default function MainPage( props ) {
 
   const [ search, setSearch ] = useState( "" );
   const [ openSidebar, setOpenSidebar ] = useState( false );
-  
+
   return (
     <div style={{height: "100vh"}}>
       <BrowserRouter>

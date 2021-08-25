@@ -6,6 +6,7 @@ import itemsReducer from './itemsSlice';
 import addressesReducer from './addressesSlice';
 import categoriesReducer from './categoriesSlice';
 import usersReducer from './usersSlice';
+import schemesReducer from './schemesSlice';
 
 export default configureStore( {
   reducer: {
@@ -14,5 +15,6 @@ export default configureStore( {
     addresses: addressesReducer,
     categories: categoriesReducer,
     users: usersReducer,
+    schemes: schemesReducer,
   },
 } )

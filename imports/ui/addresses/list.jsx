@@ -31,7 +31,8 @@ export default function AddressesList( props ) {
 
   const {
     match,
-    history
+    history,
+    edit
   } = props;
 
   const userId = Meteor.userId();
@@ -66,6 +67,10 @@ export default function AddressesList( props ) {
         }
   }
 
+  if (!edit && addressesInItem.length === 0){
+    return (<div></div>);
+  }
+
   return (
     <AddressList>
 
@@ -93,6 +98,7 @@ export default function AddressesList( props ) {
                   <td>{address.dns}</td>
                   <td>{address.vlan}</td>
                   <td>{address.note}</td>
+                  {edit &&
                   <td style={{display: "flex"}}>
                     <LinkButton
                       onClick={(e) => {e.preventDefault(); toggleAddressEdit(address._id);}}
@@ -115,9 +121,11 @@ export default function AddressesList( props ) {
                         />
                     </LinkButton>
                   </td>
+                }
                 </tr>
               ))
             }
+            {edit &&
             <tr key={"add"} onClick={() => {setAddressAdd(true)}}>
               <td colSpan={8}>
                 <LinkButton
@@ -135,6 +143,7 @@ export default function AddressesList( props ) {
                 </LinkButton>
               </td>
             </tr>
+          }
           </tbody>
         </table>
 

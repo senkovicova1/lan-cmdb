@@ -7,8 +7,8 @@ import {
 } from 'react-redux';
 
 import {
-  CompaniesCollection
-} from '/imports/api/companiesCollection';
+  SchemesCollection
+} from '/imports/api/schemesCollection';
 
 import SchemeForm from './form';
 
@@ -34,6 +34,14 @@ export default function EditSchemeContainer( props ) {
     return null;
   }, [ companies, companyID ] );
 
+  const schemes = useSelector( ( state ) => state.schemes.value ).filter(scheme => scheme.company === companyID);
+  const currentScheme = useMemo( () => {
+    if ( schemes.length > 0 ) {
+      return schemes.find(scheme => scheme.version === 0 );
+    }
+    return null;
+  }, [ schemes ] );
+
 useEffect(() => {
   if (company){
     const userCannotEdit = company.users.find(user => user._id === userId).level > 0;
@@ -46,19 +54,32 @@ useEffect(() => {
   }
 }, [company, userId]);
 
+  const editScheme = ( diagram, description, createdDate ) => {
 
-  const editCompany = ( picture, description ) => {
-    let data = {
-      picture,
-      description
-    };
-    CompaniesCollection.update( companyID, {
-      $set: {
-        scheme: {
-          ...data
-        }
+    SchemesCollection.insert( {
+      diagram,
+      description,
+      version: 0,
+      company: companyID,
+      createdDate,
+    }, (error, _id) => {
+      if (error){
+        console.log(console.error());
       }
-    } );
+    });
+
+    const schemesToUpdate = schemes;
+
+    schemesToUpdate.forEach((scheme, index) => {
+      if (scheme.version >= 20){
+        SchemesCollection.remove( {
+       _id: scheme._id
+       } );
+      } else {
+          SchemesCollection.update( scheme._id, { $inc: { version: 1 } } );
+        }
+    });
+
       history.goBack();
   };
 
@@ -66,11 +87,7 @@ useEffect(() => {
     history.goBack();
   }
 
-  if (!company){
-    return (<div></div>)
-  }
-
   return (
-    <SchemeForm {...props} title={"Edit scheme"} {...company.scheme} onSubmit={editCompany} onCancel={close} />
+    <SchemeForm {...props} title={"Edit scheme"} {...currentScheme} onSubmit={editScheme} onCancel={close} />
   );
 };

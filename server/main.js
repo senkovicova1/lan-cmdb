@@ -19,3 +19,6 @@ import {
 import {
   ImagesCollection
 } from '/imports/api/imagesCollection';
+import {
+  SchemesCollection
+} from '/imports/api/schemesCollection';

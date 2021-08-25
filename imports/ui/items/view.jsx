@@ -19,7 +19,7 @@ import {
 } from "/imports/other/styles/icons";
 import {
   Form,
-  TitleInput,
+  TitleInputView,
   ViewInput,
   FloatingButton,
 } from "/imports/other/styles/styledComponents";
@@ -79,6 +79,9 @@ export default function ItemView( props ) {
     return {};
   }, [ categories, item ] );
 
+
+  const statuses = [{label: "Active", value: 0}, {label: "Inactive", value: 1}];
+
   const userCanEditItem = company?.users.find(user => user._id === userId).level <= 1;
 
   return (
@@ -87,7 +90,7 @@ export default function ItemView( props ) {
       <section className="row">
         <div>
           <div>
-            <TitleInput
+            <TitleInputView
               type="text"
               id="name"
               name="name"
@@ -103,7 +106,8 @@ export default function ItemView( props ) {
         <hr />
       </section>
 
-      <section>
+      <section className="input-row">
+        <div>
         <label htmlFor="category">Category</label>
         <ViewInput
           id="category"
@@ -112,9 +116,8 @@ export default function ItemView( props ) {
           disabled={true}
           value={category ? category.name : "NO"}
           />
-      </section>
-
-      <section>
+      </div>
+      <div>
         <label htmlFor="company">Company</label>
         <ViewInput
           id="company"
@@ -123,10 +126,83 @@ export default function ItemView( props ) {
           disabled={true}
           value={company ? company.name : "No company"}
           />
+      </div>
+      </section>
+
+      <section className="input-row">
+        <div>
+        <label htmlFor="status">Status</label>
+        <ViewInput
+          id="status"
+          name="status"
+          type="text"
+          disabled={true}
+          value={item.status ? item.find(s => item.status.value).label : "Active"}
+          />
+      </div>
+      <div>
+        <label htmlFor="placement">Placement</label>
+        <ViewInput
+          id="placement"
+          name="placement"
+          type="text"
+          disabled={true}
+          value={item.placement ? item.placement : "Not placed"}
+          />
+      </div>
+      </section>
+
+      <section className="input-row">
+        <div>
+        <label htmlFor="installation-date">Installation date</label>
+          {
+            item.installationDate &&
+        <ViewInput
+            disabled={true}
+            type="datetime-local"
+            id="installation-date"
+            name="installation-date"
+            value={item.installationDate ? moment.unix(item.installationDate).add((new Date).getTimezoneOffset(), 'minutes').format("yyyy-MM-DD hh:mm").replace(" ", "T") : ""}
+            />
+        }
+            {
+              !item.expirationDate &&
+              <ViewInput
+                id="expiration-date"
+                name="expiration-date"
+                type="text"
+                disabled={true}
+                value={"No expiration date"}
+                />
+            }
+      </div>
+      <div>
+        <label htmlFor="expiration-date">Expiration date</label>
+        {
+          item.expirationDate &&
+          <ViewInput
+            disabled={true}
+            type="datetime-local"
+            id="expiration-date"
+            name="expiration-date"
+            value={item.expirationDate ? moment.unix(item.expirationDate).add((new Date).getTimezoneOffset(), 'minutes').format("yyyy-MM-DD hh:mm").replace(" ", "T") : ""}
+            />
+        }
+        {
+          !item.expirationDate &&
+          <ViewInput
+            id="expiration-date"
+            name="expiration-date"
+            type="text"
+            disabled={true}
+            value={"No installation date"}
+            />
+        }
+      </div>
       </section>
 
       <section>
-        <AddressesList {...props}/>
+        <AddressesList {...props} edit={false}/>
       </section>
 
       <section  className="row-notes">
