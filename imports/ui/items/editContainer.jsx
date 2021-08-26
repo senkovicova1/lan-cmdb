@@ -5,10 +5,17 @@ import React, {
 import {
   useSelector
 } from 'react-redux';
+import moment from 'moment';
 
 import {
   ItemsCollection
 } from '/imports/api/itemsCollection';
+import {
+  PreviousItemsCollection
+} from '/imports/api/previousItemsCollection';
+import {
+  AddressesCollection
+} from '/imports/api/addressesCollection';
 
 import ItemForm from './form';
 
@@ -57,31 +64,67 @@ useEffect(() => {
     return {};
   }, [ items, itemID ] );
 
-  const editItem = ( name, status, placement, installationDate, expirationDate, description, backupDescription, monitoringDescription, updatedDate, updatedBy ) => {
-    ItemsCollection.update( itemID, {
-      $set: {
-        name,
-        status,
-        placement,
-        installationDate,
-        expirationDate,
-        description,
-        backupDescription,
-        monitoringDescription,
-        updatedDate,
-        updatedBy
-      }
+  const addresses = useSelector( ( state ) => state.addresses.value );
+  const addressesInItem = useMemo( () => {
+    return addresses.filter(address => address.item === itemID);
+  }, [ addresses, itemID ] );
+
+  const editItem = ( name, status, placement, installationDate, expirationDate, description, backupDescription, monitoringDescription, updatedDate, updatedBy, originalItemId ) => {
+
+    let oldItem = {...item};
+    delete oldItem._id;
+
+    PreviousItemsCollection.insert( {
+      ...oldItem,
+      originalItem: originalItemId,
+      addresses: addressesInItem,
     }, ( error, _id ) => {
       if ( error ) {
         console.log( error );
-      } else {
+      }
+    } );
+
+    ItemsCollection.insert( {
+      name,
+      status,
+      placement,
+      installationDate,
+      expirationDate,
+      description,
+      backupDescription,
+      monitoringDescription,
+      updatedDate,
+      updatedBy,
+      category: categoryID,
+      company: companyID,
+      createdDate: moment().unix(),
+      createdBy: userId,
+      originalItem: originalItemId,
+    }, ( error, _id ) => {
+      if ( error ) {
+        console.log( error );
+      }  else {
+        addressesInItem.forEach((addr, i) => {
+          AddressesCollection.update( addr._id, {
+            $set: {
+              ...addr,
+              item: _id
+            }
+          });
+        });
+
         history.push( getGoToLink( "viewItem", {
           companyID,
           categoryID,
-          itemID
+          itemID: _id
         } ) );
       }
     } );
+
+        ItemsCollection.remove( {
+          _id: itemID
+        } );
+
   }
 
   const removeItem = () => {

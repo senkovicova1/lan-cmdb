@@ -45,7 +45,7 @@ import SchemeEdit from './schemes/editContainer';
 import ItemAdd from './items/addContainer';
 import ItemEdit from './items/editContainer';
 import ItemsList from './items/list';
-import ItemView from './items/view';
+import ItemView from './items/viewContainer';
 import EditUserContainer from './users/editUserContainer';
 
 import {

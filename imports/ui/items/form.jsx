@@ -34,6 +34,7 @@ export default function ItemForm( props ) {
   const {
     title,
     _id: itemId,
+    originalItemId: itemOriginalItemId,
     name: itemName,
     status: itemStatus,
     placement: itemPlacement,
@@ -113,7 +114,7 @@ export default function ItemForm( props ) {
     } else {
       setMonitoringDescription( "" );
     }
-  }, [ itemName, itemDescription, itemBackupDescription, itemMonitoringDescription ] );
+  }, [ itemName, itemId, itemOriginalItemId, itemName, itemStatus, itemPlacement, itemInstallationDate, itemExpirationDate, itemDescription, itemBackupDescription, itemMonitoringDescription ] );
 
   const editors = document.getElementsByClassName("ck-file-dialog-button");
   Array.from(editors).forEach((item, i) => {
@@ -187,32 +188,32 @@ export default function ItemForm( props ) {
       </section>
 
       <section>
-        <AddressesList {...props} edit={true}/>
+        <AddressesList {...props} itemID={itemId} edit={true}/>
       </section>
 
       <CKEditorWithFileUpload
-          title={"Description"}
-          text={description}
-          setText={setDescription}
-          note={category.descriptionNote ? category.descriptionNote : "No description note"}
-          buttonId={"ckeditor-file-upload-button-0"}
-          />
+        title={"Description"}
+        text={description}
+        setText={setDescription}
+        note={category.descriptionNote ? category.descriptionNote : "No description note"}
+        buttonId={"ckeditor-file-upload-button-0"}
+        />
 
-          <CKEditorWithFileUpload
-            title={"Backup tasks description"}
-              text={backupDescription}
-              setText={setBackupDescription}
-              note={category.backupNote ? category.backupNote : "No backup note"}
-              buttonId={"ckeditor-file-upload-button-1"}
-              />
+      <CKEditorWithFileUpload
+        title={"Backup tasks description"}
+        text={backupDescription}
+        setText={setBackupDescription}
+        note={category.backupNote ? category.backupNote : "No backup note"}
+        buttonId={"ckeditor-file-upload-button-1"}
+        />
 
-              <CKEditorWithFileUpload
-                title={"Monitoring  description"}
-                  text={monitoringDescription}
-                  setText={setMonitoringDescription}
-                  note={category.monitoringNote ? category.monitoringNote : "No monitoring note"}
-                  buttonId={"ckeditor-file-upload-button-2"}
-                  />
+      <CKEditorWithFileUpload
+        title={"Monitoring  description"}
+        text={monitoringDescription}
+        setText={setMonitoringDescription}
+        note={category.monitoringNote ? category.monitoringNote : "No monitoring note"}
+        buttonId={"ckeditor-file-upload-button-2"}
+        />
 
       <ButtonCol>
         <FullButton colour="grey" onClick={(e) => {e.preventDefault(); onCancel()}}>Cancel</FullButton>
@@ -231,6 +232,7 @@ export default function ItemForm( props ) {
             monitoringDescription,
             moment().unix(),
             userId,
+            itemOriginalItemId ? itemOriginalItemId : itemId,
             categoryID,
             companyID,
             moment().unix(),

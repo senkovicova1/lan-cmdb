@@ -47,7 +47,7 @@ useEffect(() => {
   }
 }, [company, companyID, userId]);
 
-  const addNew = ( name, status, placement, installationDate, expirationDate, description, backupDescription, monitoringDescription, updatedDate, updatedBy, category, company, createdDate, createdBy ) => {
+  const addNew = ( name, status, placement, installationDate, expirationDate, description, backupDescription, monitoringDescription, updatedDate, updatedBy, originalItemId, category, company, createdDate, createdBy ) => {
     ItemsCollection.insert( {
       name,
       status,

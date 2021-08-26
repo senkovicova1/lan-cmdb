@@ -185,6 +185,7 @@ export default function schemeView( props ) {
                     {
                       scheme.version > 0 &&
                       <span
+                        style={version === scheme.version ? {color: "#0078d4"} : {}}
                         onClick={(e) => {e.preventDefault(); setVersion(scheme.version);}}
                         >
                       {`Version ${moment.unix(scheme.createdDate).format("D.M.YYYY HH:mm:ss")}`}
@@ -193,6 +194,7 @@ export default function schemeView( props ) {
                     {
                       scheme.version === 0 &&
                       <span
+                        style={version === scheme.version ? {color: "#0078d4"} : {}}
                         onClick={(e) => {e.preventDefault(); setVersion(scheme.version);}}
                         >
                       {`Current version made ${moment.unix(scheme.createdDate).format("D.M.YYYY HH:mm:ss")}`}

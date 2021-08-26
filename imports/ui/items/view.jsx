@@ -1,5 +1,6 @@
 import React, {
   useMemo,
+  useState,
   useEffect
 } from 'react';
 import moment from 'moment';
@@ -12,6 +13,7 @@ import {
 } from '/imports/api/imagesCollection';
 
 import AddressesList from '/imports/ui/addresses/list';
+import ItemHistory from '/imports/ui/items/historyView';
 
 import {
   PencilIcon,
@@ -21,6 +23,7 @@ import {
   Form,
   TitleInputView,
   ViewInput,
+  LinkButton,
   FloatingButton,
 } from "/imports/other/styles/styledComponents";
 import {
@@ -34,59 +37,24 @@ export default function ItemView( props ) {
 
   const {
     match,
-    history
+    history,
+    historyOpen,
+    toggleHistory,
+    item,
+    company,
+    category,
   } = props;
+
+  const itemID = match.params.itemID;
 
   const userId = Meteor.userId();
   const users = useSelector( ( state ) => state.users.value );
-
-  const itemID = match.params.itemID;
-  const items = useSelector( ( state ) => state.items.value );
-  const item = useMemo( () => {
-    if ( items.length > 0 ) {
-      return items.find( item => item._id === itemID );
-    }
-    return {};
-  }, [ items, itemID ] );
-
-  const companyID = match.params.companyID;
-  const companies = useSelector( ( state ) => state.companies.value );
-  const company = useMemo( () => {
-    if ( companies.length > 0 && item ) {
-      return companies.find( company => company._id === item.company );
-    }
-    return null;
-  }, [ companies, item ] );
-
-  useEffect(() => {
-    if (companyID !== "all-companies" && company){
-      const userCannotViewItem = !company.users.find(user => user._id === userId);
-      if (userCannotViewItem){
-        history.push(getGoToLink());
-      }
-    }
-    if (!company){
-      history.push(getGoToLink());
-    }
-  }, [company, companyID, userId]);
-
-  const categoryID = match.params.categoryID;
-  const categories = useSelector( ( state ) => state.categories.value );
-  const category = useMemo( () => {
-    if ( categories.length > 0 && item ) {
-      return categories.find( category => category._id === item.category );
-    }
-    return {};
-  }, [ categories, item ] );
-
-
   const statuses = [{label: "Active", value: 0}, {label: "Inactive", value: 1}];
 
   const userCanEditItem = company?.users.find(user => user._id === userId).level <= 1;
 
   return (
-    <Form>
-
+    <div style={historyOpen ? { width: "calc(100% - 300px)"} : {}}>
       <section className="row">
         <div>
           <div>
@@ -101,6 +69,15 @@ export default function ItemView( props ) {
           <div className="dates">
             <span>{`Created by ${users.length > 0 ? users.find(user => user._id === item.createdBy).label : "Unknown"} at ${moment.unix(item.createdDate).format("D.M.YYYY HH:mm:ss")}`}</span>
             <span>{`Updated by ${users.length > 0 ? users.find(user => user._id === item.updatedBy).label : "Unknown"} at ${moment.unix(item.updatedDate).format("D.M.YYYY HH:mm:ss")}`}</span>
+            <span>
+              <LinkButton
+                style={{alignSelf: "flex-end", marginLeft: "auto"}}
+                onClick={(e) => {e.preventDefault(); toggleHistory();}}
+                >
+                History
+              </LinkButton>
+            </span>
+
           </div>
         </div>
         <hr />
@@ -137,7 +114,7 @@ export default function ItemView( props ) {
           name="status"
           type="text"
           disabled={true}
-          value={item.status ? item.find(s => item.status.value).label : "Active"}
+          value={item.status ? statuses.find(s => s.value === item.status).label : "Active"}
           />
       </div>
       <div>
@@ -168,8 +145,8 @@ export default function ItemView( props ) {
             {
               !item.expirationDate &&
               <ViewInput
-                id="expiration-date"
-                name="expiration-date"
+                id="installation-date"
+                name="installation-date"
                 type="text"
                 disabled={true}
                 value={"No expiration date"}
@@ -202,7 +179,7 @@ export default function ItemView( props ) {
       </section>
 
       <section>
-        <AddressesList {...props} edit={false}/>
+        <AddressesList {...props} itemID={item._id} edit={false}/>
       </section>
 
       <section  className="row-notes">
@@ -253,6 +230,7 @@ export default function ItemView( props ) {
         </div>
       </section>
 
+
       <FloatingButton
         left
         onClick={(e) => {e.preventDefault(); history.push(getGoToLink("listItemsInCategory", {companyID, categoryID}));}}
@@ -267,8 +245,9 @@ export default function ItemView( props ) {
 
       {
         userCanEditItem &&
+        itemID === item._id &&
       <FloatingButton
-        onClick={(e) => {e.preventDefault(); history.push(getGoToLink("editItem", {companyID: item.company, categoryID: item.category, itemID}));}}
+        onClick={(e) => {e.preventDefault(); history.push(getGoToLink("editItem", {companyID: item.company, categoryID: item.category, itemID: item._id}));}}
         >
         <img
           src={PencilIcon}
@@ -278,6 +257,6 @@ export default function ItemView( props ) {
       </FloatingButton>
     }
 
-    </Form>
+    </div>
   );
 };

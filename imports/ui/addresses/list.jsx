@@ -32,12 +32,11 @@ export default function AddressesList( props ) {
   const {
     match,
     history,
-    edit
+    edit,
+    itemID
   } = props;
 
   const userId = Meteor.userId();
-
-  const itemID = match.params.itemID;
 
   const addresses = useSelector( ( state ) => state.addresses.value );
   const addressesInItem = useMemo( () => {

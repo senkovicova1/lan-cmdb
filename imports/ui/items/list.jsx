@@ -68,8 +68,8 @@ export default function ItemsList( props ) {
     if ( categoryID === "all-categories" || companyID == "all-companies" ) {
       return itemsInCategory.map( item => ( {
         ...item,
-        category: categories.find( category => category._id === item.category ).name,
-        company: companies.find( company => company._id === item.company ).name,
+        category: categories.find( category => category._id === item.category ),
+        company: companies.find( company => company._id === item.company ),
       } ) );
     }
     return itemsInCategory;
@@ -130,10 +130,10 @@ export default function ItemsList( props ) {
           <tbody>
             {
               searchedItems.map((item) => (
-                <tr key={item._id} onClick={() => history.push(getGoToLink("viewItem", {companyID, categoryID, itemID: item._id}))}>
+                <tr key={item._id} onClick={() => history.push(getGoToLink("viewItem", {companyID: item.company._id, categoryID:item.category._id, itemID: item._id}))}>
                   <td>{yellowMatch(item.name)}</td>
-                  {categoryID === "all-categories" && <td>{yellowMatch(item.category ? item.category : item.type )}</td>}
-                  {companyID === "all-companies" && <td>{yellowMatch(item.company)}</td>}
+                  {categoryID === "all-categories" && <td>{yellowMatch(item.category ? item.category.name : item.type )}</td>}
+                  {companyID === "all-companies" && <td>{yellowMatch(item.company.name)}</td>}
                   <td>{ipsOfItem(item._id)}</td>
                 </tr>
               ))

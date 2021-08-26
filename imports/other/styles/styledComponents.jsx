@@ -580,7 +580,7 @@ section {
     max-width: 50%;
   }
 
-  section.input-row>div{ 
+  section.input-row>div{
     margin-right: 1em;
   }
 
@@ -605,7 +605,7 @@ section {
     }
   }
 
-  section.row-notes{
+  & section.row-notes{
     div.text{
       padding: 0px !important;
       @media all and (max-width: 799px), @media handheld  {
