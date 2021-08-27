@@ -1,7 +1,8 @@
 import React, {
   useState,
   useEffect,
-  useMemo
+  useMemo,
+  useRef
 } from 'react';
 import moment from 'moment';
 import {
@@ -34,7 +35,7 @@ export default function ItemForm( props ) {
   const {
     title,
     _id: itemId,
-    originalItemId: itemOriginalItemId,
+    originalItem: itemOriginalItemId,
     name: itemName,
     status: itemStatus,
     placement: itemPlacement,
@@ -70,6 +71,10 @@ export default function ItemForm( props ) {
   const [ description, setDescription ] = useState( "" );
   const [ backupDescription, setBackupDescription ] = useState( "" );
   const [ monitoringDescription, setMonitoringDescription ] = useState( "" );
+
+  const [ addedAddresses, setAddedAddresses ] = useState([]);
+  const [ editedAddresses, setEditedAddresses ] = useState([]);
+  const [ deletedAddresses, setDeletedAddresses ] = useState([]);
 
   const statuses = [{label: "Active", value: 0}, {label: "Inactive", value: 1}];
 
@@ -120,6 +125,10 @@ export default function ItemForm( props ) {
   Array.from(editors).forEach((item, i) => {
     item.id = `ckeditor-file-upload-button-${i}`;
   });
+
+if (!description || !monitoringDescription || !backupDescription){
+  return <div></div>
+}
 
   return (
     <Form>
@@ -188,7 +197,17 @@ export default function ItemForm( props ) {
       </section>
 
       <section>
-        <AddressesList {...props} itemID={itemId} edit={true}/>
+        <AddressesList
+          {...props}
+          itemID={itemId}
+          edit={true}
+          addedAddresses={addedAddresses}
+          setAddedAddresses={setAddedAddresses}
+          editedAddresses={editedAddresses}
+          setEditedAddresses={setEditedAddresses}
+          deletedAddresses={deletedAddresses}
+          setDeletedAddresses={setDeletedAddresses}
+          />
       </section>
 
       <CKEditorWithFileUpload
@@ -233,6 +252,9 @@ export default function ItemForm( props ) {
             moment().unix(),
             userId,
             itemOriginalItemId ? itemOriginalItemId : itemId,
+            addedAddresses,
+            editedAddresses ,
+            deletedAddresses,
             categoryID,
             companyID,
             moment().unix(),

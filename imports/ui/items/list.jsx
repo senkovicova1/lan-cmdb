@@ -58,9 +58,9 @@ export default function ItemsList( props ) {
   const ipsOfItem = (itemId) => {
       let addressesInItem = addresses.filter(addr => addr.item === itemId);
       if (addressesInItem.length > 0){
-          return <span>{addressesInItem.map(addr => <p key={addr.ip}>{addr.ip}</p>)}</span>;
+          return <span key={itemId}>{addressesInItem.map((addr, index) => <p key={addr.ip + index}>{addr.ip}</p>)}</span>;
       }
-      return (<p></p>);
+      return (<p key={itemId}></p>);
   };
 
   const itemsInCategory = useMemo( () => {
@@ -68,8 +68,8 @@ export default function ItemsList( props ) {
     if ( categoryID === "all-categories" || companyID == "all-companies" ) {
       return itemsInCategory.map( item => ( {
         ...item,
-        category: categories.find( category => category._id === item.category ),
-        company: companies.find( company => company._id === item.company ),
+        categoryName: categories.find( category => category._id === item.category ).name,
+        companyName: companies.find( company => company._id === item.company ).name,
       } ) );
     }
     return itemsInCategory;
@@ -130,10 +130,10 @@ export default function ItemsList( props ) {
           <tbody>
             {
               searchedItems.map((item) => (
-                <tr key={item._id} onClick={() => history.push(getGoToLink("viewItem", {companyID: item.company._id, categoryID:item.category._id, itemID: item._id}))}>
+                <tr key={item._id} onClick={() => history.push(getGoToLink("viewItem", {companyID: item.company, categoryID:item.category, itemID: item._id}))}>
                   <td>{yellowMatch(item.name)}</td>
-                  {categoryID === "all-categories" && <td>{yellowMatch(item.category ? item.category.name : item.type )}</td>}
-                  {companyID === "all-companies" && <td>{yellowMatch(item.company.name)}</td>}
+                  {categoryID === "all-categories" && <td>{yellowMatch(item.categoryName ? item.categoryName : item.type )}</td>}
+                  {companyID === "all-companies" && <td>{yellowMatch(item.companyName)}</td>}
                   <td>{ipsOfItem(item._id)}</td>
                 </tr>
               ))

@@ -19,6 +19,7 @@ export default function AddressForm( props ) {
 
   const {
     title,
+    _id,
     nic: addrNic,
     ip: addrIp,
     mask: addrMask,
@@ -178,6 +179,7 @@ export default function AddressForm( props ) {
           colour=""
           disabled={nic.length === 0}
           onClick={(e) => {e.preventDefault(); onSubmit(
+            _id,
             nic,
             ip,
             mask,

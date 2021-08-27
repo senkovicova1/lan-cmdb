@@ -69,7 +69,7 @@ useEffect(() => {
     return addresses.filter(address => address.item === itemID);
   }, [ addresses, itemID ] );
 
-  const editItem = ( name, status, placement, installationDate, expirationDate, description, backupDescription, monitoringDescription, updatedDate, updatedBy, originalItemId ) => {
+  const editItem = ( name, status, placement, installationDate, expirationDate, description, backupDescription, monitoringDescription, updatedDate, updatedBy, originalItemId, addedAddresses, editedAddresses, deletedAddresses ) => {
 
     let oldItem = {...item};
     delete oldItem._id;
@@ -104,7 +104,31 @@ useEffect(() => {
       if ( error ) {
         console.log( error );
       }  else {
-        addressesInItem.forEach((addr, i) => {
+        addedAddresses.forEach((addr, i) => {
+          AddressesCollection.insert( {
+            ...addr,
+            item: _id,
+          });
+        });
+
+        deletedAddresses.forEach((addr, i) => {
+          AddressesCollection.remove( {
+            _id: addr._id,
+          });
+        });
+
+        editedAddresses.forEach((addr, i) => {
+          AddressesCollection.update( addr._id, {
+            $set: {
+              ...addr,
+              item: _id
+            }
+          });
+        });
+
+        const editedAddressesIds = editedAddresses.map(addr => addr._id);
+
+        addressesInItem.filter(addr => !editedAddressesIds.includes(addr._id)).forEach((addr, i) => {
           AddressesCollection.update( addr._id, {
             $set: {
               ...addr,

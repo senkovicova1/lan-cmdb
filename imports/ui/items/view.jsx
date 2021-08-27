@@ -7,6 +7,7 @@ import moment from 'moment';
 import {
   useSelector
 } from 'react-redux';
+import CKEditorWithFileUpload from '/imports/ui/other/ckeditorWithFileUpload';
 
 import {
   ImagesCollection
@@ -54,7 +55,7 @@ export default function ItemView( props ) {
   const userCanEditItem = company?.users.find(user => user._id === userId).level <= 1;
 
   return (
-    <div style={historyOpen ? { width: "calc(100% - 300px)"} : {}}>
+    <div style={historyOpen ? { width: "calc(100% - 300px)"} : {width: "100%"}}>
       <section className="row">
         <div>
           <div>
@@ -179,7 +180,7 @@ export default function ItemView( props ) {
       </section>
 
       <section>
-        <AddressesList {...props} itemID={item._id} edit={false}/>
+        <AddressesList {...props} addresses={item.addresses ? item.addresses : null} itemID={item._id} edit={false}/>
       </section>
 
       <section  className="row-notes">

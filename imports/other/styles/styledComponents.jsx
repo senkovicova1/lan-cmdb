@@ -66,6 +66,13 @@ export const MainPage = styled.div `
     margin: 0px;
     cursor: zoom-in;
   }
+
+  .cke_content > iframe{
+  width: 100% !important;
+}
+.cke_contents > iframe{
+width: 100% !important;
+}
 `;
 
 export const MobilePageHeader = styled.header `

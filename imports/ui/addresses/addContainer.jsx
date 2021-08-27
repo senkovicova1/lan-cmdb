@@ -20,30 +20,18 @@ export default function AddAddressContainer( props ) {
   const {
     match,
     history,
-    closeSelf
+    closeSelf,
+    addedAddresses,
+    setAddedAddresses
   } = props;
 
   const userId = Meteor.userId();
 
   const itemID = match.params.itemID;
 
-  const addNew = ( nic, ip, mask, gateway, dns, vlan, note ) => {
-    AddressesCollection.insert( {
-      nic,
-      ip,
-      mask,
-      gateway,
-      dns,
-      vlan,
-      note,
-      item: itemID
-    }, ( error, _id ) => {
-      if ( error ) {
-        console.log( error );
-      } else {
-        closeSelf();
-      }
-    } );
+  const addNew = ( _id, nic, ip, mask, gateway, dns, vlan, note ) => {
+    setAddedAddresses([...addedAddresses, {nic, ip, mask, gateway, dns, vlan, note, item: itemID}]);
+    closeSelf();
   }
 
   const close = () => {

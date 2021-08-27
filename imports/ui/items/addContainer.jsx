@@ -9,6 +9,9 @@ import {
 import {
   ItemsCollection
 } from '/imports/api/itemsCollection';
+import {
+  AddressesCollection
+} from '/imports/api/addressesCollection';
 
 import ItemForm from './form';
 
@@ -47,7 +50,8 @@ useEffect(() => {
   }
 }, [company, companyID, userId]);
 
-  const addNew = ( name, status, placement, installationDate, expirationDate, description, backupDescription, monitoringDescription, updatedDate, updatedBy, originalItemId, category, company, createdDate, createdBy ) => {
+  const addNew = ( name, status, placement, installationDate, expirationDate, description, backupDescription, monitoringDescription, updatedDate, updatedBy, originalItemId, addedAddresses, editedAddresses, deletedAddresses, category, company, createdDate, createdBy ) => {
+    console.log(addedAddresses);
     ItemsCollection.insert( {
       name,
       status,
@@ -67,6 +71,13 @@ useEffect(() => {
       if ( error ) {
         console.log( error );
       } else {
+        addedAddresses.forEach((addr, i) => {
+          AddressesCollection.insert( {
+            ...addr,
+            item: _id
+          });
+        });
+
         history.push( getGoToLink( "viewItem", {
           companyID,
           categoryID,

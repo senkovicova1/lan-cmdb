@@ -4,6 +4,9 @@ import React, {
   useEffect
 } from 'react';
 import moment from 'moment';
+import {
+  useSelector
+} from 'react-redux';
 
 import {
   ItemsCollection
@@ -11,6 +14,9 @@ import {
 import {
   PreviousItemsCollection
 } from '/imports/api/previousItemsCollection';
+import {
+  AddressesCollection
+} from '/imports/api/addressesCollection';
 
 import {
   LinkButton,
@@ -35,21 +41,28 @@ export default function ItemHistory( props ) {
     currentlyUsedItem,
   } = props;
 
-  const userId = Meteor.userId();
+    const userId = Meteor.userId();
 
     const companyID = match.params.companyID;
-      const categoryID = match.params.categoryID;
+    const categoryID = match.params.categoryID;
+
+    const addresses = useSelector( ( state ) => state.addresses.value );
+    const addressesInCurrentlyUsedItem = useMemo( () => {
+      return addresses.filter(address => address.item === currentlyUsedItem._id);
+    }, [ addresses, currentlyUsedItem ] );
 
   const restorePreviousVersion = (version) => {
     if ( window.confirm( "Are you sure you want to restore this version?" ) ) {
 
+        const originalItem = currentlyUsedItem.originalItem ? currentlyUsedItem.originalItem : version.originalItem;
+
         let oldItem = {...currentlyUsedItem};
         delete oldItem._id;
 
-        console.log(currentlyUsedItem, version);
         PreviousItemsCollection.insert( {
           ...oldItem,
-          originalItem: currentlyUsedItem.originalItem ? currentlyUsedItem.originalItem : currentlyUsedItem._id ,
+          originalItem: originalItem,
+          addresses: [...addressesInCurrentlyUsedItem],
         }, ( error, _id ) => {
           if ( error ) {
             console.log( error );
@@ -60,8 +73,16 @@ export default function ItemHistory( props ) {
           _id: currentlyUsedItem._id
         } );
 
+        addressesInCurrentlyUsedItem.forEach((addr, i) => {
+          AddressesCollection.remove( {
+            _id: addr._id,
+          });
+        });
+
         let newItem = {...version};
+        const addressesInNewItem = [...version.addresses];
         delete version._id;
+        delete version.addresses
 
         ItemsCollection.insert( {
           ...version,
@@ -69,11 +90,20 @@ export default function ItemHistory( props ) {
           updatedBy: userId,
           createdDate: moment().unix(),
           createdBy: userId,
-          originalItem: version.originalItem ? version.originalItem : version._id,
+          originalItem: originalItem,
         }, ( error, _id ) => {
           if ( error ) {
             console.log( error );
           }  else {
+
+            addressesInNewItem.forEach((addr, i) => {
+              delete addr._id;
+              AddressesCollection.insert( {
+                ...addr,
+                item: _id,
+              });
+            });
+
             history.push( getGoToLink( "viewItem", {
               companyID,
               categoryID,

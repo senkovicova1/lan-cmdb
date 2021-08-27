@@ -22,40 +22,22 @@ export default function EditItemContainer( props ) {
     match,
     history,
     closeSelf,
-    addressId
+    address,
+    addedAddresses,
+    setAddedAddresses,
+    editedAddresses,
+    setEditedAddresses,
+    deletedAddresses,
+    setDeletedAddresses
   } = props;
 
     const userId = Meteor.userId();
 
     const itemID = match.params.itemID;
 
-    const addresses = useSelector( ( state ) => state.addresses.value );
-    const address = useMemo( () => {
-      if ( addresses.length > 0 ) {
-        return addresses.find( address => address._id === addressId );
-      }
-      return {};
-    }, [ addresses, addressId ] );
-
-    const editItem = ( nic, ip, mask, gateway, dns, vlan, note ) => {
-    AddressesCollection.update( addressId, {
-      $set: {
-        nic,
-        ip,
-        mask,
-        gateway,
-        dns,
-        vlan,
-        note,
-        item: itemID
-      }
-    }, ( error ) => {
-      if ( error ) {
-        console.log( error );
-      } else {
-        closeSelf();
-      }
-    } );
+    const editItem = (_id, nic, ip, mask, gateway, dns, vlan, note ) => {
+      setEditedAddresses([...editedAddresses, {_id, nic, ip, mask, gateway, dns, vlan, note, item: itemID}]);
+      closeSelf();
     }
 
     const close = () => {
@@ -64,12 +46,12 @@ export default function EditItemContainer( props ) {
 
 
   const removeItem = () => {
-    if ( window.confirm( "Are you sure you want to remove this address?" ) ) {
-      AddressesCollection.remove( {
-        _id: addressId
-      } );
-    closeSelf();
+    if (!address._id){
+      setAddedAddresses(addedAddresses.filter(addr => addr.toString() !== address.toString()));
+    } else {
+      setDeletedAddresses([...deletedAddresses, address]);
     }
+    closeSelf();
   };
 
   return (

@@ -37,7 +37,7 @@ export default function Menu( props ) {
 
   const userId = Meteor.userId();
 
-  const companyID = match.params.companyID;
+  const companyID = match.params.companyID !== "undefined" ? match.params.companyID : "all-companies";
   const categoryID = match.params.categoryID !== "undefined" ? match.params.categoryID : "all-categories";
 
   const companies = useSelector((state) => state.companies.value);
