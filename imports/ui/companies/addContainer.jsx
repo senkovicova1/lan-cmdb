@@ -16,19 +16,9 @@ export default function AddCompanyContainer( props ) {
     closeSelf
   } = props;
 
-  const addNew = ( name, DPH, ICO, DIC, IC_DPH, country, city, street, ZIP, email, phone, description, users ) => {
+  const addNew = ( name, description, users ) => {
     CompaniesCollection.insert( {
       name,
-      DPH,
-      ICO,
-      DIC,
-      IC_DPH,
-      country,
-      city,
-      street,
-      ZIP,
-      email,
-      phone,
       description,
       users
     }, ( error, _id ) => {

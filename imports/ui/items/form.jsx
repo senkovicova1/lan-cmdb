@@ -15,6 +15,7 @@ import Select from 'react-select';
 import CKEditorWithFileUpload from '/imports/ui/other/ckeditorWithFileUpload';
 
 import AddressesList from '/imports/ui/addresses/list';
+import Loader from '/imports/ui/other/loadingScreen';;
 import {
   Form,
   TitleInput,
@@ -126,8 +127,10 @@ export default function ItemForm( props ) {
     item.id = `ckeditor-file-upload-button-${i}`;
   });
 
-if (!description || !monitoringDescription || !backupDescription){
-  return <div></div>
+if (itemId &&
+  ((itemDescription.length > 0 && description.length === 0) ||
+  (itemMonitoringDescription.length > 0 && monitoringDescription.length === 0) || (itemBackupDescription.length > 0 && backupDescription.length === 0))){
+  return <Loader />
 }
 
   return (

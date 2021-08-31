@@ -36,19 +36,9 @@ export default function EditCompanyContainer( props ) {
     return companies.find( company => company._id === companyID );
   }, [ companies, companyID ] );
 
-  const editCompany = ( name, DPH, ICO, DIC, IC_DPH, country, city, street, ZIP, email, phone, description, users ) => {
+  const editCompany = ( name, description, users ) => {
     let data = {
       name,
-      DPH,
-      ICO,
-      DIC,
-      IC_DPH,
-      country,
-      city,
-      street,
-      ZIP,
-      email,
-      phone,
       description,
       users
     };
