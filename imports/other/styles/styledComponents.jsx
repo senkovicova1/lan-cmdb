@@ -73,6 +73,10 @@ export const MainPage = styled.div `
 .cke_contents > iframe{
 width: 100% !important;
 }
+
+.ck-editor__editable_inline {
+    min-height: 200px;
+}
 `;
 
 export const MobilePageHeader = styled.header `
@@ -406,8 +410,7 @@ export const FloatingButton = styled.button `
   border: none !important;
   border-radius: 1.5em;
   align-items: center;
-  position: -webkit-sticky;
-  position: sticky;
+  position: absolute;
   bottom: 40px;
   ${(props) => props.left &&
   `
@@ -415,7 +418,7 @@ export const FloatingButton = styled.button `
   `};
   ${(props) => !props.left &&
   `
-  left: 100%;
+  right: ${inputOffset};
   `};
   display: flex;
 

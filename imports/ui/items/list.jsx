@@ -6,8 +6,10 @@ import {
   useSelector
 } from 'react-redux';
 
+import { PlusIcon } from  "/imports/other/styles/icons";
 import {
-  List
+  List,
+  FloatingButton
 } from "/imports/other/styles/styledComponents";
 import {
   getGoToLink
@@ -22,8 +24,8 @@ export default function ItemsList( props ) {
   } = props;
 
   const userId = Meteor.userId();
+  const {companyID, categoryID} = match.params;
 
-  const companyID = match.params.companyID;
   const companies = useSelector( ( state ) => state.companies.value );
   const company = useMemo( () => {
     if ( companies.length > 0 ) {
@@ -44,7 +46,6 @@ export default function ItemsList( props ) {
     }
   }, [company, companyID, userId]);
 
-  const categoryID = match.params.categoryID;
   const categories = useSelector( ( state ) => state.categories.value );
   const category = useMemo( () => {
     if ( categories.length > 0 ) {
@@ -110,6 +111,9 @@ export default function ItemsList( props ) {
     return <span> {string.substring( 0, startIndex - 1 )} <span style={{ backgroundColor: "yellow" }}> {string.substring( startIndex, endIndex )} </span> {string.substring(endIndex )} </span>;
   }
 
+    const userCanAddItems =company && company.users?.find(user => user._id === userId).level <= 1;
+
+
   return (
     <List>
       {
@@ -141,6 +145,23 @@ export default function ItemsList( props ) {
           </tbody>
         </table>
       }
+      {
+          userCanAddItems &&
+          companyID !== "all-companies" &&
+          categoryID !== "all-categories" &&
+      <FloatingButton
+        onClick={() => history.push(getGoToLink("addItem", {companyID, categoryID}))}
+        >
+        <img
+          className="icon"
+          src={PlusIcon}
+          alt="Plus icon not found"
+          />
+        <span>
+          Item
+        </span>
+      </FloatingButton>
+    }
 
     </List>
   );

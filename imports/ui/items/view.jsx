@@ -46,7 +46,7 @@ export default function ItemView( props ) {
     category,
   } = props;
 
-  const itemID = match.params.itemID;
+  const {companyID, categoryID, itemID} = match.params;
 
   const userId = Meteor.userId();
   const users = useSelector( ( state ) => state.users.value );

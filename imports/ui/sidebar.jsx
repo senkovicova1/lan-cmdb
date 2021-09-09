@@ -211,6 +211,8 @@ export default function Menu( props ) {
         </span>
       </LinkButton>
 
+      {
+      companyID !== "all-companies" &&
       <LinkButton
         onClick={(e) => {e.preventDefault(); toggleCompanyEdit()}}
         >
@@ -224,6 +226,7 @@ export default function Menu( props ) {
           Company
         </span>
       </LinkButton>
+    }
 
       <Modal isOpen={companyAdd} toggle={toggleCompanyAdd}>
         <ModalBody>
