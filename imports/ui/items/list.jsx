@@ -41,10 +41,16 @@ export default function ItemsList( props ) {
         history.push(getGoToLink());
       }
     }
-    if (!company){
-      history.push(getGoToLink());
-    }
   }, [company, companyID, userId]);
+
+    useEffect(() => {
+      if (companyID !== "all-companies" && company){
+        const userCannotView = !company.users.find(user => user._id === userId);
+        if (userCannotView){
+          history.push(getGoToLink());
+        }
+      }
+    }, [company, companyID, userId]);
 
   const categories = useSelector( ( state ) => state.categories.value );
   const category = useMemo( () => {
@@ -90,18 +96,6 @@ export default function ItemsList( props ) {
     return searchedItems;
   }, [ itemsInCategory, search, categoryID, companyID ] )
 
-  useEffect(() => {
-    if (companyID !== "all-companies" && company){
-      const userCannotView = !company.users.find(user => user._id === userId);
-      if (userCannotView){
-        history.push(getGoToLink());
-      }
-    }
-    if (!company){
-      history.push(getGoToLink());
-    }
-  }, [company, companyID, userId]);
-
   const yellowMatch = ( string ) => {
     if ( search.length === 0 || !string.toLowerCase().includes( search.toLowerCase() ) ) {
       return string;
@@ -146,6 +140,7 @@ export default function ItemsList( props ) {
         </table>
       }
       {
+        false &&
           userCanAddItems &&
           companyID !== "all-companies" &&
           categoryID !== "all-categories" &&

@@ -15,7 +15,7 @@ import Select from 'react-select';
 import CKEditorWithFileUpload from '/imports/ui/other/ckeditorWithFileUpload';
 
 import AddressesList from '/imports/ui/addresses/list';
-import Loader from '/imports/ui/other/loadingScreen';;
+import Loader from '/imports/ui/other/loadingScreen';
 import {
   Form,
   TitleInput,
@@ -122,11 +122,6 @@ export default function ItemForm( props ) {
     }
   }, [ itemName, itemId, itemOriginalItemId, itemName, itemStatus, itemPlacement, itemInstallationDate, itemExpirationDate, itemDescription, itemBackupDescription, itemMonitoringDescription ] );
 
-  const editors = document.getElementsByClassName("ck-file-dialog-button");
-  Array.from(editors).forEach((item, i) => {
-    item.id = `ckeditor-file-upload-button-${i}`;
-  });
-
 if (itemId &&
   ((itemDescription.length > 0 && description.length === 0) ||
   (itemMonitoringDescription.length > 0 && monitoringDescription.length === 0) || (itemBackupDescription.length > 0 && backupDescription.length === 0))){
@@ -219,6 +214,7 @@ if (itemId &&
         setText={setDescription}
         note={category.descriptionNote ? category.descriptionNote : "No description note"}
         buttonId={"ckeditor-file-upload-button-0"}
+        editorIndex={0}
         />
 
       <CKEditorWithFileUpload
@@ -227,6 +223,7 @@ if (itemId &&
         setText={setBackupDescription}
         note={category.backupNote ? category.backupNote : "No backup note"}
         buttonId={"ckeditor-file-upload-button-1"}
+        editorIndex={1}
         />
 
       <CKEditorWithFileUpload
@@ -235,6 +232,7 @@ if (itemId &&
         setText={setMonitoringDescription}
         note={category.monitoringNote ? category.monitoringNote : "No monitoring note"}
         buttonId={"ckeditor-file-upload-button-2"}
+        editorIndex={2}
         />
 
       <ButtonCol>

@@ -35,6 +35,7 @@ import {
 } from '/imports/api/schemesCollection';
 
 import Reroute from './reroute';
+import Breadcrumbs from './breadcrumbs';
 import Header from './header';
 import Login from './login';
 import CategoryAdd from './categories/addContainer';
@@ -75,16 +76,14 @@ export default function MainPage( props ) {
   const companies = useTracker( () => CompaniesCollection.find( { users:  { $elemMatch: { _id: userId } } } ).fetch() );
 
   useEffect(() => {
-    if (companies.length > 0){
       dispatch(
         setCompanies(
           [
           {label: "All companies", value: "all-companies"},
-          ...companies.map(company => ({...company, label: company.name, value: company._id}))
+          ...companies.map(company => ({...company, label: company.name, value: company._id})).sort((c1, c2) => c1.label > c2.label ? 1 : -1)
           ]
         )
       );
-    }
   }, [companies]);
 
 
@@ -190,6 +189,29 @@ export default function MainPage( props ) {
         {
           currentUser &&
           <Content>
+            <Route
+              exact
+              path={[
+                "/",
+                getLink("login"),
+                getLink("currentUserEdit"),
+                getLink("addCategory"),
+                getLink("editCategory"),
+                getLink("listItemsInCategory"),
+                getLink("schemeView"),
+                getLink("schemeDraw"),
+                getLink("schemeEdit"),
+                getLink("addItem"),
+                getLink("editItem"),
+                getLink("viewItem"),
+              ]}
+              render={(props) => (
+                <Breadcrumbs
+                  {...props}
+                  />
+              )}
+              />
+
             <div style={{height: "100%", position: "relative"}}>
 
             <Route

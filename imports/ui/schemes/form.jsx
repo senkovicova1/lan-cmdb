@@ -69,12 +69,6 @@ export default function SchemeForm( props ) {
     }
   }, [ schemeDiagram, schemeDescription ] );
 
-    const editors = document.getElementsByClassName("ck-file-dialog-button");
-
-    if (editors[0]){
-      editors[0].id = "ckeditor-file-upload-button-scheme";
-    }
-
   return (
     <Form>
 
@@ -115,6 +109,7 @@ export default function SchemeForm( props ) {
             setText={setDescription}
             note={false}
             buttonId={"ckeditor-file-upload-button-scheme"}
+            editorIndex={0}
             />
 
       <ButtonCol>

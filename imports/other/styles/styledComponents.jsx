@@ -255,6 +255,32 @@ export const Content = styled.main `
   }
 `;
 
+export const Breadcrumbs = styled.div`
+  width: 100%;
+  padding: 0em ${inputOffset};
+  display: flex;
+  font-size: 1.3em;
+  font-weight: 300 !important;
+  &>span{
+    display: flex;
+    align-items: center;
+  }
+  &>span>button{
+    font-weight: 300 !important;
+    margin: 0em 0.3em;
+    text-decoration: underline;
+    text-decoration-thickness: from-font;
+    text-underline-offset: 0.2em;
+    }
+  &>span:last-of-type>button{
+    color: black !important;
+    text-decoration: none;
+  }
+  &>span:first-of-type>button{
+    margin-left: 0px !important;
+  }
+`;
+
 export const Sidebar = styled.section `
   background-color: ${backgroundColour};
   position: absolute;

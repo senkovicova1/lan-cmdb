@@ -9,6 +9,7 @@ import {
   ImagesCollection
 } from '/imports/api/imagesCollection';
 
+import Loader from '/imports/ui/other/loadingScreen';
 import {
   uint8ArrayToImg
 } from '../../other/helperFunctions';
@@ -20,11 +21,20 @@ export default function CKEditorWithFileUpload( props ) {
     text,
     setText,
     note,
-    buttonId
+    buttonId,
+    editorIndex
   } = props;
 
+  console.log("CKEDIT");
+
+    const editors = document.getElementsByClassName("ck-file-dialog-button");
+    if (editors.length > 0){
+      console.log(editors);
+      editors[editorIndex].id = `ckeditor-file-upload-button-${editorIndex}`;
+    }
+
     const inputFile = useRef(null);
-    const input = document.querySelectorAll(`span#${buttonId}>input`)[0];
+    const input = document.querySelectorAll(`span#ckeditor-file-upload-button-${editorIndex}>input`)[0];
     if (input){
       input.click = function(){
         inputFile.current.click();
@@ -38,7 +48,7 @@ export default function CKEditorWithFileUpload( props ) {
         <div className="main" style={note ? {} : {width: "100%", padding: "0px"}}>
           <input
             type='file'
-            id={`file-input-for-${buttonId}`}
+            id={`file-input-for-${editorIndex}`}
             ref={inputFile}
             style={{display: 'none'}}
             onChange={(e) =>  {

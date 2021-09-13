@@ -72,7 +72,7 @@ export default function Menu( props ) {
     return [...categories].sort((c1, c2) => c1.label > c2.label ? 1 : -1);
   }, [categories]);
 
-  const userCanAddItems = selectedCompany?.users?.find(user => user._id === userId).level <= 1;
+  const userCanAddItems = selectedCompany.value === "all-companies" || selectedCompany.users?.find(user => user._id === userId).level <= 1;
 
   return (
     <Sidebar>
@@ -158,8 +158,6 @@ export default function Menu( props ) {
 <hr />
 {
     userCanAddItems &&
-    companyID !== "all-companies" &&
-    categoryID !== "all-categories" &&
       <NavLink
         style={{width: "100%"}}
         key={"add-item"}
