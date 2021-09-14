@@ -20,7 +20,9 @@ export default function ItemsList( props ) {
   const {
     match,
     history,
-    search
+    search,
+    sortBy,
+    sortDirection,
   } = props;
 
   const userId = Meteor.userId();
@@ -94,7 +96,18 @@ export default function ItemsList( props ) {
       searchedItems = searchedItems.filter( item => item.name.toLowerCase().includes( search.toLowerCase() ) || item.category.toLowerCase().includes( search.toLowerCase() ) || item.company.toLowerCase().includes( search.toLowerCase() ) );
     }
     return searchedItems;
-  }, [ itemsInCategory, search, categoryID, companyID ] )
+  }, [ itemsInCategory, search, categoryID, companyID ] );
+
+  const sortedItems = useMemo(() => {
+    const multiplier = !sortDirection || sortDirection === "asc" ? -1 : 1;
+    return searchedItems
+    .sort((p1, p2) => {
+      if (sortBy === "date"){
+        return p1.createdDate < p2.createdDate ? 1*multiplier : (-1)*multiplier;
+      }
+        return p1.name.toLowerCase() < p2.name.toLowerCase() ? 1*multiplier : (-1)*multiplier;
+    });
+  }, [searchedItems, sortBy, sortDirection]);
 
   const yellowMatch = ( string ) => {
     if ( search.length === 0 || !string.toLowerCase().includes( search.toLowerCase() ) ) {
@@ -111,11 +124,11 @@ export default function ItemsList( props ) {
   return (
     <List>
       {
-        searchedItems.length === 0 &&
+        sortedItems.length === 0 &&
         <span className="message">You have no items in this category.</span>
       }
 
-      {searchedItems.length > 0 &&
+      {sortedItems.length > 0 &&
         <table>
           <thead>
             <tr>

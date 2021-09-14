@@ -35,6 +35,8 @@ export default function ItemForm( props ) {
 
   const {
     title,
+    companyID,
+    categoryID,
     _id: itemId,
     originalItem: itemOriginalItemId,
     name: itemName,
@@ -52,9 +54,6 @@ export default function ItemForm( props ) {
   } = props;
 
   const userId = Meteor.userId();
-
-  const companyID = match.params.companyID;
-  const categoryID = match.params.categoryID;
 
   const categories = useSelector( ( state ) => state.categories.value );
   const category = useMemo( () => {

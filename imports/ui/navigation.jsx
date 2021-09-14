@@ -141,6 +141,8 @@ export default function MainPage( props ) {
 
   const [ search, setSearch ] = useState( "" );
   const [ openSidebar, setOpenSidebar ] = useState( false );
+  const [ sortBy, setSortBy ] = useState("name");
+  const [ sortDirection, setSortDirection ] = useState("asc");
 
   return (
     <div style={{height: "100vh"}}>
@@ -178,6 +180,10 @@ export default function MainPage( props ) {
               setSearch={setSearch}
               search={search}
               setParentOpenSidebar={setOpenSidebar}
+              sortBy={sortBy}
+              setSortBy={setSortBy}
+              sortDirection={sortDirection}
+              setSortDirection={setSortDirection}
               />
           )}
           />
@@ -252,6 +258,8 @@ export default function MainPage( props ) {
                       <ItemsList
                         {...props}
                         search={search}
+                        sortBy={sortBy}
+                        sortDirection={sortDirection}
                         />
                     )}
                   />

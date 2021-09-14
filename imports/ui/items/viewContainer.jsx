@@ -53,7 +53,7 @@ export default function ItemViewContainer( props ) {
     if ( items.length > 0 ) {
         return items.find(item => item._id === itemID);
     }
-    return {};
+    return null;
   }, [ items, itemID ] );
 
   let originalItemId = null;
@@ -101,13 +101,13 @@ export default function ItemViewContainer( props ) {
     if ( categories.length > 0 && displayedItem ) {
       return categories.find( category => category._id === displayedItem.category );
     }
-    return {};
+    return null;
   }, [ categories, displayedItem ] );
 
-  if (!displayedItem){
+  if (!displayedItem || !category || !company){
     return <Loader />
   }
-
+  
   return (
     <Form>
     <div className="scheme-content">

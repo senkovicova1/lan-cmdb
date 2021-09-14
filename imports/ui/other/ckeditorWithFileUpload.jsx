@@ -1,6 +1,7 @@
 import React, {
   useState,
-  useRef
+  useRef,
+  useEffect
 } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -25,21 +26,20 @@ export default function CKEditorWithFileUpload( props ) {
     editorIndex
   } = props;
 
-  console.log("CKEDIT");
-
-    const editors = document.getElementsByClassName("ck-file-dialog-button");
+  const inputFile = useRef(null);
+  const editors = document.getElementsByClassName("ck-file-dialog-button");
+  useEffect(() => {
     if (editors.length > 0){
-      console.log(editors);
       editors[editorIndex].id = `ckeditor-file-upload-button-${editorIndex}`;
-    }
 
-    const inputFile = useRef(null);
-    const input = document.querySelectorAll(`span#ckeditor-file-upload-button-${editorIndex}>input`)[0];
-    if (input){
-      input.click = function(){
-        inputFile.current.click();
-      };
+      const input = document.querySelectorAll(`span#ckeditor-file-upload-button-${editorIndex}>input`)[0];
+      if (input){
+        input.click = function(){
+          inputFile.current.click();
+        };
+      }
     }
+  }, [editors, editorIndex]);
 
   return (
     <section  className="row-notes">
@@ -78,6 +78,17 @@ export default function CKEditorWithFileUpload( props ) {
           <CKEditor
             editor={ClassicEditor}
             data={text}
+            onReady={() => {
+              const editors = document.getElementsByClassName("ck-file-dialog-button");
+              editors[editorIndex].id = `ckeditor-file-upload-button-${editorIndex}`;
+
+              const input = document.querySelectorAll(`span#ckeditor-file-upload-button-${editorIndex}>input`)[0];
+              if (input){
+                input.click = function(){
+                  inputFile.current.click();
+                };
+              }
+            }}
             onChange={(event, editor) => {
               setText(editor.getData());
             }}

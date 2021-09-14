@@ -797,6 +797,26 @@ padding-left: 0px;
 }
 `;
 
+export const Sort = styled.div`
+  position: absolute;
+  z-index: 999;
+  background-color: white;
+  box-shadow: 0px 0px 7px 0px slategrey;
+  width: 350px;
+  top: 50px;
+  right: 20px;
+  padding: ${inputOffset};
+  span{
+    display: flex;
+    align-items: center;
+    line-height: 2em;
+  }
+  input{
+    height: 1.3em;
+    width: 1.3em;
+    margin-right: 0.6em;
+  }
+`;
 
 export const GroupButton = styled.button `
   width: -webkit-fill-available;

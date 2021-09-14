@@ -40,8 +40,6 @@ export default function Breadcrumbs( props ) {
       }
     }
 
-    console.log(companies, categories, items);
-
     if (companyID){
       const company = companies.length > 1 ? companies.find( company => company.value === companyID ) : {};
       result.push({ link: "listItemsInCategory", label: company.label, args: {companyID, categoryID: "all-categories"}});
@@ -55,15 +53,17 @@ export default function Breadcrumbs( props ) {
     if (categoryID){
       const category = categories.find( category => category.value === categoryID );
       result.push({ link: "listItemsInCategory", label: category.label, args: {companyID: !companyID ? "all-companies" : companyID, categoryID}});
-      if (match.path.includes("edit")){
+      if (match.path.includes("edit") && !itemID){
         result.push({ link: "editCategory", label: "Edit category", args: {categoryID}});
       }
     }
-    if (itemID){
+    if (itemID && items.length !== 0){
       const item = items.find( item => item._id === itemID );
-      result.push({ link: "viewItem", label: item.name, args: {companyID, categoryID, itemID}});
-      if (match.path.includes("edit")){
-        result.push({ link: "editItem", label: "Edit item", args: {companyID, categoryID, itemID}});
+      if (item){
+        result.push({ link: "viewItem", label: item.name, args: {companyID, categoryID, itemID}});
+        if (match.path.includes("edit")){
+          result.push({ link: "editItem", label: "Edit item", args: {companyID, categoryID, itemID}});
+        }
       }
     }
     if (match.path.includes("user")){
@@ -72,8 +72,6 @@ export default function Breadcrumbs( props ) {
 
     setBreadcrumbs(result);
   }, [match.path, categoryID, categories, companyID, companies, itemID, items]);
-
-  console.log();
 
   return (
     <StyledBreadcrumbs>

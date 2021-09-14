@@ -51,9 +51,6 @@ useEffect(() => {
       history.push(getGoToLink());
     }
   }
-  if (!company){
-    history.push(getGoToLink());
-  }
 }, [company, companyID, userId]);
 
   const items = useSelector( ( state ) => state.items.value );
@@ -168,6 +165,6 @@ useEffect(() => {
   }
 
   return (
-    <ItemForm {...props} {...item} onSubmit={editItem} onRemove={removeItem} onCancel={close} />
+    <ItemForm {...props} companyID={companyID} categoryID={categoryID} {...item} onSubmit={editItem} onRemove={removeItem} onCancel={close} />
   );
 };

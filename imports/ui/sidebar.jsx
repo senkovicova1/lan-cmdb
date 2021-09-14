@@ -13,6 +13,7 @@ import Select from 'react-select';
 
 import AddCompany from '/imports/ui/companies/addContainer';
 import EditCompany from '/imports/ui/companies/editContainer';
+import Loader from '/imports/ui/other/loadingScreen';
 
 import {
   invisibleSelectStyle
@@ -71,6 +72,11 @@ export default function Menu( props ) {
   const sortedCategories = useMemo(() => {
     return [...categories].sort((c1, c2) => c1.label > c2.label ? 1 : -1);
   }, [categories]);
+
+
+if (!selectedCompany){
+  return <Loader />;
+}
 
   const userCanAddItems = selectedCompany.value === "all-companies" || selectedCompany.users?.find(user => user._id === userId).level <= 1;
 
@@ -161,7 +167,7 @@ export default function Menu( props ) {
       <NavLink
         style={{width: "100%"}}
         key={"add-item"}
-        to={getGoToLink("addItem", {companyID, categoryID})}
+        to={getGoToLink("addItem", {companyID: companyID ? companyID : "all-companies", categoryID: categoryID ? categoryID : "all-categories"})}
         onClick={() => {
           if (/Mobi|Android/i.test(navigator.userAgent)) {
             closeSelf();
