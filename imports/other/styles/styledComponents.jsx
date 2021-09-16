@@ -40,7 +40,7 @@ export const MainPage = styled.div `
   }
 
   img.icon {
-    height: 1.3em !important;
+    height: 1em !important;
     filter: invert(32%) sepia(81%) saturate(4601%) hue-rotate(210deg) brightness(90%) contrast(101%);
   }
 
@@ -268,14 +268,9 @@ export const Breadcrumbs = styled.div`
   &>span>button{
     font-weight: 300 !important;
     margin: 0em 0.3em;
-    text-decoration: underline;
-    text-decoration-thickness: from-font;
-    text-underline-offset: 0.2em;
-    }
-  &>span:last-of-type>button{
     color: black !important;
     text-decoration: none;
-  }
+    }
   &>span:first-of-type>button{
     margin-left: 0px !important;
   }
@@ -496,6 +491,9 @@ export const List = styled.section `
       line-height: 2em;
     }
   }
+  span.message{
+    margin-left: 0px !important;
+  }
 
 `;
 
@@ -525,6 +523,9 @@ export const AddressList = styled.section `
   &>table>tbody>tr>td{
     padding: 0px ${inputOffset};
       font-weight: 400;
+  }
+  span.message{
+    margin-left: 0px !important;
   }
 
 `;
