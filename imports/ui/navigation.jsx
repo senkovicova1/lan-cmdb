@@ -48,6 +48,7 @@ import ItemEdit from './items/editContainer';
 import ItemsList from './items/list';
 import ItemView from './items/viewContainer';
 import EditUserContainer from './users/editUserContainer';
+import UsersList from './users/list';
 
 import {
   uint8ArrayToImg
@@ -164,6 +165,7 @@ export default function MainPage( props ) {
             "/",
             getLink("login"),
             getLink("currentUserEdit"),
+            getLink("users"),
             getLink("addCategory"),
             getLink("editCategory"),
             getLink("listItemsInCategory"),
@@ -201,6 +203,7 @@ export default function MainPage( props ) {
                 "/",
                 getLink("login"),
                 getLink("currentUserEdit"),
+                getLink("users"),
                 getLink("addCategory"),
                 getLink("editCategory"),
                 getLink("listItemsInCategory"),
@@ -227,6 +230,14 @@ export default function MainPage( props ) {
                 <EditUserContainer {...props} />
               )}
               />
+
+                            <Route
+                              exact
+                              path={getLink("users")}
+                              render={(props) => (
+                                <UsersList {...props} search={search}/>
+                              )}
+                              />
 
             <Route
               exact

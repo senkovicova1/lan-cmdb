@@ -6,6 +6,9 @@ export const getLink = (address) => {
     case "currentUserEdit":
       return "/user";
       break;
+    case "users":
+      return "/users/list";
+      break;
     case "addCategory":
       return "/categories/add";
       break;
@@ -50,6 +53,9 @@ export const getGoToLink = (address, arguments) => {
       break;
     case "currentUserEdit":
       return "/user";
+      break;
+    case "users":
+      return "/users/list";
       break;
     case "addCategory":
       return "/categories/add";

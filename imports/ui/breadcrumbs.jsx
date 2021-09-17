@@ -41,7 +41,7 @@ export default function Breadcrumbs( props ) {
     }
 
     if (companyID){
-      const company = companies.length > 1 ? companies.find( company => company.value === companyID ) : {};
+      const company = companies.length > 0 ? companies.find( company => company.value === companyID ) : {};
       result.push({ link: "listItemsInCategory", label: company.label, args: {companyID, categoryID: "all-categories"}});
     }
     if (match.path.includes("scheme")){
@@ -67,7 +67,7 @@ export default function Breadcrumbs( props ) {
       }
     }
     if (match.path.includes("user")){
-       result.push({ link: "currentUserEdit", label: "Edit user"});
+       result = [];
      }
 
     setBreadcrumbs(result);

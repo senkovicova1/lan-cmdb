@@ -6,6 +6,9 @@ import React, {
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import {
+  useTracker
+} from 'meteor/react-meteor-data';
+import {
   Modal,
   ModalBody
 } from 'reactstrap';
@@ -18,7 +21,7 @@ import Loader from '/imports/ui/other/loadingScreen';
 import {
   invisibleSelectStyle
 } from '/imports/other/styles/selectStyles';
-import { PlusIcon, SettingsIcon, FolderIcon, FilterIcon } from  "/imports/other/styles/icons";
+import { PlusIcon, SettingsIcon, FolderIcon, FilterIcon, UserIcon } from  "/imports/other/styles/icons";
 import {
   Sidebar,
   LinkButton
@@ -37,6 +40,7 @@ export default function Menu( props ) {
   } = props;
 
   const userId = Meteor.userId();
+    const currentUser = useTracker( () => Meteor.user() );
 
   const companyID = match.params.companyID !== "undefined" ? match.params.companyID : "all-companies";
   const categoryID = match.params.categoryID !== "undefined" ? match.params.categoryID : "all-categories";
@@ -79,6 +83,9 @@ if (!selectedCompany){
 }
 
   const userCanAddItems = selectedCompany.value === "all-companies" || selectedCompany.users?.find(user => user._id === userId).level <= 1;
+  const userCanAddCompanies = currentUser && currentUser.profile.rights && currentUser.profile.rights.addCompanies;
+  const userCanManageCategories = currentUser && currentUser.profile.rights && currentUser.profile.rights.manageCategories;
+  const userCanManageUsers = currentUser && currentUser.profile.rights && currentUser.profile.rights.manageUsers;
 
   return (
     <Sidebar>
@@ -148,6 +155,7 @@ if (!selectedCompany){
             </NavLink>
             {
               category.value !== "all-categories" &&
+              userCanManageCategories &&
             <LinkButton
               onClick={(e) => {e.preventDefault(); history.push(getGoToLink("editCategory", {categoryID: category.value}))}}
               >
@@ -183,6 +191,8 @@ if (!selectedCompany){
       </NavLink>
     }
 
+    {
+      userCanManageCategories &&
       <NavLink
         style={{width: "100%"}}
         key={"add-item-category"}
@@ -200,7 +210,9 @@ if (!selectedCompany){
           />
         Item Category
       </NavLink>
+    }
 
+    {userCanAddCompanies &&
       <LinkButton
         onClick={(e) => {e.preventDefault(); toggleCompanyAdd()}}
         >
@@ -214,6 +226,7 @@ if (!selectedCompany){
           Company
         </span>
       </LinkButton>
+    }
 
       {
       companyID !== "all-companies" &&
@@ -231,6 +244,27 @@ if (!selectedCompany){
         </span>
       </LinkButton>
     }
+
+    {userCanManageUsers &&
+  <NavLink
+    className={match.path === "/users/list" ? "active" : ""}
+    style={{width: "100%"}}
+    key={"users"}
+    to={getGoToLink("users")}
+    onClick={() => {
+      if (/Mobi|Android/i.test(navigator.userAgent)) {
+        closeSelf();
+      }
+    }}
+    >
+    <img
+      className="icon"
+      src={UserIcon}
+      alt=""
+      />
+    <span>Users</span>
+  </NavLink>
+}
 
       <Modal isOpen={companyAdd} toggle={toggleCompanyAdd}>
         <ModalBody>

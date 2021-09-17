@@ -74,7 +74,7 @@ export default function ItemsList( props ) {
 
   const itemsInCategory = useMemo( () => {
     let itemsInCategory = items.filter( item => ( categoryID === "all-categories" || item.category === categoryID ) && ( companyID === "all-companies" || item.company === companyID ) );
-    if ( categoryID === "all-categories" || companyID == "all-companies" ) {
+    if ( (categoryID === "all-categories" || companyID == "all-companies") && categories.length > 1 && companies.length > 1) {
       return itemsInCategory.map( item => ( {
         ...item,
         categoryName: categories.find( category => category._id === item.category ).name,

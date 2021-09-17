@@ -30,7 +30,7 @@ export default function SignInForm( props ) {
     history.push(getGoToLink());
   };
 
-  const createUser = ( name, surname, avatar, email, password ) => {
+  const createUser = ( name, surname, avatar, active, rights, email, password ) => {
     Accounts.createUser( {
       password,
       email,
@@ -38,6 +38,8 @@ export default function SignInForm( props ) {
         name,
         surname,
         avatar,
+        active,
+        rights, 
       }
     }, (error) => {
       setShowLoading(false);
