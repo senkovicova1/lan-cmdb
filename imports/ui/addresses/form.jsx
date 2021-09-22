@@ -179,14 +179,14 @@ export default function AddressForm( props ) {
           colour=""
           disabled={nic.length === 0}
           onClick={(e) => {e.preventDefault(); onSubmit(
-            _id,
             nic,
             ip,
             mask,
             gateway,
             dns,
             vlan,
-            note
+            note,
+            _id
           );}}
           >
           Save

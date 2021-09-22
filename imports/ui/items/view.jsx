@@ -42,6 +42,7 @@ export default function ItemView( props ) {
     historyOpen,
     toggleHistory,
     item,
+    addresses,
     company,
     category,
   } = props;
@@ -180,7 +181,7 @@ export default function ItemView( props ) {
       </section>
 
       <section>
-        <AddressesList {...props} addresses={item.addresses ? item.addresses : null} itemID={item._id} edit={false}/>
+        <AddressesList {...props} addresses={addresses} itemID={item._id} edit={false}/>
       </section>
 
       <section  className="row-notes">

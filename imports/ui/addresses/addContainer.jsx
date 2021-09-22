@@ -16,21 +16,26 @@ import {
   getGoToLink,
 } from "/imports/other/navigationLinks";
 
+const NO_CHANGE = 0;
+const ADDED = 1;
+const EDITED = 2;
+const DELETED = 3;
+
 export default function AddAddressContainer( props ) {
   const {
     match,
     history,
     closeSelf,
-    addedAddresses,
-    setAddedAddresses
+    addresses,
+    setAddresses,
   } = props;
 
   const userId = Meteor.userId();
 
   const itemID = match.params.itemID;
 
-  const addNew = ( _id, nic, ip, mask, gateway, dns, vlan, note ) => {
-    setAddedAddresses([...addedAddresses, {nic, ip, mask, gateway, dns, vlan, note, item: itemID}]);
+  const addNew = ( nic, ip, mask, gateway, dns, vlan, note ) => {
+    setAddresses([...addresses, {nic, ip, mask, gateway, dns, vlan, note, item: itemID, change: ADDED}]);
     closeSelf();
   }
 

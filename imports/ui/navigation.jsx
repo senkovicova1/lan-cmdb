@@ -133,11 +133,9 @@ export default function MainPage( props ) {
   }, [schemes]);
 
     const itemsIds = items.map(item => item._id);
-    const addresses = useTracker( () => AddressesCollection.find( { item: {$in: itemsIds}} ).fetch() );
+    const addresses = useTracker( () => AddressesCollection.find( {item: {$in: itemsIds}} ).fetch() );
     useEffect(() => {
-      if (addresses.length > 0){
-        dispatch(setAddresses(addresses));
-      }
+      dispatch(setAddresses(addresses));
     }, [addresses]);
 
   const [ search, setSearch ] = useState( "" );

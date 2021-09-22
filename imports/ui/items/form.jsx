@@ -47,6 +47,7 @@ export default function ItemForm( props ) {
     description: itemDescription,
     backupDescription: itemBackupDescription,
     monitoringDescription: itemMonitoringDescription,
+    addresses: itemAddresses,
     match,
     onSubmit,
     onRemove,
@@ -72,9 +73,7 @@ export default function ItemForm( props ) {
   const [ backupDescription, setBackupDescription ] = useState( "" );
   const [ monitoringDescription, setMonitoringDescription ] = useState( "" );
 
-  const [ addedAddresses, setAddedAddresses ] = useState([]);
-  const [ editedAddresses, setEditedAddresses ] = useState([]);
-  const [ deletedAddresses, setDeletedAddresses ] = useState([]);
+  const [ addresses, setAddresses ] = useState([]);
 
   const statuses = [{label: "Active", value: 0}, {label: "Inactive", value: 1}];
 
@@ -119,7 +118,12 @@ export default function ItemForm( props ) {
     } else {
       setMonitoringDescription( "" );
     }
-  }, [ itemName, itemId, itemOriginalItemId, itemName, itemStatus, itemPlacement, itemInstallationDate, itemExpirationDate, itemDescription, itemBackupDescription, itemMonitoringDescription ] );
+    if ( itemAddresses ) {
+      setAddresses( itemAddresses );
+    } else {
+      setAddresses( [] );
+    }
+  }, [ itemName, itemId, itemOriginalItemId, itemName, itemStatus, itemPlacement, itemInstallationDate, itemExpirationDate, itemDescription, itemBackupDescription, itemMonitoringDescription, itemAddresses ] );
 
 if (itemId &&
   ((itemDescription.length > 0 && description.length === 0) ||
@@ -198,12 +202,8 @@ if (itemId &&
           {...props}
           itemID={itemId}
           edit={true}
-          addedAddresses={addedAddresses}
-          setAddedAddresses={setAddedAddresses}
-          editedAddresses={editedAddresses}
-          setEditedAddresses={setEditedAddresses}
-          deletedAddresses={deletedAddresses}
-          setDeletedAddresses={setDeletedAddresses}
+          addresses={addresses}
+          setAddresses={setAddresses}
           />
       </section>
 
@@ -252,9 +252,7 @@ if (itemId &&
             moment().unix(),
             userId,
             itemOriginalItemId ? itemOriginalItemId : itemId,
-            addedAddresses,
-            editedAddresses ,
-            deletedAddresses,
+            addresses,
             categoryID,
             companyID,
             moment().unix(),

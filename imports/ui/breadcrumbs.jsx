@@ -41,8 +41,8 @@ export default function Breadcrumbs( props ) {
     }
 
     if (companyID){
-      const company = companies.length > 0 ? companies.find( company => company.value === companyID ) : {};
-      result.push({ link: "listItemsInCategory", label: company.label, args: {companyID, categoryID: "all-categories"}});
+      const company = companies.find( company => company.value === companyID);
+      result.push({ link: "listItemsInCategory", label: company ? company.label : "All companies", args: {companyID: company ? company._id : "all-companies", categoryID: "all-categories"}});
     }
     if (match.path.includes("scheme")){
       result.push({ link: "schemeView", label: "Scheme", args: {companyID}});

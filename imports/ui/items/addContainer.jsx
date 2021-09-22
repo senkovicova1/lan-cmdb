@@ -19,6 +19,8 @@ import {
   AddressesCollection
 } from '/imports/api/addressesCollection';
 
+import {addNewAddress, NO_CHANGE, ADDED, EDITED, DELETED} from '../addresses/addressesHandlers';
+
 import ItemForm from './form';
 
 import {
@@ -74,7 +76,7 @@ useEffect(() => {
     }
   }, [categoryID, companyID]);
 
-  const addNew = ( name, status, placement, installationDate, expirationDate, description, backupDescription, monitoringDescription, updatedDate, updatedBy, originalItemId, addedAddresses, editedAddresses, deletedAddresses, category, company, createdDate, createdBy ) => {
+  const addNew = ( name, status, placement, installationDate, expirationDate, description, backupDescription, monitoringDescription, updatedDate, updatedBy, originalItemId, addresses, category, company, createdDate, createdBy ) => {
     ItemsCollection.insert( {
       name,
       status,
@@ -94,11 +96,8 @@ useEffect(() => {
       if ( error ) {
         console.log( error );
       } else {
-        addedAddresses.forEach((addr, i) => {
-          AddressesCollection.insert( {
-            ...addr,
-            item: _id
-          });
+        addresses.forEach((address, i) => {
+          addNewAddress(address.nic, address.ip, address.mask, address.gateway, address.dns, address.vlan, address.note, _id );
         });
 
         history.push( getGoToLink( "viewItem", {

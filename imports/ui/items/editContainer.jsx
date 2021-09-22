@@ -17,11 +17,18 @@ import {
   AddressesCollection
 } from '/imports/api/addressesCollection';
 
+import {addNewAddress, editAddress, removeAddress} from '../addresses/addressesHandlers';
+
 import ItemForm from './form';
 
 import {
   getGoToLink,
 } from "/imports/other/navigationLinks";
+
+const NO_CHANGE = 0;
+const ADDED = 1;
+const EDITED = 2;
+const DELETED = 3;
 
 export default function EditItemContainer( props ) {
 
@@ -63,10 +70,10 @@ useEffect(() => {
 
   const addresses = useSelector( ( state ) => state.addresses.value );
   const addressesInItem = useMemo( () => {
-    return addresses.filter(address => address.item === itemID);
+    return addresses.filter(address => address.item === itemID).map(address => ({...address, change: NO_CHANGE}));
   }, [ addresses, itemID ] );
 
-  const editItem = ( name, status, placement, installationDate, expirationDate, description, backupDescription, monitoringDescription, updatedDate, updatedBy, originalItemId, addedAddresses, editedAddresses, deletedAddresses ) => {
+  const editItem = ( name, status, placement, installationDate, expirationDate, description, backupDescription, monitoringDescription, updatedDate, updatedBy, originalItemId, addresses ) => {
 
     let oldItem = {...item};
     delete oldItem._id;
@@ -101,37 +108,25 @@ useEffect(() => {
       if ( error ) {
         console.log( error );
       }  else {
-        addedAddresses.forEach((addr, i) => {
-          AddressesCollection.insert( {
-            ...addr,
-            item: _id,
-          });
-        });
-
-        deletedAddresses.forEach((addr, i) => {
-          AddressesCollection.remove( {
-            _id: addr._id,
-          });
-        });
-
-        editedAddresses.forEach((addr, i) => {
-          AddressesCollection.update( addr._id, {
-            $set: {
-              ...addr,
-              item: _id
-            }
-          });
-        });
-
-        const editedAddressesIds = editedAddresses.map(addr => addr._id);
-
-        addressesInItem.filter(addr => !editedAddressesIds.includes(addr._id)).forEach((addr, i) => {
-          AddressesCollection.update( addr._id, {
-            $set: {
-              ...addr,
-              item: _id
-            }
-          });
+        console.log(_id);
+        console.log(addresses);
+        addresses.forEach((address, i) => {
+          switch (address.change) {
+            case NO_CHANGE:
+              editAddress(address._id, address.nic, address.ip, address.mask, address.gateway, address.dns, address.vlan, address.note, _id );
+              break;
+            case ADDED:
+              addNewAddress(address.nic, address.ip, address.mask, address.gateway, address.dns, address.vlan, address.note, _id );
+              break;
+            case EDITED:
+              editAddress(address._id, address.nic, address.ip, address.mask, address.gateway, address.dns, address.vlan, address.note, _id );
+              break;
+            case DELETED:
+              removeAddress(address._id);
+              break;
+            default:
+              editAddress(address._id, address.nic, address.ip, address.mask, address.gateway, address.dns, address.vlan, address.note, _id );
+          }
         });
 
         history.push( getGoToLink( "viewItem", {
@@ -165,6 +160,6 @@ useEffect(() => {
   }
 
   return (
-    <ItemForm {...props} companyID={companyID} categoryID={categoryID} {...item} onSubmit={editItem} onRemove={removeItem} onCancel={close} />
+    <ItemForm {...props} companyID={companyID} categoryID={categoryID} {...item} addresses={addressesInItem} onSubmit={editItem} onRemove={removeItem} onCancel={close} />
   );
 };

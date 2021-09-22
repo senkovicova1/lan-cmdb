@@ -31,6 +31,11 @@ import {
   getGoToLink
 } from "/imports/other/navigationLinks";
 
+const NO_CHANGE = 0;
+const ADDED = 1;
+const EDITED = 2;
+const DELETED = 3;
+
 export default function ItemViewContainer( props ) {
 
   const {
@@ -39,6 +44,7 @@ export default function ItemViewContainer( props ) {
   } = props;
 
   const [ displayedItemId, setDisplayedItemId] = useState(null);
+
   const [ historyView, setHistoryView ] = useState( false );
   const historyViewToggle = () => {
     setHistoryView(!historyView);
@@ -47,7 +53,7 @@ export default function ItemViewContainer( props ) {
   const userId = Meteor.userId();
   const users = useSelector( ( state ) => state.users.value );
 
-  const itemID = match.params.itemID; // currently used item
+  const itemID = match.params.itemID;
   const items = useSelector( ( state ) => state.items.value );
   const currentlyUsedItem = useMemo( () => {
     if ( items.length > 0 ) {
@@ -104,10 +110,15 @@ export default function ItemViewContainer( props ) {
     return null;
   }, [ categories, displayedItem ] );
 
+  const dbAddresses = useSelector( ( state ) => state.addresses.value );
+  const addresses = useMemo(() => {
+    return dbAddresses.filter(address => address.item === itemID);
+  }, [dbAddresses, itemID]);
+
   if (!displayedItem || !category || !company){
     return <Loader />
   }
-  
+
   return (
     <Form>
     <div className="scheme-content">
@@ -115,6 +126,7 @@ export default function ItemViewContainer( props ) {
         <ItemView
           {...props}
           item={displayedItem}
+          addresses={addresses}
           company={company}
           category={category}
           historyOpen={historyView}

@@ -27,6 +27,11 @@ import {
   getGoToLink
 } from "/imports/other/navigationLinks";
 
+const NO_CHANGE = 0;
+const ADDED = 1;
+const EDITED = 2;
+const DELETED = 3;
+
 export default function AddressesList( props ) {
 
   const {
@@ -34,24 +39,11 @@ export default function AddressesList( props ) {
     history,
     edit,
     itemID,
-    addresses: historyAddresses,
-    addedAddresses,
-    setAddedAddresses,
-    editedAddresses,
-    setEditedAddresses,
-    deletedAddresses,
-    setDeletedAddresses
+    addresses,
+    setAddresses,
   } = props;
 
   const userId = Meteor.userId();
-
-  const addresses = useSelector( ( state ) => state.addresses.value );
-  const addressesInItem = useMemo( () => {
-    if (historyAddresses){
-      return historyAddresses;
-    }
-    return addresses.filter(address => address.item === itemID);
-  }, [ addresses, itemID ] );
 
   const [ addressAdd, setAddressAdd ] = useState(false);
   const [ addressEdit, setAddressEdit ] = useState(false);
@@ -68,24 +60,22 @@ export default function AddressesList( props ) {
     }
   } ;
 
-  const removeAddress = (id) => {
+  const removeAddress = (address) => {
         if ( window.confirm( "Are you sure you want to remove this address?" ) ) {
-          AddressesCollection.remove( {
-            _id: id
-          } );
+          const newAddresses = addresses.map(addr => {
+            if (addr._id && addr._id === address._id){
+              return ({...addr, change: DELETED});
+            }
+            if (!addr._id && JSON.stringify(addr) === JSON.stringify(address)){
+              return null;
+            }
+            return addr;
+          });
+          setAddresses(newAddresses.filter(addr => addr));
         }
   }
 
-  const allAddresses = useMemo(() => {
-    if (!deletedAddresses && !editedAddresses && ! addedAddresses){
-        return addressesInItem;
-    }
-    const deletedAddressesIds = deletedAddresses.map(addr => addr._id);
-    const editedAddressesIds = editedAddresses.map(addr => addr._id);
-    return [...addressesInItem.filter((addr, i) => !deletedAddressesIds.includes(addr._id) && !editedAddressesIds.includes(addr._id)), ...editedAddresses, ...addedAddresses];
-  }, [addressesInItem, deletedAddresses, editedAddresses, addedAddresses]);
-
-  if (!edit && addressesInItem.length === 0){
+  if (!edit && addresses.length === 0){
     return (<div></div>);
   }
 
@@ -107,8 +97,8 @@ export default function AddressesList( props ) {
           </thead>
           <tbody>
             {
-              allAddresses.map((address, index) => (
-                <tr key={address._id + index}>
+              addresses.filter(address => address.change !== DELETED).map((address, index) => (
+                <tr key={address._id ? address._id : (address.nic + address.ip)}>
                   <td>{address.nic}</td>
                   <td>{address.ip}</td>
                   <td>{address.mask}</td>
@@ -129,7 +119,7 @@ export default function AddressesList( props ) {
                         />
                     </LinkButton>
                     <LinkButton
-                      onClick={(e) => {e.preventDefault(); removeAddress(address._id)}}
+                      onClick={(e) => {e.preventDefault(); removeAddress(address)}}
                       >
                       <img
                         className="icon"
@@ -171,8 +161,9 @@ export default function AddressesList( props ) {
               match={props.match}
               history={props.history}
               closeSelf={toggleAddressAdd}
-              addedAddresses={addedAddresses}
-              setAddedAddresses={setAddedAddresses}/>
+              addresses={addresses}
+              setAddresses={setAddresses}
+              />
           </ModalBody>
         </Modal>
 
@@ -182,8 +173,8 @@ export default function AddressesList( props ) {
               {...props}
               address={editedAddress}
               closeSelf={toggleAddressEdit}
-              setEditedAddresses={setEditedAddresses}
-              setDeletedAddresses={setDeletedAddresses}
+              addresses={addresses}
+              setAddresses={setAddresses}
               />
           </ModalBody>
         </Modal>
