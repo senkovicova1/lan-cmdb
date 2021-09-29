@@ -142,7 +142,7 @@ if (!selectedCompany){
           <div className="nav" key={category.value}>
             <NavLink
               className={category.value === categoryID ? "active" : ""}
-              style={category.value === "all-categories" ? {width: "100%"} : {}}
+              style={category.value === "all-categories" || !userCanManageCategories ? {width: "100%"} : {}}
               key={category.value}
               to={getGoToLink("listItemsInCategory", {companyID: selectedCompany?.value, categoryID: category.value})}
               onClick={() => {

@@ -18,7 +18,6 @@ import AddressesList from '/imports/ui/addresses/list';
 import Loader from '/imports/ui/other/loadingScreen';
 import {
   Form,
-  TitleInput,
   Input,
   Textarea,
   ButtonCol,
@@ -138,7 +137,7 @@ if (itemId &&
 
       <section>
         <label htmlFor="name">Name</label>
-        <TitleInput
+        <Input
           id="name"
           name="name"
           type="text"

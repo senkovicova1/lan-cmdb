@@ -27,8 +27,12 @@ export const MainPage = styled.div `
 
   ul {
     list-style-type: none;
-    padding: 0px;
   }
+
+  .ck ul, form ul {
+    list-style-type: circle !important;
+  }
+
   label {
     margin: 0px;
   }
@@ -77,6 +81,27 @@ width: 100% !important;
 .ck-editor__editable_inline {
     min-height: 200px;
 }
+
+  section.description{
+    table td, table th {
+      background-color: white;
+      border: 1px solid #d6d6d6;
+      min-width: 150px;
+      padding: 0.3em 0.6em;
+      text-align: center;
+    }
+    table tr:first-of-type td, table tr:first-of-type td {
+      font-weight: 500;
+    }
+
+    blockquote{
+      border-left: 4px solid #d6d6d6;
+      padding: 0.5em 1em;
+      font-style: italic;
+    }
+  }
+
+
 `;
 
 export const MobilePageHeader = styled.header `
@@ -532,188 +557,190 @@ export const AddressList = styled.section `
 
 
 export const ItemContainer = styled.section `
-&:hover{
-  cursor: pointer;
-}
+  &:hover{
+    cursor: pointer;
+  }
 
-margin: 0em ${inputOffset};
-height: 3em;
-display: flex;
-align-items: center;
-color: ${basicBlueColour};
+  margin: 0em ${inputOffset};
+  height: 3em;
+  display: flex;
+  align-items: center;
+  color: ${basicBlueColour};
 
-input[type=checkbox]{
-  width: 1.5em !important;
-  height: 1.5em !important;
-}
+  input[type=checkbox]{
+    width: 1.5em !important;
+    height: 1.5em !important;
+  }
 
-&> span {
-  margin-right: auto;
-  padding: 10px;
-  width: calc(100% - 6em);
-  overflow-wrap: anywhere;
-}
+  &> span {
+    margin-right: auto;
+    padding: 10px;
+    width: calc(100% - 6em);
+    overflow-wrap: anywhere;
+  }
 
-img.icon{
-  height: 1.3em;
-  filter: invert(32%) sepia(81%) saturate(4601%) hue-rotate(210deg) brightness(90%) contrast(101%);
-}
+  img.icon{
+    height: 1.3em;
+    filter: invert(32%) sepia(81%) saturate(4601%) hue-rotate(210deg) brightness(90%) contrast(101%);
+  }
 
-img.folder{
-  margin-right: 0.3em;
-}
+  img.folder{
+    margin-right: 0.3em;
+  }
 
-img.avatar {
-  margin-right: 0.6em;
-}
+  img.avatar {
+    margin-right: 0.6em;
+  }
 `;
 
 export const Form = styled.form `
-padding: 1em ${inputOffset};
-width: -webkit-fill-available;
+  padding: 1em ${inputOffset};
+  width: -webkit-fill-available;
 
-section {
-  margin: 0em 0em 1.5em 0em;
-    i {
-      font-size: 1.5em;
-    }
-
+  section {
+    margin: 0em 0em 1.5em 0em;
+      i {
+        font-size: 1.5em;
+      }
     div.flex{
       display: flex;
       img{
         margin: 0px;
+        }
+      }
+
+      img:not(.scheme) {
+        width: auto;
+        max-width: 500px;
+        height: auto;
+        max-height: 500px;
+        border-radius: 0px;
+      }
+
+      img.icon {
+        width:32px;
+        height: 32px;
+        border-radius: 50px;
+        margin-right: 1em;
+      }
+
+      label{
+        margin: 0px 1em 0em 0em;
+        font-weight: 500;
+      }
+
+      input[type=text], input[type=password], input[type=datetime-local], teaxtarea, &>div {
+        width: -webkit-fill-available;
       }
     }
-    img:not(.scheme) {
-      width: auto;
-      max-width: 500px;
-      height: auto;
-      max-height: 500px;
-      border-radius: 0px;
-    }
+      section:last-of-type {
+        margin: 0em !important;
+      }
 
-    img.icon {
-      width:32px;
-      height: 32px;
-      border-radius: 50px;
-      margin-right: 1em;
-    }
-
-    label{
-      margin: 0px 1em 0em 0em;
-      font-weight: 500;
-    }
-
-    input[type=text], input[type=password], input[type=datetime-local], teaxtarea, &>div {
-      width: -webkit-fill-available;
-    }
-    section:last-of-type {
-      margin: 0em !important;
-    }
-  }
 
   section.input-row{
-    display: flex;
-    max-width: 50%;
-  }
+        display: flex !important;
+        max-width: 50% !important;
+        display: flex !important;
+      }
 
-  section.input-row>div{
-    margin-right: 1em;
-  }
+    section.input-row>div{
+        margin-right: 1em;
+      }
 
-  section.row{
-    div{
-      padding: 0px !important;
-      display: flex;
-      width: -webkit-fill-available;
+    section.row{
+      div{
+        padding: 0px !important;
+        display: flex;
+        width: -webkit-fill-available;
 
-      div.dates{
-        display: inline-block;
-        text-align: end;
-        span{
-          display: block;
-          font-size: 0.8em;
-          color: #7d7d7d;
+        div.dates{
+          display: inline-block;
+          text-align: end;
           span{
-            font-weight
+            display: block;
+            font-size: 0.8em;
+            color: #7d7d7d;
+            span{
+              font-weight
+            }
           }
         }
       }
     }
-  }
 
-  & section.row-notes{
-    div.text{
-      padding: 0px !important;
-      @media all and (max-width: 799px), @media handheld  {
-        display: block;
-      }
-      @media all and (min-width: 800px){
-        display: flex;
-      }
-      width: 100%;
-
-      div.main{
+    & section.row-notes{
+      div.text{
+        padding: 0px !important;
         @media all and (max-width: 799px), @media handheld  {
-          padding-right: 0em;
-          margin-bottom: 1em;
+          display: block;
         }
         @media all and (min-width: 800px){
-          padding-right: 1em;
+          display: flex;
         }
-        min-width: 66%;
+        width: 100%;
 
-      }
+        div.main{
+          @media all and (max-width: 799px), @media handheld  {
+            padding-right: 0em;
+            margin-bottom: 1em;
+          }
+          @media all and (min-width: 800px){
+            padding-right: 1em;
+          }
+          min-width: 66%;
+        }
 
-      div.note{
-        background-color: #fff10026;
-        padding: 1.5em !important;
-        height: fit-content;
+        div.note{
+          background-color: #fff10026;
+          padding: 1.5em !important;
+          height: fit-content;
+          width: -webkit-fill-available;
+        }
       }
     }
+
+  div.heading{
+    display: flex;
+    justify-content: space-between;
   }
 
-div.heading{
-  display: flex;
-  justify-content: space-between;
-}
+  div.scheme-content{
+    display: flex;
+    justify-content: space-between;
+  }
 
-div.scheme-content{
-  display: flex;
-  justify-content: space-between;
-}
+  div.scheme-sidebar{
+    margin-left: 2em;
+    height: auto;
+    width: 300px;
+    background-color: white;
+    padding: 1em;
+  }
 
-div.scheme-sidebar{
-  margin-left: 2em;
-  height: auto;
-  width: 300px;
-  background-color: white;
-  padding: 1em;
-}
+  div.scheme-sidebar>h2{
+    font-size: 1.5em;
+  }
 
-div.scheme-sidebar>h2{
-  font-size: 1.5em;
-}
+  div.scheme-sidebar>div{
+    display: flex;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+  }
 
-div.scheme-sidebar>div{
-  display: flex;
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 1em;
-  margin-bottom: 1em;
-}
+  div.scheme-sidebar>div:first-of-type{
+    margin-top: 1em;
+  }
 
-div.scheme-sidebar>div:first-of-type{
-  margin-top: 1em;
-}
+  div.scheme-sidebar>div:hover{
+    cursor: pointer;
+  }
 
-div.scheme-sidebar>div:hover{
-  cursor: pointer;
-}
-
-div.scheme-sidebar>div>span{
-  margin-right: 1em;
-  align-self: center;
-}
+  div.scheme-sidebar>div>span{
+    margin-right: 1em;
+    align-self: center;
+  }
 
 `;
 export const Input = styled.input `

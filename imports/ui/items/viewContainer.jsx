@@ -121,7 +121,7 @@ export default function ItemViewContainer( props ) {
 
   return (
     <Form>
-    <div className="scheme-content">
+    <div>
       {
         <ItemView
           {...props}

@@ -31,7 +31,8 @@ import {
 } from "/imports/other/navigationLinks";
 import {
   uint8ArrayToImg,
-  addImagesToText
+  addImagesToText,
+  handleMedia
 } from '/imports/other/helperFunctions';
 
 export default function schemeView( props ) {
@@ -127,7 +128,6 @@ export default function schemeView( props ) {
 
       <div className="heading">
       <h1>
-        Scheme
       </h1>
       {
         schemes.length > 0 &&
@@ -163,11 +163,11 @@ export default function schemeView( props ) {
           </ModalBody>
         </Modal>
 
-      <section>
+      <section className="description">
         <label htmlFor="description">Description</label>
           <div
             dangerouslySetInnerHTML={{
-              __html: currentScheme?.description ? addImagesToText(currentScheme.description) : "No description",
+              __html: currentScheme?.description ? addImagesToText(handleMedia(currentScheme.description)) : "No description",
           }}
           >
         </div>
@@ -219,18 +219,6 @@ export default function schemeView( props ) {
       }
 
     </div>
-
-      <FloatingButton
-        left
-        onClick={(e) => {e.preventDefault(); history.push(getGoToLink("listItemsInCategory", {companyID, categoryID: "all-categories"}));}}
-        >
-        <img
-          style={{marginRight: "2px"}}
-          src={BackIcon}
-          alt=""
-          className="icon"
-          />
-      </FloatingButton>
 
       {
         userCanEdit &&

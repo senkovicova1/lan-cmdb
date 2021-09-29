@@ -31,7 +31,8 @@ import {
   getGoToLink
 } from "/imports/other/navigationLinks";
 import {
-  addImagesToText
+  addImagesToText,
+  handleMedia
 } from '../../other/helperFunctions';
 
 export default function ItemView( props ) {
@@ -184,13 +185,13 @@ export default function ItemView( props ) {
         <AddressesList {...props} addresses={addresses} itemID={item._id} edit={false}/>
       </section>
 
-      <section  className="row-notes">
+      <section className="row-notes description">
         <label htmlFor="description">Description</label>
         <div className="text">
           <div
             className="main"
             dangerouslySetInnerHTML={{
-              __html: item.description ? addImagesToText(item.description) : "No description",
+              __html: item.description ? addImagesToText(handleMedia(item.description)) : "No description",
           }}
           >
           </div>
@@ -200,13 +201,13 @@ export default function ItemView( props ) {
         </div>
       </section>
 
-      <section  className="row-notes">
+      <section className="row-notes description">
         <label >Backup tasks description</label>
         <div className="text">
           <div
             className="main"
           dangerouslySetInnerHTML={{
-            __html: item.backupDescription ? addImagesToText(item.backupDescription) : "No backup description",
+            __html: item.backupDescription ? addImagesToText(handleMedia(item.backupDescription)) : "No backup description",
         }}
         >
           </div>
@@ -216,13 +217,13 @@ export default function ItemView( props ) {
         </div>
       </section>
 
-      <section  className="row-notes">
+      <section className="row-notes description">
         <label htmlFor="description">Monitoring  description</label>
         <div className="text">
           <div
             className="main"
         dangerouslySetInnerHTML={{
-          __html: item.monitoringDescription ? addImagesToText(item.monitoringDescription) : "No monitoring description",
+          __html: item.monitoringDescription ? addImagesToText(handleMedia(item.monitoringDescription)) : "No monitoring description",
       }}
       >
           </div>
