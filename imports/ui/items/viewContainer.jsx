@@ -115,18 +115,24 @@ export default function ItemViewContainer( props ) {
     return dbAddresses.filter(address => address.item === itemID);
   }, [dbAddresses, itemID]);
 
+  const dbPasswords = useSelector( ( state ) => state.passwords.value );
+  const passwords = useMemo(() => {
+    return dbPasswords.filter(password => password.item === itemID);
+  }, [dbPasswords, itemID]);
+
   if (!displayedItem || !category || !company){
     return <Loader />
   }
 
   return (
-    <Form>
+    <Form scrollable={true}>
     <div>
       {
         <ItemView
           {...props}
           item={displayedItem}
           addresses={addresses}
+          passwords={passwords}
           company={company}
           category={category}
           historyOpen={historyView}

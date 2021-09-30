@@ -11,12 +11,12 @@ import {
   ModalBody
 } from 'reactstrap';
 
-import AddAddressContainer from './addContainer';
-import EditAddressContainer from './editContainer';
+import AddContainer from './addContainer';
+import EditContainer from './editContainer';
 
 import {
-  AddressesCollection
-} from '/imports/api/addressesCollection';
+  PasswordsCollection
+} from '/imports/api/passwordsCollection';
 
 import { PlusIcon, DeleteIcon, PencilIcon } from  "/imports/other/styles/icons";
 import {
@@ -32,50 +32,51 @@ const ADDED = 1;
 const EDITED = 2;
 const DELETED = 3;
 
-export default function AddressesList( props ) {
+export default function PasswordsList( props ) {
 
   const {
     match,
     history,
     edit,
     itemID,
-    addresses,
-    setAddresses,
+    passwords,
+    setPasswords,
   } = props;
 
   const userId = Meteor.userId();
 
-  const [ addressAdd, setAddressAdd ] = useState(false);
-  const [ addressEdit, setAddressEdit ] = useState(false);
-  const [ editedAddress, setEditedAddress ] = useState(null);
+  const [ passwordsAdd, setPasswordAdd ] = useState(false);
+  const [ passwordsEdit, setPasswordEdit ] = useState(false);
+  const [ editedPassword, setEditedPassword ] = useState(null);
 
-  const toggleAddressAdd = () => {setAddressAdd(!addressAdd);};
-  const toggleAddressEdit = (addr) => {
-    if (addressEdit){
-      setAddressEdit(false);
-      setEditedAddress(null);
+  const togglePasswordAdd = () => {setPasswordAdd(!passwordsAdd);};
+  const togglePasswordEdit = (pass) => {
+    console.log("HI");
+    if (passwordsEdit){
+      setPasswordEdit(false);
+      setEditedPassword(null);
     } else {
-      setAddressEdit(true);
-      setEditedAddress(addr);
+      setPasswordEdit(true);
+      setEditedPassword(pass);
     }
   } ;
 
-  const removeAddress = (address) => {
-        if ( window.confirm( "Are you sure you want to remove this address?" ) ) {
-          const newAddresses = addresses.map(addr => {
-            if (addr._id && addr._id === address._id){
-              return ({...addr, change: DELETED});
+  const removePassword = (password) => {
+        if ( window.confirm( "Are you sure you want to remove this password?" ) ) {
+          const newPasswords = passwords.map(pass => {
+            if (pass._id && pass._id === password._id){
+              return ({...pass, change: DELETED});
             }
-            if (!addr._id && JSON.stringify(addr) === JSON.stringify(address)){
+            if (!pass._id && JSON.stringify(pass) === JSON.stringify(password)){
               return null;
             }
-            return addr;
+            return pass;
           });
-          setAddresses(newAddresses.filter(addr => addr));
+          setPasswords(newPasswords.filter(pass => pass));
         }
   }
 
-  if (!edit && addresses.length === 0){
+  if (!edit && passwords.length === 0){
     return (<div></div>);
   }
 
@@ -85,31 +86,27 @@ export default function AddressesList( props ) {
         <table>
           <thead>
             <tr>
-                <th>NIC</th>
-                <th>IP</th>
-                <th>Mask</th>
-                <th>Gateway</th>
-                <th>DNS</th>
-              <th>VLAN</th>
+                <th>Passwords</th>
+                <th>Login</th>
+                <th>Password</th>
+                <th>IP/URL:PORT</th>
               <th>Note</th>
               {edit && <th width="60px"></th>}
             </tr>
           </thead>
           <tbody>
             {
-              addresses.filter(address => address.change !== DELETED).map((address, index) => (
-                <tr key={address._id ? address._id : (address.nic + address.ip)}>
-                  <td>{address.nic}</td>
-                  <td>{address.ip}</td>
-                  <td>{address.mask}</td>
-                  <td>{address.gateway}</td>
-                  <td>{address.dns}</td>
-                  <td>{address.vlan}</td>
-                  <td>{address.note}</td>
+              passwords.filter(password => password.change !== DELETED).map((password, index) => (
+                <tr key={password._id ? password._id : (password.title + password.login)}>
+                  <td>{password.title}</td>
+                  <td>{password.login}</td>
+                  <td>{password.password}</td>
+                  <td>{password.ipUrl}</td>
+                  <td>{password.note}</td>
                   {edit &&
                   <td style={{display: "flex"}}>
                     <LinkButton
-                      onClick={(e) => {e.preventDefault(); toggleAddressEdit(address);}}
+                      onClick={(e) => {e.preventDefault(); togglePasswordEdit(password);}}
                       >
                       <img
                         className="icon"
@@ -119,7 +116,7 @@ export default function AddressesList( props ) {
                         />
                     </LinkButton>
                     <LinkButton
-                      onClick={(e) => {e.preventDefault(); removeAddress(address)}}
+                      onClick={(e) => {e.preventDefault(); removePassword(password)}}
                       >
                       <img
                         className="icon"
@@ -134,7 +131,7 @@ export default function AddressesList( props ) {
               ))
             }
             {edit &&
-            <tr key={"add"} onClick={() => {setAddressAdd(true)}}>
+            <tr key={"add"} onClick={() => {setPasswordAdd(true)}}>
               <td colSpan={8}>
                 <LinkButton
                   onClick={(e) => e.preventDefault()}
@@ -146,7 +143,7 @@ export default function AddressesList( props ) {
                     alt=""
                     />
                   <span>
-                    Address
+                    Password
                   </span>
                 </LinkButton>
               </td>
@@ -155,26 +152,26 @@ export default function AddressesList( props ) {
           </tbody>
         </table>
 
-        <Modal isOpen={addressAdd} toggle={toggleAddressAdd}>
+        <Modal isOpen={passwordsAdd} toggle={togglePasswordAdd}>
           <ModalBody>
-            <AddAddressContainer
+            <AddContainer
               match={props.match}
               history={props.history}
-              closeSelf={toggleAddressAdd}
-              addresses={addresses}
-              setAddresses={setAddresses}
+              closeSelf={togglePasswordAdd}
+              passwords={passwords}
+              setPasswords={setPasswords}
               />
           </ModalBody>
         </Modal>
 
-        <Modal isOpen={addressEdit} toggle={toggleAddressEdit}>
+        <Modal isOpen={passwordsEdit} toggle={togglePasswordEdit}>
           <ModalBody>
-            <EditAddressContainer
+            <EditContainer
               {...props}
-              address={editedAddress}
-              closeSelf={toggleAddressEdit}
-              addresses={addresses}
-              setAddresses={setAddresses}
+              password={editedPassword}
+              closeSelf={togglePasswordEdit}
+              passwords={passwords}
+              setPasswords={setPasswords}
               />
           </ModalBody>
         </Modal>

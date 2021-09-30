@@ -14,6 +14,7 @@ import {
 } from '/imports/api/imagesCollection';
 
 import AddressesList from '/imports/ui/addresses/list';
+import PasswordsList from '/imports/ui/passwords/list';
 import ItemHistory from '/imports/ui/items/historyView';
 
 import {
@@ -44,6 +45,7 @@ export default function ItemView( props ) {
     toggleHistory,
     item,
     addresses,
+    passwords,
     company,
     category,
   } = props;
@@ -183,6 +185,10 @@ export default function ItemView( props ) {
 
       <section>
         <AddressesList {...props} addresses={addresses} itemID={item._id} edit={false}/>
+      </section>
+
+      <section>
+        <PasswordsList {...props} passwords={passwords} itemID={item._id} edit={false}/>
       </section>
 
       <section className="row-notes description">

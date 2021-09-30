@@ -76,10 +76,11 @@ useEffect(() => {
     }
   }, [categoryID, companyID]);
 
-  const addNew = ( name, status, placement, installationDate, expirationDate, description, backupDescription, monitoringDescription, updatedDate, updatedBy, originalItemId, addresses, category, company, createdDate, createdBy ) => {
+  const addNew = ( name, status, company, placement, installationDate, expirationDate, description, backupDescription, monitoringDescription, updatedDate, updatedBy, originalItemId, addresses, category, createdDate, createdBy ) => {
     ItemsCollection.insert( {
       name,
       status,
+      company,
       placement,
       installationDate,
       expirationDate,
@@ -101,7 +102,7 @@ useEffect(() => {
         });
 
         history.push( getGoToLink( "viewItem", {
-          companyID,
+          companyID: company,
           categoryID,
           itemID: _id
         } ) );
@@ -168,7 +169,6 @@ useEffect(() => {
       {...props}
       companyID={actualCompany ? actualCompany._id : companyID}
       categoryID={actualCategory ? actualCategory._id : categoryID}
-      title={"Add item"}
       onSubmit={addNew}
       onCancel={close}
       />

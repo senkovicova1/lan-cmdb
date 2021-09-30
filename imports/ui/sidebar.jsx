@@ -141,7 +141,7 @@ if (!selectedCompany){
         sortedCategories.map(category =>  (
           <div className="nav" key={category.value}>
             <NavLink
-              className={category.value === categoryID ? "active" : ""}
+              className={category.value === categoryID && !location.pathname.includes("add-item") ? "active" : ""}
               style={category.value === "all-categories" || !userCanManageCategories ? {width: "100%"} : {}}
               key={category.value}
               to={getGoToLink("listItemsInCategory", {companyID: selectedCompany?.value, categoryID: category.value})}

@@ -39,7 +39,6 @@ export default function CategoryForm( props ) {
     onCancel,
     match,
     location,
-    title
   } = props;
 
   const [ name, setName ] = useState( "" );
@@ -72,8 +71,6 @@ export default function CategoryForm( props ) {
 
   return (
     <Form>
-
-      <h1> {title} </h1>
 
       <section>
         <label htmlFor="name">

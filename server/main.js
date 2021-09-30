@@ -17,6 +17,9 @@ import {
   AddressesCollection
 } from '/imports/api/addressesCollection';
 import {
+  PasswordsCollection
+} from '/imports/api/passwordsCollection';
+import {
   CategoriesCollection
 } from '/imports/api/categoriesCollection';
 import {

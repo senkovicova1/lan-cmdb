@@ -16,6 +16,7 @@ import { setCompanies } from '/imports/redux/companiesSlice';
 import { setCategories } from '/imports/redux/categoriesSlice';
 import { setItems } from '/imports/redux/itemsSlice';
 import { setAddresses } from '/imports/redux/addressesSlice';
+import { setPasswords } from '/imports/redux/passwordsSlice';
 import { setUsers } from '/imports/redux/usersSlice';
 import { setSchemes } from '/imports/redux/schemesSlice';
 import {
@@ -30,6 +31,9 @@ import {
 import {
   AddressesCollection
 } from '/imports/api/addressesCollection';
+import {
+  PasswordsCollection
+} from '/imports/api/passwordsCollection';
 import {
   SchemesCollection
 } from '/imports/api/schemesCollection';
@@ -75,7 +79,6 @@ export default function MainPage( props ) {
   }, [currentUser]);
 
   const companies = useTracker( () => CompaniesCollection.find( { users:  { $elemMatch: { _id: userId } } } ).fetch() );
-
   useEffect(() => {
       dispatch(
         setCompanies(
@@ -86,7 +89,6 @@ export default function MainPage( props ) {
         )
       );
   }, [companies]);
-
 
   const categories = useTracker( () => CategoriesCollection.find( {} ).fetch() );
   useEffect(() => {
@@ -137,6 +139,10 @@ export default function MainPage( props ) {
     useEffect(() => {
       dispatch(setAddresses(addresses));
     }, [addresses]);
+    const passwords = useTracker( () => PasswordsCollection.find( {item: {$in: itemsIds}} ).fetch() );
+    useEffect(() => {
+      dispatch(setPasswords(passwords));
+    }, [passwords]);
 
   const [ search, setSearch ] = useState( "" );
   const [ openSidebar, setOpenSidebar ] = useState( false );

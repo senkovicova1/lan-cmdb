@@ -13,6 +13,7 @@ const sidebarWidthMobile = "300px";
 const inputOffset = "15px";
 
 export const MainPage = styled.div `
+  overflow: hidden;
   font-size: 1em;
   text-align: left;
   line-height: 1.5em;
@@ -73,14 +74,14 @@ export const MainPage = styled.div `
 
   .cke_content > iframe{
   width: 100% !important;
-}
-.cke_contents > iframe{
-width: 100% !important;
-}
+  }
+  .cke_contents > iframe{
+  width: 100% !important;
+  }
 
-.ck-editor__editable_inline {
-    min-height: 200px;
-}
+  .ck-editor__editable_inline {
+      min-height: 200px;
+  }
 
   section.description{
     table td, table th {
@@ -100,8 +101,6 @@ width: 100% !important;
       font-style: italic;
     }
   }
-
-
 `;
 
 export const MobilePageHeader = styled.header `
@@ -215,7 +214,6 @@ export const PageHeader = styled.header `
     }
 `;
 
-
 export const SearchSection = styled.section `
   display: flex;
   width: 800px !important;
@@ -246,38 +244,13 @@ export const SearchSection = styled.section `
   }
 `;
 
-
 export const Content = styled.main `
   display: block;
   height: calc(100vh - 50px);
-  @media all and (max-width: 799px), @media handheld {
-    width: 100%;
-  }
-  @media all and (min-width: 800px) and (max-width: 1299px){
-    ${(props) =>
-      props.withSidebar &&
-      `
-        max-width: 800px;
-        margin-left: ${sidebarWidthWeb};
-        margin-right: auto;
-      `
-    }
-    ${(props) =>
-      !props.withSidebar &&
-      `
-      padding-left: calc(50vw - 400px);
-      padding-right: calc(50vw - 400px);
-      margin: 0px;
-      overflow-y: overlay;
-      `
-    }
-  }
-  @media all and (min-width: 1300px) {
-    padding-left: 270px;
-    padding-right: 20px;
-    margin: 0px;
-    overflow-y: overlay;
-  }
+  margin: 0px;
+  margin-left: 250px;
+  padding-right: 20px;
+  overflow-x: auto;
 `;
 
 export const Breadcrumbs = styled.div`
@@ -477,7 +450,6 @@ export const FloatingButton = styled.button `
   }
 `;
 
-
 export const List = styled.section `
   width: 100%;
   padding: 0em ${inputOffset};
@@ -519,11 +491,9 @@ export const List = styled.section `
   span.message{
     margin-left: 0px !important;
   }
-
 `;
 
-
-export const AddressList = styled.section `
+export const TableList = styled.section `
   width: 100%;
   padding: 0px;
 
@@ -552,9 +522,7 @@ export const AddressList = styled.section `
   span.message{
     margin-left: 0px !important;
   }
-
 `;
-
 
 export const ItemContainer = styled.section `
   &:hover{
@@ -596,6 +564,7 @@ export const ItemContainer = styled.section `
 export const Form = styled.form `
   padding: 1em ${inputOffset};
   width: -webkit-fill-available;
+  min-width: ${(props) => props.scrollable ? "1200px" : ""};
 
   section {
     margin: 0em 0em 1.5em 0em;
@@ -638,15 +607,20 @@ export const Form = styled.form `
       }
 
 
-  section.input-row{
+      section.input-row{
         display: flex !important;
         max-width: 50% !important;
-        display: flex !important;
       }
 
-    section.input-row>div{
+      section.input-row-triple{
+              display: flex !important;
+              max-width: 75% !important;
+            }
+
+    section.input-row>div, section.input-row-triple>div{
         margin-right: 1em;
       }
+
 
     section.row{
       div{

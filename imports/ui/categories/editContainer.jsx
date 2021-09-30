@@ -87,6 +87,6 @@ export default function EditCategoryContainer( props ) {
   }
 
   return (
-    <CategoryForm {...category} title={"Edit item category"} onSubmit={editCategory} onCancel={cancel} onRemove={removeCategory}/>
+    <CategoryForm {...category} onSubmit={editCategory} onCancel={cancel} onRemove={removeCategory}/>
   );
 };

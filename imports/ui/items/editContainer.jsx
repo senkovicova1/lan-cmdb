@@ -13,11 +13,9 @@ import {
 import {
   PreviousItemsCollection
 } from '/imports/api/previousItemsCollection';
-import {
-  AddressesCollection
-} from '/imports/api/addressesCollection';
 
 import {addNewAddress, editAddress, removeAddress} from '../addresses/addressesHandlers';
+import {addNewPassword, editPassword, removePassword} from '../passwords/passwordsHandlers';
 
 import ItemForm from './form';
 
@@ -73,7 +71,12 @@ useEffect(() => {
     return addresses.filter(address => address.item === itemID).map(address => ({...address, change: NO_CHANGE}));
   }, [ addresses, itemID ] );
 
-  const editItem = ( name, status, placement, installationDate, expirationDate, description, backupDescription, monitoringDescription, updatedDate, updatedBy, originalItemId, addresses ) => {
+  const passwords = useSelector( ( state ) => state.passwords.value );
+  const passwordsInItem = useMemo( () => {
+    return passwords.filter(password => password.item === itemID).map(password => ({...password, change: NO_CHANGE}));
+  }, [ passwords, itemID ] );
+
+  const editItem = ( name, status, company, placement, installationDate, expirationDate, description, backupDescription, monitoringDescription, updatedDate, updatedBy, originalItemId, addresses, passwords ) => {
 
     let oldItem = {...item};
     delete oldItem._id;
@@ -82,6 +85,7 @@ useEffect(() => {
       ...oldItem,
       originalItem: originalItemId,
       addresses: addressesInItem,
+      passwords: passwordsInItem,
     }, ( error, _id ) => {
       if ( error ) {
         console.log( error );
@@ -91,6 +95,7 @@ useEffect(() => {
     ItemsCollection.insert( {
       name,
       status,
+      company,
       placement,
       installationDate,
       expirationDate,
@@ -100,7 +105,6 @@ useEffect(() => {
       updatedDate,
       updatedBy,
       category: categoryID,
-      company: companyID,
       createdDate: moment().unix(),
       createdBy: userId,
       originalItem: originalItemId,
@@ -108,8 +112,6 @@ useEffect(() => {
       if ( error ) {
         console.log( error );
       }  else {
-        console.log(_id);
-        console.log(addresses);
         addresses.forEach((address, i) => {
           switch (address.change) {
             case NO_CHANGE:
@@ -129,8 +131,27 @@ useEffect(() => {
           }
         });
 
+        passwords.forEach((password, i) => {
+          switch (password.change) {
+            case NO_CHANGE:
+              editPassword(password._id, password.title, password.login, password.password, password.ipUrl, password.note, _id );
+              break;
+            case ADDED:
+              addNewPassword(password.title, password.login, password.password, password.ipUrl, password.note, _id );
+              break;
+            case EDITED:
+              editPassword(password._id, password.title, password.login, password.password, password.ipUrl, password.note, _id );
+              break;
+            case DELETED:
+              removePassword(password._id);
+              break;
+            default:
+              editPassword(password._id, password.title, password.login, password.password, password.ipUrl, password.note, _id );
+          }
+        });
+
         history.push( getGoToLink( "viewItem", {
-          companyID,
+          companyID: company,
           categoryID,
           itemID: _id
         } ) );
@@ -160,6 +181,6 @@ useEffect(() => {
   }
 
   return (
-    <ItemForm {...props} companyID={companyID} categoryID={categoryID} {...item} addresses={addressesInItem} onSubmit={editItem} onRemove={removeItem} onCancel={close} />
+    <ItemForm {...props} companyID={companyID} categoryID={categoryID} {...item} addresses={addressesInItem} passwords={passwordsInItem} onSubmit={editItem} onRemove={removeItem} onCancel={close} />
   );
 };

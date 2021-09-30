@@ -15,6 +15,7 @@ import Select from 'react-select';
 import CKEditorWithFileUpload from '/imports/ui/other/ckeditorWithFileUpload';
 
 import AddressesList from '/imports/ui/addresses/list';
+import PasswordsList from '/imports/ui/passwords/list';
 import Loader from '/imports/ui/other/loadingScreen';
 import {
   Form,
@@ -33,13 +34,13 @@ import {
 export default function ItemForm( props ) {
 
   const {
-    title,
     companyID,
     categoryID,
     _id: itemId,
     originalItem: itemOriginalItemId,
     name: itemName,
     status: itemStatus,
+    company: itemCompany,
     placement: itemPlacement,
     installationDate: itemInstallationDate,
     expirationDate: itemExpirationDate,
@@ -47,6 +48,7 @@ export default function ItemForm( props ) {
     backupDescription: itemBackupDescription,
     monitoringDescription: itemMonitoringDescription,
     addresses: itemAddresses,
+    passwords: itemPasswords,
     match,
     onSubmit,
     onRemove,
@@ -55,6 +57,7 @@ export default function ItemForm( props ) {
 
   const userId = Meteor.userId();
 
+  const companies = useSelector( ( state ) => state.companies.value );
   const categories = useSelector( ( state ) => state.categories.value );
   const category = useMemo( () => {
     if ( categories.length > 0 ) {
@@ -65,6 +68,7 @@ export default function ItemForm( props ) {
 
   const [ name, setName ] = useState( "" );
   const [ status, setStatus ] = useState( null );
+  const [ company, setCompany ] = useState( null );
   const [ placement, setPlacement ] = useState( "" );
   const [ installationDate, setInstallationDate ] = useState( "" );
   const [ expirationDate, setExpirationDate ] = useState( "" );
@@ -73,6 +77,7 @@ export default function ItemForm( props ) {
   const [ monitoringDescription, setMonitoringDescription ] = useState( "" );
 
   const [ addresses, setAddresses ] = useState([]);
+  const [ passwords, setPasswords ] = useState([]);
 
   const statuses = [{label: "Active", value: 0}, {label: "Inactive", value: 1}];
 
@@ -82,6 +87,13 @@ export default function ItemForm( props ) {
     } else {
       setName( "" );
     }
+      if ( itemCompany && companies.length > 1 ) {
+        setCompany( companies.find(company => company._id === itemCompany) );
+      } else if ( companies.length > 1 ) {
+        setCompany( companies.find(company => company._id === companyID) );
+      } else {
+        setCompany( null );
+      }
     if ( itemStatus ) {
       setStatus( statuses.find(st => st.value === itemStatus) );
     } else {
@@ -122,18 +134,22 @@ export default function ItemForm( props ) {
     } else {
       setAddresses( [] );
     }
-  }, [ itemName, itemId, itemOriginalItemId, itemName, itemStatus, itemPlacement, itemInstallationDate, itemExpirationDate, itemDescription, itemBackupDescription, itemMonitoringDescription, itemAddresses ] );
+    if ( itemPasswords ) {
+      setPasswords( itemPasswords );
+    } else {
+      setPasswords( [] );
+    }
+  }, [ itemName, itemId, itemOriginalItemId, itemName, itemStatus, itemCompany, itemPlacement, itemInstallationDate, itemExpirationDate, itemDescription, itemBackupDescription, itemMonitoringDescription, itemAddresses, itemPasswords, companies, companyID ] );
 
 if (itemId &&
   ((itemDescription.length > 0 && description.length === 0) ||
+  !company ||
   (itemMonitoringDescription.length > 0 && monitoringDescription.length === 0) || (itemBackupDescription.length > 0 && backupDescription.length === 0))){
   return <Loader />
 }
 
   return (
-    <Form>
-
-      <h1>{title}</h1>
+    <Form scrollable={true}>
 
       <section>
         <label htmlFor="name">Name</label>
@@ -147,7 +163,7 @@ if (itemId &&
           />
       </section>
 
-      <section className="input-row">
+      <section className="input-row-triple">
         <div>
           <label htmlFor="status">Status</label>
             <Select
@@ -170,6 +186,18 @@ if (itemId &&
             value={placement}
             onChange={(e) => setPlacement(e.target.value)}
             />
+        </div>
+        <div>
+          <label htmlFor="company">Company</label>
+            <Select
+              id="company"
+              styles={selectStyle}
+              value={company}
+              onChange={(e) => {
+                setCompany(e);
+              }}
+              options={companies}
+              />
         </div>
       </section>
 
@@ -205,6 +233,16 @@ if (itemId &&
           setAddresses={setAddresses}
           />
       </section>
+
+        <section>
+          <PasswordsList
+            {...props}
+            itemID={itemId}
+            edit={true}
+            passwords={passwords}
+            setPasswords={setPasswords}
+            />
+        </section>
 
       <CKEditorWithFileUpload
         title={"Description"}
@@ -242,6 +280,7 @@ if (itemId &&
           onClick={(e) => {e.preventDefault(); onSubmit(
             name,
             status.value,
+            company._id,
             placement,
             installationDate,
             expirationDate,
@@ -252,8 +291,8 @@ if (itemId &&
             userId,
             itemOriginalItemId ? itemOriginalItemId : itemId,
             addresses,
+            passwords,
             categoryID,
-            companyID,
             moment().unix(),
             userId,
           );}}

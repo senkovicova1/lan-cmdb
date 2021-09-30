@@ -66,6 +66,11 @@ export default function Breadcrumbs( props ) {
         }
       }
     }
+    
+    if (match.path.includes("add-item")){
+      result.push({ link: "addItem", label: "Add item", args: {companyID, categoryID}});
+    }
+
     if (match.path.includes("user")){
        result = [];
      }

@@ -40,6 +40,6 @@ export default function AddCategoryContainer( props ) {
   }
 
   return (
-    <CategoryForm title={"Add item category"} onSubmit={addNew} onCancel={cancel}/>
+    <CategoryForm onSubmit={addNew} onCancel={cancel}/>
   );
 };
