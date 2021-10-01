@@ -26,7 +26,7 @@ import {
 export default function UserList( props ) {
 
   const users = useSelector((state) => state.users.value);
-    const currentUser = useTracker( () => Meteor.user() );
+  const currentUser = useTracker( () => Meteor.user() );
 
   const [ editUserModalOpen, showEditUserModal ] = useState( false );
   const [ chosenUser, setChosenUser ] = useState( null );
