@@ -21,14 +21,17 @@ export const getLink = (address) => {
     case "schemeView":
       return `/:companyID/scheme/view`;
       break;
-    case "schemeDraw":
-      return `/:companyID/scheme/draw`;
-      break;
     case "schemeEdit":
       return `/:companyID/scheme/edit`;
       break;
-      case "diagram":
-      return `/:companyID/diagram/draw`;
+    case "descriptionView":
+      return `/:companyID/description/view`;
+      break;
+    case "descriptionEdit":
+      return `/:companyID/description/edit`;
+      break;
+    case "manuals":
+      return `/:companyID/manuals`;
       break;
     case "addItem":
       return `/:companyID/:categoryID/add-item`;
@@ -69,11 +72,17 @@ export const getGoToLink = (address, arguments) => {
     case "schemeView":
       return `/${companyID}/scheme/view`;
       break;
-    case "schemeDraw":
-      return `/${companyID}/scheme/draw`;
-      break;
     case "schemeEdit":
       return `/${companyID}/scheme/edit`;
+      break;
+    case "descriptionView":
+      return `/${companyID}/description/view`;
+      break;
+    case "descriptionEdit":
+      return `/${companyID}/description/edit`;
+      break;
+    case "manuals":
+      return `/${companyID}/manuals`;
       break;
     case "addItem":
       return `/${companyID}/${categoryID}/add-item`;

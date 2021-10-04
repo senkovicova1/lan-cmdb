@@ -47,6 +47,7 @@ export default function UserForm( props ) {
     addCompanies: false,
     manageCategories: false,
     manageUsers: false,
+    managePasswords: false,
   } );
   const [ active, setActive ] = useState( true );
 
@@ -87,6 +88,7 @@ export default function UserForm( props ) {
         addCompanies: false,
         manageCategories: false,
         manageUsers: false,
+        managePasswords: false,
       } );
     }
     if ( user?.active ) {
@@ -240,10 +242,11 @@ export default function UserForm( props ) {
         <table width="100%">
           <thead>
             <tr>
-              <th width="25%">Active</th>
-              <th width="25%">Add companies</th>
-              <th width="25%">Manage categories</th>
-              <th width="25%">Manage users</th>
+              <th width="20%">Active</th>
+              <th width="20%">Add companies</th>
+              <th width="20%">Manage categories</th>
+              <th width="20%">Manage users</th>
+              <th width="20%">Manage passwords</th>
             </tr>
           </thead>
           <tbody>
@@ -300,6 +303,22 @@ export default function UserForm( props ) {
                             addCompanies: rights.addCompanies,
                             manageCategories: rights.manageCategories,
                             manageUsers: !rights.editUsers,
+                          });
+                        }}
+                        />
+                    </td>
+                    <td>
+                      <Input
+                        id="manage-passwords"
+                        name="manage-passwords"
+                        type="checkbox"
+                        checked={rights.managePasswords}
+                        onChange={(e) =>  {
+                          setRights({
+                            addCompanies: rights.addCompanies,
+                            manageCategories: rights.manageCategories,
+                            manageUsers: rights.editUsers,
+                            managePasswords: rights.managePasswords,                            
                           });
                         }}
                         />

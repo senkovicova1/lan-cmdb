@@ -50,6 +50,12 @@ export default function Breadcrumbs( props ) {
           result.push({ link: "schemeEdit", label: "Edit scheme", args: {companyID}});
         }
     }
+    if (match.path.includes("description")){
+      result.push({ link: "descriptionView", label: "Description", args: {companyID}});
+       if (match.path.includes("edit")){
+          result.push({ link: "descriptionEdit", label: "Edit description", args: {companyID}});
+        }
+    }
     if (categoryID){
       const category = categories.find( category => category.value === categoryID );
       result.push({ link: "listItemsInCategory", label: category.label, args: {companyID: !companyID ? "all-companies" : companyID, categoryID}});
@@ -57,16 +63,16 @@ export default function Breadcrumbs( props ) {
         result.push({ link: "editCategory", label: "Edit category", args: {categoryID}});
       }
     }
-    if (itemID && items.length !== 0){
+    if (itemID && items.length !== 0 && match.path.includes("edit")){
       const item = items.find( item => item._id === itemID );
-      if (item){
-        result.push({ link: "viewItem", label: item.name, args: {companyID, categoryID, itemID}});
-        if (match.path.includes("edit")){
-          result.push({ link: "editItem", label: "Edit item", args: {companyID, categoryID, itemID}});
-        }
-      }
+      result.push({ link: "viewItem", label: item.name, args: {companyID, categoryID, itemID}});
+      result.push({ link: "editItem", label: "Edit item", args: {companyID, categoryID, itemID}});
     }
-    
+
+    if (itemID && !match.path.includes("edit")){
+      result = [];
+    }
+
     if (match.path.includes("add-item")){
       result.push({ link: "addItem", label: "Add item", args: {companyID, categoryID}});
     }

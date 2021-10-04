@@ -43,12 +43,13 @@ export default function UserList( props ) {
       <table style={{width: "100%"}}>
         <thead>
           <tr>
-            <th width="16%">Name</th>
-            <th width="16%">Active</th>
-            <th width="16%">Add companies</th>
-            <th width="16%">Managae categories</th>
-            <th width="16%">Manage users</th>
-            {userCanManageUsers && <th width="16%">Actions</th> }
+            <th width="14%">Name</th>
+            <th width="14%">Active</th>
+            <th width="14%">Add companies</th>
+            <th width="14%">Managae categories</th>
+            <th width="14%">Manage users</th>
+            <th width="14%">Manage passwords</th>
+            {userCanManageUsers && <th width="14%">Actions</th> }
           </tr>
         </thead>
         <tbody>
@@ -81,6 +82,13 @@ export default function UserList( props ) {
                   disabled
                   type="checkbox"
                   checked={user.rights ? user.rights.manageUsers : false}
+                  />
+              </td>
+              <td>
+                <Input
+                  disabled
+                  type="checkbox"
+                  checked={user.rights ? user.rights.managePasswords : false}
                   />
               </td>
               {userCanManageUsers &&

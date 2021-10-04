@@ -19,6 +19,7 @@ import { setAddresses } from '/imports/redux/addressesSlice';
 import { setPasswords } from '/imports/redux/passwordsSlice';
 import { setUsers } from '/imports/redux/usersSlice';
 import { setSchemes } from '/imports/redux/schemesSlice';
+import { setDescriptions } from '/imports/redux/descriptionsSlice';
 import {
   CompaniesCollection
 } from '/imports/api/companiesCollection';
@@ -37,6 +38,9 @@ import {
 import {
   SchemesCollection
 } from '/imports/api/schemesCollection';
+import {
+  DescriptionsCollection
+} from '/imports/api/descriptionsCollection';
 
 import Reroute from './reroute';
 import Breadcrumbs from './breadcrumbs';
@@ -45,8 +49,9 @@ import Login from './login';
 import CategoryAdd from './categories/addContainer';
 import CategoryEdit from './categories/editContainer';
 import SchemeView from './schemes/view';
-import SchemeDraw from './schemes/drawScheme';
 import SchemeEdit from './schemes/editContainer';
+import DescriptionView from './descriptions/view';
+import DescriptionEdit from './descriptions/editContainer';
 import ItemAdd from './items/addContainer';
 import ItemEdit from './items/editContainer';
 import ItemsList from './items/list';
@@ -134,6 +139,13 @@ export default function MainPage( props ) {
     }
   }, [schemes]);
 
+  const descriptions = useTracker( () => DescriptionsCollection.find( { company:  { $in: companiesIds} } ).fetch() );
+  useEffect(() => {
+    if (descriptions.length > 0){
+      dispatch(setDescriptions(descriptions));
+    }
+  }, [descriptions]);
+
     const itemsIds = items.map(item => item._id);
     const addresses = useTracker( () => AddressesCollection.find( {item: {$in: itemsIds}} ).fetch() );
     useEffect(() => {
@@ -174,8 +186,9 @@ export default function MainPage( props ) {
             getLink("editCategory"),
             getLink("listItemsInCategory"),
             getLink("schemeView"),
-            getLink("schemeDraw"),
             getLink("schemeEdit"),
+            getLink("descriptionView"),
+            getLink("descriptionEdit"),
             getLink("addItem"),
             getLink("editItem"),
             getLink("viewItem"),
@@ -212,8 +225,9 @@ export default function MainPage( props ) {
                 getLink("editCategory"),
                 getLink("listItemsInCategory"),
                 getLink("schemeView"),
-                getLink("schemeDraw"),
                 getLink("schemeEdit"),
+                getLink("descriptionView"),
+                getLink("descriptionEdit"),
                 getLink("addItem"),
                 getLink("editItem"),
                 getLink("viewItem"),
@@ -235,13 +249,13 @@ export default function MainPage( props ) {
               )}
               />
 
-                            <Route
-                              exact
-                              path={getLink("users")}
-                              render={(props) => (
-                                <UsersList {...props} search={search}/>
-                              )}
-                              />
+            <Route
+              exact
+              path={getLink("users")}
+              render={(props) => (
+                <UsersList {...props} search={search}/>
+              )}
+              />
 
             <Route
               exact
@@ -282,8 +296,10 @@ export default function MainPage( props ) {
                 <Route exact path={getLink("viewItem")} component={ItemView}/>
 
                 <Route exact path={getLink("schemeView")} component={SchemeView}/>
-                <Route exact path={getLink("schemeDraw")} component={SchemeDraw}/>
                 <Route exact path={getLink("schemeEdit")} component={SchemeEdit}/>
+
+                <Route exact path={getLink("descriptionView")} component={DescriptionView}/>
+                <Route exact path={getLink("descriptionEdit")} component={DescriptionEdit}/>
           </div>
         </Content>
       }

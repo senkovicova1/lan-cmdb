@@ -25,6 +25,7 @@ export default function PasswordForm( props ) {
     password: passPassword,
     ipUrl: passIpUrl,
     note: passNote,
+    private: passPrivate,
     match,
     onSubmit,
     onRemove,
@@ -40,6 +41,7 @@ export default function PasswordForm( props ) {
   const [ password, setPassword ] = useState( "" );
   const [ ipUrl, setIpUrl ] = useState( "" );
   const [ note, setNote ] = useState( "" );
+  const [ private, setPrivate ] = useState( false );
 
   useEffect( () => {
     if ( passTitle ) {
@@ -47,27 +49,38 @@ export default function PasswordForm( props ) {
     } else {
       setTitle( "" );
     }
+
     if ( passLogin ) {
       setLogin( passLogin );
     } else {
       setLogin( "" );
     }
+
     if ( passPassword ) {
       setPassword( passPassword );
     } else {
       setPassword( "" );
     }
+
     if ( passIpUrl ) {
       setIpUrl( passIpUrl );
     } else {
       setIpUrl( "" );
     }
+
     if ( passNote ) {
       setNote( passNote );
     } else {
       setNote( "" );
     }
-  }, [  passTitle, passLogin, passPassword, passIpUrl, passNote ] );
+
+    if ( passPrivate ) {
+      setPrivate( passPrivate );
+    } else {
+      setPrivate( false);
+    }
+
+  }, [  passTitle, passLogin, passPassword, passIpUrl, passNote, passPrivate ] );
 
   return (
     <Form>
@@ -132,6 +145,18 @@ export default function PasswordForm( props ) {
           value={note}
           onChange={(e) => setNote(e.target.value)}
           />
+      </section>
+
+      <section>
+        <Input
+          style={{marginRight: "0.6em"}}
+          id="private"
+          name="private"
+          type="checkbox"
+          checked={false}
+          onChange={(e) => {}}
+          />
+        <label htmlFor="private">Private</label>
       </section>
 
       <ButtonCol>

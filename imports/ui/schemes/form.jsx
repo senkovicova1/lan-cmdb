@@ -102,16 +102,7 @@ export default function SchemeForm( props ) {
               />
           </div>
         </section>
-
-        <CKEditorWithFileUpload
-          title={"Description"}
-            text={description}
-            setText={setDescription}
-            note={false}
-            buttonId={"ckeditor-file-upload-button-scheme"}
-            editorIndex={0}
-            />
-
+        
       <ButtonCol>
         <FullButton colour="grey" onClick={(e) => {e.preventDefault(); onCancel()}}>Cancel</FullButton>
         <FullButton

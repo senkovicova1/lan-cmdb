@@ -26,7 +26,7 @@ import {
   TitleInputView,
   ViewInput,
   LinkButton,
-  FloatingButton,
+  FullButton,
 } from "/imports/other/styles/styledComponents";
 import {
   getGoToLink
@@ -75,8 +75,26 @@ export default function ItemView( props ) {
             <span>{`Created by ${users.length > 0 ? users.find(user => user._id === item.createdBy).label : "Unknown"} at ${moment.unix(item.createdDate).format("D.M.YYYY HH:mm:ss")}`}</span>
             <span>{`Updated by ${users.length > 0 ? users.find(user => user._id === item.updatedBy).label : "Unknown"} at ${moment.unix(item.updatedDate).format("D.M.YYYY HH:mm:ss")}`}</span>
             <span>
+
+                  {
+                    userCanEditItem &&
+                    itemID === item._id &&
+                  <FullButton
+                    style={{display: "initial", marginLeft: "auto", marginRight: "0.6em", width: "100px"}}
+                    onClick={(e) => {e.preventDefault(); history.push(getGoToLink("editItem", {companyID: item.company, categoryID: item.category, itemID: item._id}));}}
+                    >
+                    <img
+                      src={PencilIcon}
+                      alt=""
+                      className="icon"
+                      style={{marginRight: "0px", width: "20px"}}
+                      />
+                    Edit
+                  </FullButton>
+                }
+
               <LinkButton
-                style={{alignSelf: "flex-end", marginLeft: "auto"}}
+                style={{display: "inline"}}
                 onClick={(e) => {e.preventDefault(); toggleHistory();}}
                 >
                 History
@@ -88,7 +106,7 @@ export default function ItemView( props ) {
         <hr />
       </section>
 
-      <section className="input-row">
+      <section className="input-row-triple">
         <div>
         <label htmlFor="category">Category</label>
         <ViewInput
@@ -109,9 +127,32 @@ export default function ItemView( props ) {
           value={company ? company.name : "No company"}
           />
       </div>
+      <div>
+      <label htmlFor="installation-date">Installation date</label>
+        {
+          item.installationDate &&
+      <ViewInput
+          disabled={true}
+          type="datetime-local"
+          id="installation-date"
+          name="installation-date"
+          value={item.installationDate ? moment.unix(item.installationDate).add((new Date).getTimezoneOffset(), 'minutes').format("yyyy-MM-DD hh:mm").replace(" ", "T") : ""}
+          />
+      }
+          {
+            !item.expirationDate &&
+            <ViewInput
+              id="installation-date"
+              name="installation-date"
+              type="text"
+              disabled={true}
+              value={"No expiration date"}
+              />
+          }
+    </div>
       </section>
 
-      <section className="input-row">
+      <section className="input-row-triple">
         <div>
         <label htmlFor="status">Status</label>
         <ViewInput
@@ -131,32 +172,6 @@ export default function ItemView( props ) {
           disabled={true}
           value={item.placement ? item.placement : "Not placed"}
           />
-      </div>
-      </section>
-
-      <section className="input-row">
-        <div>
-        <label htmlFor="installation-date">Installation date</label>
-          {
-            item.installationDate &&
-        <ViewInput
-            disabled={true}
-            type="datetime-local"
-            id="installation-date"
-            name="installation-date"
-            value={item.installationDate ? moment.unix(item.installationDate).add((new Date).getTimezoneOffset(), 'minutes').format("yyyy-MM-DD hh:mm").replace(" ", "T") : ""}
-            />
-        }
-            {
-              !item.expirationDate &&
-              <ViewInput
-                id="installation-date"
-                name="installation-date"
-                type="text"
-                disabled={true}
-                value={"No expiration date"}
-                />
-            }
       </div>
       <div>
         <label htmlFor="expiration-date">Expiration date</label>
@@ -239,32 +254,6 @@ export default function ItemView( props ) {
         </div>
       </section>
 
-
-      <FloatingButton
-        left
-        onClick={(e) => {e.preventDefault(); history.push(getGoToLink("listItemsInCategory", {companyID, categoryID}));}}
-        >
-        <img
-          style={{marginRight: "2px"}}
-          src={BackIcon}
-          alt=""
-          className="icon"
-          />
-      </FloatingButton>
-
-      {
-        userCanEditItem &&
-        itemID === item._id &&
-      <FloatingButton
-        onClick={(e) => {e.preventDefault(); history.push(getGoToLink("editItem", {companyID: item.company, categoryID: item.category, itemID: item._id}));}}
-        >
-        <img
-          src={PencilIcon}
-          alt=""
-          className="icon"
-          />
-      </FloatingButton>
-    }
 
     </div>
   );

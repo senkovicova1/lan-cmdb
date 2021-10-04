@@ -29,5 +29,8 @@ import {
   SchemesCollection
 } from '/imports/api/schemesCollection';
 import {
+  DescriptionsCollection
+} from '/imports/api/descriptionsCollection';
+import {
   UsersCollection
 } from '/imports/api/usersCollection';

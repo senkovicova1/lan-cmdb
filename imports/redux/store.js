@@ -8,6 +8,7 @@ import passwordsReducer from './passwordsSlice';
 import categoriesReducer from './categoriesSlice';
 import usersReducer from './usersSlice';
 import schemesReducer from './schemesSlice';
+import descriptionsReducer from './descriptionsSlice';
 
 export default configureStore( {
   reducer: {
@@ -18,5 +19,6 @@ export default configureStore( {
     categories: categoriesReducer,
     users: usersReducer,
     schemes: schemesReducer,
+    descriptions: descriptionsReducer,
   },
 } )

@@ -24,7 +24,7 @@ import {
 import {
   Form,
   LinkButton,
-  FloatingButton,
+  FullButton,
 } from "/imports/other/styles/styledComponents";
 import {
   getGoToLink
@@ -129,15 +129,7 @@ export default function schemeView( props ) {
       <div className="heading">
       <h1>
       </h1>
-      {
-        schemes.length > 0 &&
-      <LinkButton
-        style={{alignSelf: "flex-end"}}
-        onClick={(e) => {e.preventDefault(); historyViewToggle();}}
-        >
-        History
-      </LinkButton>
-    }
+
     </div>
 
     <div className="scheme-content">
@@ -163,18 +155,32 @@ export default function schemeView( props ) {
           </ModalBody>
         </Modal>
 
-      <section className="description">
-        <label htmlFor="description">Description</label>
-          <div
-            dangerouslySetInnerHTML={{
-              __html: currentScheme?.description ? addImagesToText(handleMedia(currentScheme.description)) : "No description",
-          }}
-          >
-        </div>
-      </section>
-
     </div>
-
+    <div>
+      <div style={{ display: "flex", alignItems: "center"}}>
+          {
+          userCanEdit &&
+          <FullButton
+            style={{marginLeft: "auto", marginRight: "0.6em", width: "150px"}}
+            onClick={(e) => {e.preventDefault(); history.push(getGoToLink("schemeEdit", {companyID}));}}
+            >
+            <img
+              src={PencilIcon}
+              alt=""
+              className="icon"
+              />
+            Edit
+          </FullButton>
+        }
+        {
+          schemes.length > 0 &&
+          <LinkButton
+            onClick={(e) => {e.preventDefault(); historyViewToggle();}}
+            >
+            History
+          </LinkButton>
+        }
+      </div>
         {
           historyView &&
           <div className="scheme-sidebar">
@@ -217,22 +223,10 @@ export default function schemeView( props ) {
             }
           </div>
       }
+    </div>
 
     </div>
 
-      {
-        userCanEdit &&
-        version === 0 &&
-      <FloatingButton
-        onClick={(e) => {e.preventDefault(); history.push(getGoToLink("schemeEdit", {companyID}));}}
-        >
-        <img
-          src={PencilIcon}
-          alt=""
-          className="icon"
-          />
-      </FloatingButton>
-    }
 
     </Form>
   );
