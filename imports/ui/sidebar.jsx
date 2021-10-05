@@ -128,6 +128,40 @@ if (!selectedCompany){
         </NavLink>
       }
 
+      {
+        selectedCompany.value !== "all-companies" &&
+        <NavLink
+          className={location.pathname.includes("description") ? "active" : ""}
+          style={{width: "100%"}}
+          key={"description"}
+          to={getGoToLink("descriptionView", {companyID: selectedCompany.value})}
+          onClick={() => {
+            if (/Mobi|Android/i.test(navigator.userAgent)) {
+              closeSelf();
+            }
+          }}
+          >
+          <span>Description</span>
+        </NavLink>
+      }
+
+      {
+        selectedCompany.value !== "all-companies" &&
+        <NavLink
+          className={location.pathname.includes("manuals") ? "active" : ""}
+          style={{width: "100%"}}
+          key={"manuals"}
+          to={getGoToLink("manuals", {companyID: selectedCompany.value})}
+          onClick={() => {
+            if (/Mobi|Android/i.test(navigator.userAgent)) {
+              closeSelf();
+            }
+          }}
+          >
+          <span>Manuals</span>
+        </NavLink>
+      }
+
       <label className="selector-name">
         <img
           className="icon"

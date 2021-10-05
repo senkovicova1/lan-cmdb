@@ -19,12 +19,12 @@ import {
 import {
   PencilIcon,
   RestoreIcon,
-  BackIcon
+  BackIcon,
+  HourglassIcon
 } from "/imports/other/styles/icons";
 import {
   Form,
   LinkButton,
-  FloatingButton,
 } from "/imports/other/styles/styledComponents";
 import {
   getGoToLink
@@ -127,17 +127,37 @@ export default function schemeView( props ) {
     <Form>
 
       <div className="heading">
-      <h1>
-      </h1>
-      {
-        schemes.length > 0 &&
-      <LinkButton
-        style={{alignSelf: "flex-end"}}
-        onClick={(e) => {e.preventDefault(); historyViewToggle();}}
-        >
-        History
-      </LinkButton>
-    }
+        <div style={{ display: "flex", alignItems: "center"}}>
+            {
+            userCanEdit &&
+            <LinkButton
+              style={{marginRight: "2em"}}
+              onClick={(e) => {e.preventDefault(); history.push(getGoToLink("schemeEdit", {companyID}));}}
+              >
+              <img
+                src={PencilIcon}
+                style={{marginRight: "0.6em"}}
+                alt=""
+                className="icon"
+                />
+              Edit
+            </LinkButton>
+          }
+          {
+            schemes.length > 0 &&
+            <LinkButton
+              onClick={(e) => {e.preventDefault(); historyViewToggle();}}
+              >
+              <img
+                src={HourglassIcon}
+                style={{marginRight: "0.6em"}}
+                alt=""
+                className="icon"
+                />
+              History
+            </LinkButton>
+          }
+        </div>
     </div>
 
     <div className="scheme-content">
@@ -159,7 +179,7 @@ export default function schemeView( props ) {
 
         <Modal className="scheme" isOpen={enlargeScheme} toggle={enlargeSchemeToggle}>
           <ModalBody>
-            <img className="enlarged-scheme" width="100%" src={diagram} alt="scheme"/>
+            <img className="enlarged-scheme" width="auto" src={diagram} alt="scheme"/>
           </ModalBody>
         </Modal>
 
@@ -174,7 +194,7 @@ export default function schemeView( props ) {
       </section>
 
     </div>
-
+    <div>
         {
           historyView &&
           <div className="scheme-sidebar">

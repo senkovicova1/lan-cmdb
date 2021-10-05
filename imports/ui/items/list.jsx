@@ -45,15 +45,6 @@ export default function ItemsList( props ) {
     }
   }, [company, companyID, userId]);
 
-    useEffect(() => {
-      if (companyID !== "all-companies" && company){
-        const userCannotView = !company.users.find(user => user._id === userId);
-        if (userCannotView){
-          history.push(getGoToLink());
-        }
-      }
-    }, [company, companyID, userId]);
-
   const categories = useSelector( ( state ) => state.categories.value );
   const category = useMemo( () => {
     if ( categories.length > 0 ) {

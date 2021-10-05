@@ -19,6 +19,8 @@ import { setAddresses } from '/imports/redux/addressesSlice';
 import { setPasswords } from '/imports/redux/passwordsSlice';
 import { setUsers } from '/imports/redux/usersSlice';
 import { setSchemes } from '/imports/redux/schemesSlice';
+import { setDescriptions } from '/imports/redux/descriptionsSlice';
+import { setManuals } from '/imports/redux/manualsSlice';
 import {
   CompaniesCollection
 } from '/imports/api/companiesCollection';
@@ -37,6 +39,12 @@ import {
 import {
   SchemesCollection
 } from '/imports/api/schemesCollection';
+import {
+  DescriptionsCollection
+} from '/imports/api/descriptionsCollection';
+import {
+  ManualsCollection
+} from '/imports/api/manualsCollection';
 
 import Reroute from './reroute';
 import Breadcrumbs from './breadcrumbs';
@@ -53,6 +61,7 @@ import ItemsList from './items/list';
 import ItemView from './items/viewContainer';
 import EditUserContainer from './users/editUserContainer';
 import UsersList from './users/list';
+import Manuals from './manuals/container';
 
 import {
   uint8ArrayToImg
@@ -111,6 +120,11 @@ export default function MainPage( props ) {
       dispatch(setItems(items));
     }
   }, [items]);
+
+  const manuals = useTracker( () => ManualsCollection.find( { company:  { $in: companiesIds} } ).fetch() );
+  useEffect(() => {
+      dispatch(setManuals(manuals));
+  }, [manuals]);
 
   const users = useTracker( () => Meteor.users.find( {} ).fetch() );
   useEffect(() => {
@@ -176,6 +190,9 @@ export default function MainPage( props ) {
             getLink("schemeView"),
             getLink("schemeDraw"),
             getLink("schemeEdit"),
+            getLink("descriptionView"),
+            getLink("descriptionEdit"),
+            getLink("manuals"),
             getLink("addItem"),
             getLink("editItem"),
             getLink("viewItem"),
@@ -201,6 +218,8 @@ export default function MainPage( props ) {
         {
           currentUser &&
           <Content>
+            <div style={{height: "calc(100vh - 50px)", position: "relative"}}>
+
             <Route
               exact
               path={[
@@ -214,6 +233,9 @@ export default function MainPage( props ) {
                 getLink("schemeView"),
                 getLink("schemeDraw"),
                 getLink("schemeEdit"),
+                getLink("descriptionView"),
+                getLink("descriptionEdit"),
+                getLink("manuals"),
                 getLink("addItem"),
                 getLink("editItem"),
                 getLink("viewItem"),
@@ -224,8 +246,6 @@ export default function MainPage( props ) {
                   />
               )}
               />
-
-            <div style={{height: "100%", position: "relative"}}>
 
             <Route
               exact
@@ -284,6 +304,11 @@ export default function MainPage( props ) {
                 <Route exact path={getLink("schemeView")} component={SchemeView}/>
                 <Route exact path={getLink("schemeDraw")} component={SchemeDraw}/>
                 <Route exact path={getLink("schemeEdit")} component={SchemeEdit}/>
+
+                <Route exact path={getLink("descriptionView")} component={DescriptionView}/>
+                <Route exact path={getLink("descriptionEdit")} component={DescriptionEdit}/>
+
+                <Route exact path={getLink("manuals")} component={Manuals}/>
           </div>
         </Content>
       }

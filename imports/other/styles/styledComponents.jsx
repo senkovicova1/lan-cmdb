@@ -65,7 +65,7 @@ export const MainPage = styled.div `
   }
 
   img.enlarged-scheme{
-    width: 100%;
+    width: auto;
     height: auto;
     border-radius: 0px;
     margin: 0px;
@@ -249,7 +249,7 @@ export const Content = styled.main `
   height: calc(100vh - 50px);
   margin: 0px;
   margin-left: 250px;
-  padding-right: 20px;
+  padding-right: 0px;
   overflow-x: auto;
 `;
 
@@ -350,7 +350,56 @@ export const Sidebar = styled.section `
       filter: invert(0);
     }
   }
+`;
 
+export const ColumnContainer = styled.div`
+  display: flex;
+  height: -webkit-fill-available;
+
+  div.left-section{
+    width: 43%;
+  }
+
+  div.right-section{
+    background: white;
+    width: 57%;
+  }
+`;
+
+export const ManualInfo = styled.div`
+  display: flex;
+  padding: 1em 16px;
+  align-items: center;
+  border-top: 1px solid #d6d6d6;
+
+  &:last-of-type{
+    border-bottom: 1px solid #d6d6d6;
+  }
+
+  &:hover{
+    background-color: ${lightBlueColour};
+    cursor: pointer;
+  }
+
+  ${(props) => props.active && `
+    background-color: ${lightBlueColour};
+    `};
+
+  span.title{
+    width: 50%;
+  }
+
+  div.info{
+    width: 50%;
+    font-size: 0.8em;
+    color: #acacac;
+    text-align: end;
+    height: fit-content;
+  }
+
+  div.info span{
+    display: block;
+  }
 `;
 
 export const ButtonRow = styled.section `
@@ -622,25 +671,31 @@ export const Form = styled.form `
       }
 
 
-    section.row{
-      div{
+    section.row div{
         padding: 0px !important;
         display: flex;
-        width: -webkit-fill-available;
 
-        div.dates{
-          display: inline-block;
-          text-align: end;
-          span{
-            display: block;
-            font-size: 0.8em;
-            color: #7d7d7d;
-            span{
-              font-weight
-            }
-          }
-        }
+        align-items: center;
+        width: -webkit-fill-available;
       }
+
+      section.row div>div.dates{
+        display: inline-block;
+        text-align: end;
+      }
+
+      section.row div>div.dates>span{
+        display: block;
+        font-size: 0.8em;
+        color: #7d7d7d;
+      }
+
+      section.row div>div.dates>span>span{
+        font-weight
+      }
+
+    section.row .title-and-btns{
+      display: block;
     }
 
     & section.row-notes{
@@ -717,34 +772,35 @@ export const Form = styled.form `
   }
 
 `;
+
 export const Input = styled.input `
-background-color: white !important;
-outline: none !important;
-border: ${(props) => props.error ? "1px solid red" : "1px solid #d6d6d6"};
-width: ${(props) => props.width ? props.width : "auto"};
-padding-left: 0.4em;
-height: 2.5em !important;
+  background-color: white !important;
+  outline: none !important;
+  border: ${(props) => props.error ? "1px solid red" : "1px solid #d6d6d6"};
+  width: ${(props) => props.width ? props.width : "auto"};
+  padding-left: 0.4em;
+  height: 2.5em !important;
 
-&:focus{
-  border: 1px solid ${basicBlueColour} !important;
-}
+  &:focus{
+    border: 1px solid ${basicBlueColour} !important;
+  }
 
-&[type=checkbox]{
-    vertical-align: middle;
-}
+  &[type=checkbox]{
+      vertical-align: middle;
+  }
 `;
 
 export const ViewInput = styled.input `
-background-color: transparent !important;
-outline: none !important;
-border: none;
-width: 100%;
-height: 2.5em !important;
-padding-left: 0px;
+  background-color: transparent !important;
+  outline: none !important;
+  border: none;
+  width: 100%;
+  height: 2.5em !important;
+  padding-left: 0px;
 
-&:hover{
-  cursor: default;
-}
+  &:hover{
+    cursor: default;
+  }
 `;
 
 export const TitleInput = styled.input `
@@ -761,16 +817,16 @@ height: 2.5em !important;
 }
 
 `;export const TitleInputView = styled.input `
-background-color: transparent !important;
-outline: none !important;
-font-size: 1.5em;
-border: none;
-width: ${(props) => props.width ? props.width : "auto"};
-height: 2.5em !important;
+  background-color: transparent !important;
+  outline: none !important;
+  font-size: 1.5em;
+  border: none;
+  width: ${(props) => props.width ? props.width : "auto"};
+  height: 2.5em !important;
 
-&:hover{
-  cursor: default;
-}
+  &:hover{
+    cursor: default;
+  }
 `;
 
 export const Textarea = styled.textarea `
