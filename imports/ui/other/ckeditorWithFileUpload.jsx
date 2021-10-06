@@ -43,7 +43,7 @@ export default function CKEditorWithFileUpload( props ) {
 
   return (
     <section  className="row-notes">
-      <label>{title}</label>
+      { title && <label>{title}</label> }
       <div className="text">
         <div className="main" style={note ? {} : {width: "100%", padding: "0px"}}>
           <input

@@ -2,6 +2,14 @@ body {
   background-color: #f6f6f6 !important;
 }
 
+  h1, h2, h3, h4 {
+    font-weight: lighter;
+  }
+
+  h2 {
+    font-size: 1.3em;
+  }
+
 .modal-dialog{
   max-width: 800px !important;
   position: relative;

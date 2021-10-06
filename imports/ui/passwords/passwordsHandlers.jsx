@@ -10,7 +10,6 @@ export const EDITED = 2;
 export const DELETED = 3;
 
 export const addNewPassword = ( title, login, password, ipUrl, note, item ) => {
-  console.log(title, login, password, ipUrl, note, item);
   PasswordsCollection.insert( {
     title,
     login,

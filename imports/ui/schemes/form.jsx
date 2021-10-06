@@ -15,7 +15,7 @@ import CKEditorWithFileUpload from '/imports/ui/other/ckeditorWithFileUpload';
 import {
   Form,
   Input,
-  ButtonCol,
+  ButtonRow,
   FullButton,
 } from "/imports/other/styles/styledComponents";
 import {
@@ -28,7 +28,6 @@ export default function SchemeForm( props ) {
   const {
     title,
     diagram: schemeDiagram,
-    description: schemeDescription,
     createdDate,
     match,
     onSubmit,
@@ -45,7 +44,6 @@ export default function SchemeForm( props ) {
     buffer: null,
     img: null
   } );
-  const [ description, setDescription ] = useState( "" );
 
   useEffect( () => {
     if ( schemeDiagram ) {
@@ -62,20 +60,12 @@ export default function SchemeForm( props ) {
         img: null
       } );
     }
-    if ( schemeDescription ) {
-      setDescription( addImagesToText(schemeDescription) );
-    } else {
-      setDescription( "" );
-    }
-  }, [ schemeDiagram, schemeDescription ] );
+  }, [ schemeDiagram ] );
 
   return (
     <Form>
 
-      <h1>{title}</h1>
-
         <section>
-          <label htmlFor="scheme">Scheme</label>
           <div>
             {
               diagram.img &&
@@ -103,28 +93,18 @@ export default function SchemeForm( props ) {
           </div>
         </section>
 
-        <CKEditorWithFileUpload
-          title={"Description"}
-            text={description}
-            setText={setDescription}
-            note={false}
-            buttonId={"ckeditor-file-upload-button-scheme"}
-            editorIndex={0}
-            />
-
-      <ButtonCol>
-        <FullButton colour="grey" onClick={(e) => {e.preventDefault(); onCancel()}}>Cancel</FullButton>
+      <ButtonRow>
         <FullButton
           colour=""
           onClick={(e) => {e.preventDefault(); onSubmit(
             diagram.buffer,
-            description,
             moment().unix()
           );}}
           >
           Save
         </FullButton>
-      </ButtonCol>
+        <FullButton colour="grey" onClick={(e) => {e.preventDefault(); onCancel()}}>Cancel</FullButton>
+      </ButtonRow>
 
     </Form>
   );

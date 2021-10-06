@@ -40,10 +40,10 @@ export default function Menu( props ) {
   } = props;
 
   const userId = Meteor.userId();
-    const currentUser = useTracker( () => Meteor.user() );
+  const currentUser = useTracker( () => Meteor.user() );
 
-  const companyID = match.params.companyID !== "undefined" ? match.params.companyID : "all-companies";
-  const categoryID = match.params.categoryID !== "undefined" ? match.params.categoryID : "all-categories";
+  const companyID = match.params.companyID && match.params.companyID !== "undefined" ? match.params.companyID : "all-companies";
+  const categoryID = match.params.categoryID && match.params.categoryID !== "undefined" ? match.params.categoryID : "all-categories";
 
   const companies = useSelector((state) => state.companies.value);
   const categories = useSelector((state) => state.categories.value);
@@ -104,7 +104,13 @@ if (!selectedCompany){
         value={selectedCompany}
         onChange={(e) => {
           setSelectedCompany(e);
-          history.push(getGoToLink("listItemsInCategory", {companyID: e.value, categoryID}));
+          if (match.path.includes(":itemID")){
+            history.push(getGoToLink("listItemsInCategory", {companyID: e.value, categoryID}));
+          } else if (match.path.includes(":companyID") && match.path.includes(":categoryID")){
+            history.push(match.path.replace(":companyID", e.value).replace(":categoryID", categoryID));
+          } else if (match.path.includes(":companyID")){
+            history.push(match.path.replace(":companyID", e.value));
+          }
         }}
         options={{label: "All companies", value: "all-companies"}, [...companies]}
         />
@@ -175,7 +181,7 @@ if (!selectedCompany){
         sortedCategories.map(category =>  (
           <div className="nav" key={category.value}>
             <NavLink
-              className={category.value === categoryID && !location.pathname.includes("add-item") ? "active" : ""}
+              className={category.value === categoryID && !location.pathname.includes("add-item") && !location.pathname.includes("manuals") && !location.pathname.includes("description") && !location.pathname.includes("scheme")  && !location.pathname.includes("user")? "active" : ""}
               style={category.value === "all-categories" || !userCanManageCategories ? {width: "100%"} : {}}
               key={category.value}
               to={getGoToLink("listItemsInCategory", {companyID: selectedCompany?.value, categoryID: category.value})}

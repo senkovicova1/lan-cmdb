@@ -11,6 +11,7 @@ const contentOffset = "calc((100vw - 800px)/2)";
 const sidebarWidthWeb = "250px";
 const sidebarWidthMobile = "300px";
 const inputOffset = "15px";
+const elementOffset = "24.9px"; //1.2em
 
 export const MainPage = styled.div `
   overflow: hidden;
@@ -23,7 +24,7 @@ export const MainPage = styled.div `
   }
 
   h2 {
-    font-size: 2em;
+    font-size: 1.3em;
   }
 
   ul {
@@ -255,7 +256,7 @@ export const Content = styled.main `
 
 export const Breadcrumbs = styled.div`
   width: 100%;
-  padding: 0em ${inputOffset};
+  padding: ${elementOffset};
   display: flex;
   font-size: 1.3em;
   font-weight: 300 !important;
@@ -264,6 +265,7 @@ export const Breadcrumbs = styled.div`
     align-items: center;
   }
   &>span>button{
+    height: fit-content;
     font-weight: 300 !important;
     margin: 0em 0.3em;
     color: black !important;
@@ -368,7 +370,7 @@ export const ColumnContainer = styled.div`
 
 export const ManualInfo = styled.div`
   display: flex;
-  padding: 1em 16px;
+  padding: 1em ${elementOffset};
   align-items: center;
   border-top: 1px solid #d6d6d6;
 
@@ -406,6 +408,9 @@ export const ButtonRow = styled.section `
   display: flex;
   margin-top: 0em !important;
   margin-bottom: 0em;
+  button {
+    width: 150px;
+  }
   button:first-of-type{
     margin-right: 0.5em;
   }
@@ -427,7 +432,7 @@ export const ButtonCol = styled.section `
 export const LinkButton = styled.button `
   color: ${(props) => props.font ? props.font : basicBlueColour};
   padding: 0px;
-  height: 2.5em;
+  height: ${(props) => props.fit ? "fit-content" : "2.5em"};
   background-color: ${(props) => props.searchButton ? "white" : "transparent" } !important;
   outline: none !important;
   border: none !important;
@@ -501,7 +506,7 @@ export const FloatingButton = styled.button `
 
 export const List = styled.section `
   width: 100%;
-  padding: 0em ${inputOffset};
+  padding: 0em ${elementOffset};
 
   span.message{
     margin: 0em ${inputOffset};
@@ -510,14 +515,15 @@ export const List = styled.section `
 
   &>table{
     width: 100%;
-    tr{
+    tbody tr{
       line-height: 2.5em;
     }
   }
 
   &>table>thead>tr>th{
+    height: fit-content;
     font-weight: 400;
-      padding: 0px ${inputOffset};
+    padding: 0px ${inputOffset};
   }
 
   &>table>tbody>tr{
@@ -611,12 +617,16 @@ export const ItemContainer = styled.section `
 `;
 
 export const Form = styled.form `
-  padding: 1em ${inputOffset};
+  padding: ${(props) => props.fullPadding ? `${elementOffset}` : "0em"} ${elementOffset};
   width: -webkit-fill-available;
   min-width: ${(props) => props.scrollable ? "1200px" : ""};
 
+  section hr {
+    margin-top: ${elementOffset};
+  }
+
   section {
-    margin: 0em 0em 1.5em 0em;
+    margin: 0em 0em ${elementOffset} 0em;
       i {
         font-size: 1.5em;
       }
@@ -698,6 +708,10 @@ export const Form = styled.form `
       display: block;
     }
 
+    input[type=file] {
+      margin-top: ${elementOffset};
+    }
+
     & section.row-notes{
       div.text{
         padding: 0px !important;
@@ -732,7 +746,9 @@ export const Form = styled.form `
   div.heading{
     display: flex;
     justify-content: space-between;
+    margin-bottom: ${elementOffset};
   }
+
 
   div.scheme-content{
     display: flex;
@@ -770,6 +786,7 @@ export const Form = styled.form `
     margin-right: 1em;
     align-self: center;
   }
+
 
 `;
 
@@ -822,7 +839,8 @@ height: 2.5em !important;
   font-size: 1.5em;
   border: none;
   width: ${(props) => props.width ? props.width : "auto"};
-  height: 2.5em !important;
+  height: fit-content !important;
+  padding: 0em 0em ${elementOffset} 0em;
 
   &:hover{
     cursor: default;

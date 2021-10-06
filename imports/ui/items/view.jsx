@@ -27,7 +27,6 @@ import {
   TitleInputView,
   ViewInput,
   LinkButton,
-  FloatingButton,
 } from "/imports/other/styles/styledComponents";
 import {
   getGoToLink
@@ -81,12 +80,13 @@ const userCanEditItem = company?.users.find( user => user._id === userId ).level
               disabled={true}
               value={item.name ? item.name : "Untitled"}
               />
-            <span>
+            <span style={{display: "flex"}}>
               {
                 userCanEditItem &&
                 itemID === item._id &&
                 <LinkButton
-                  style={{display: "initial", marginLeft: "auto", marginRight: "0.6em", width: "80px", paddingRight: "15px"}}
+                  fit={true}
+                  style={{marginRight: "0.6em", width: "80px", paddingRight: "15px"}}
                   onClick={(e) => {e.preventDefault(); history.push(getGoToLink("editItem", {companyID: item.company, categoryID: item.category, itemID: item._id}));}}
                   >
                   <img
@@ -100,7 +100,7 @@ const userCanEditItem = company?.users.find( user => user._id === userId ).level
               }
 
               <LinkButton
-                style={{alignSelf: "flex-end", marginLeft: "auto"}}
+                fit={true}
                 onClick={(e) => {e.preventDefault(); toggleHistory();}}
                 >
                 <img

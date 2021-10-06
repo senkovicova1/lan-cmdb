@@ -35,17 +35,17 @@ export default function ManualDetail( props ) {
   }, [ editedManual, manuals ] );
 
   return (
-    <Form>
+    <Form fullPadding={true}>
 
-      <section className="row">
-        <div style={{width: "80%"}}>
+      <section>
           <h2>
             {manual && manual.title ? manual.title : "Untitled"}
           </h2>
-        </div>
-        <div style={{width: "20%"}}>
+        </section>
+
+        <section>
           <LinkButton
-            style={{marginLeft: "auto"}}
+            fit={true}
             onClick={(e) => {e.preventDefault(); setShowDetail(false);}}
             >
             <img
@@ -56,7 +56,6 @@ export default function ManualDetail( props ) {
               />
             Edit
           </LinkButton>
-        </div>
       </section>
 
       <section>

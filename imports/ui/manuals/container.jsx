@@ -81,7 +81,7 @@ export default function ManualsContainer( props ) {
         }
         {
           !addManual && !editedManual &&
-          <p style={{padding: "15px", textAlign: "center"}}>No chosen manual</p>
+          <p style={{padding: "24.9px", textAlign: "center"}}>No chosen manual</p>
         }
       </div>
     </ColumnContainer>

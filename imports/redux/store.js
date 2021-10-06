@@ -10,6 +10,7 @@ import usersReducer from './usersSlice';
 import schemesReducer from './schemesSlice';
 import descriptionsReducer from './descriptionsSlice';
 import manualsReducer from './manualsSlice';
+import metadataReducer from './metadataSlice';
 
 export default configureStore( {
   reducer: {
@@ -22,5 +23,6 @@ export default configureStore( {
     schemes: schemesReducer,
     descriptions: descriptionsReducer,
     manuals: manualsReducer,
+    metadata: metadataReducer,
   },
 } )

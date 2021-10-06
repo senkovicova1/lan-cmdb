@@ -4,11 +4,6 @@ import {
   AddressesCollection
 } from '/imports/api/addressesCollection';
 
-export const NO_CHANGE = 0;
-export const ADDED = 1;
-export const EDITED = 2;
-export const DELETED = 3;
-
 export const addNewAddress = ( nic, ip, mask, gateway, dns, vlan, note, item ) => {
   AddressesCollection.insert( {
     nic,

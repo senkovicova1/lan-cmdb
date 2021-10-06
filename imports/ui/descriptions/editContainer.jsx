@@ -73,6 +73,6 @@ export default function EditDescriptionContainer( props ) {
   }
 
   return (
-    <Form {...props} title={"Edit description"} {...currentDescription} onSubmit={editDescription} onCancel={close} />
+    <Form {...props} {...currentDescription} onSubmit={editDescription} onCancel={close} />
   );
 };

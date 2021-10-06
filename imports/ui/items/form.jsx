@@ -21,7 +21,7 @@ import {
   Form,
   Input,
   Textarea,
-  ButtonCol,
+  ButtonRow,
   FullButton,
 } from "/imports/other/styles/styledComponents";
 import {
@@ -271,9 +271,7 @@ if (itemId &&
         editorIndex={2}
         />
 
-      <ButtonCol>
-        <FullButton colour="grey" onClick={(e) => {e.preventDefault(); onCancel()}}>Cancel</FullButton>
-        {onRemove && <FullButton colour="red" onClick={(e) => {e.preventDefault(); onRemove()}}>Delete</FullButton>}
+      <ButtonRow>
         <FullButton
           colour=""
           disabled={name.length === 0}
@@ -299,7 +297,9 @@ if (itemId &&
           >
           Save
         </FullButton>
-      </ButtonCol>
+        <FullButton colour="grey" onClick={(e) => {e.preventDefault(); onCancel()}}>Cancel</FullButton>
+        {onRemove && <FullButton colour="red" onClick={(e) => {e.preventDefault(); onRemove()}}>Delete</FullButton>}
+      </ButtonRow>
 
     </Form>
   );

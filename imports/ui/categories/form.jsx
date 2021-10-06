@@ -11,7 +11,7 @@ import {
 import {
   Form,
   Input,
-  ButtonCol,
+  ButtonRow,
   LinkButton,
   FullButton,
   UserEntry,
@@ -125,7 +125,22 @@ export default function CategoryForm( props ) {
           />
       </section>
 
-      <ButtonCol>
+      <ButtonRow>
+        <FullButton
+          colour=""
+          disabled={name.length === 0}
+          onClick={(e) => {
+            e.preventDefault();
+            onSubmit(
+              name,
+              descriptionNote,
+              backupNote,
+              monitoringNote
+            );
+          }}
+          >
+          Save
+        </FullButton>
         <FullButton
           colour="grey"
           onClick={(e) => {
@@ -147,22 +162,7 @@ export default function CategoryForm( props ) {
             Delete
           </FullButton>
         }
-        <FullButton
-          colour=""
-          disabled={name.length === 0}
-          onClick={(e) => {
-            e.preventDefault();
-            onSubmit(
-              name,
-              descriptionNote,
-              backupNote,
-              monitoringNote
-            );
-          }}
-          >
-          Save
-        </FullButton>
-      </ButtonCol>
+      </ButtonRow>
 
     </Form>
 );

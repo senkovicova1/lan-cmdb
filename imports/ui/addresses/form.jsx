@@ -11,7 +11,7 @@ import {
   Form,
   Input,
   Textarea,
-  ButtonCol,
+  ButtonRow,
   FullButton,
 } from "/imports/other/styles/styledComponents";
 
@@ -172,9 +172,7 @@ export default function AddressForm( props ) {
           />
       </section>
 
-      <ButtonCol>
-        <FullButton colour="grey" onClick={(e) => {e.preventDefault(); onCancel()}}>Cancel</FullButton>
-        {onRemove && <FullButton colour="red" onClick={(e) => {e.preventDefault(); onRemove()}}>Delete</FullButton>}
+      <ButtonRow>
         <FullButton
           colour=""
           disabled={nic.length === 0}
@@ -191,7 +189,9 @@ export default function AddressForm( props ) {
           >
           Save
         </FullButton>
-      </ButtonCol>
+        <FullButton colour="grey" onClick={(e) => {e.preventDefault(); onCancel()}}>Cancel</FullButton>
+        {onRemove && <FullButton colour="red" onClick={(e) => {e.preventDefault(); onRemove()}}>Delete</FullButton>}
+      </ButtonRow>
 
     </Form>
   );

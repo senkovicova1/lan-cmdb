@@ -132,6 +132,7 @@ export default function schemeView( props ) {
             userCanEdit &&
             <LinkButton
               style={{marginRight: "2em"}}
+              fit={true}
               onClick={(e) => {e.preventDefault(); history.push(getGoToLink("schemeEdit", {companyID}));}}
               >
               <img
@@ -146,6 +147,7 @@ export default function schemeView( props ) {
           {
             schemes.length > 0 &&
             <LinkButton
+            fit={true}
               onClick={(e) => {e.preventDefault(); historyViewToggle();}}
               >
               <img
@@ -182,16 +184,6 @@ export default function schemeView( props ) {
             <img className="enlarged-scheme" width="auto" src={diagram} alt="scheme"/>
           </ModalBody>
         </Modal>
-
-      <section className="description">
-        <label htmlFor="description">Description</label>
-          <div
-            dangerouslySetInnerHTML={{
-              __html: currentScheme?.description ? addImagesToText(handleMedia(currentScheme.description)) : "No description",
-          }}
-          >
-        </div>
-      </section>
 
     </div>
     <div>
@@ -237,23 +229,9 @@ export default function schemeView( props ) {
             }
           </div>
       }
+          </div>
 
     </div>
-
-      {
-        userCanEdit &&
-        version === 0 &&
-      <FloatingButton
-        onClick={(e) => {e.preventDefault(); history.push(getGoToLink("schemeEdit", {companyID}));}}
-        >
-        <img
-          src={PencilIcon}
-          alt=""
-          className="icon"
-          />
-      </FloatingButton>
-    }
-
     </Form>
   );
 };

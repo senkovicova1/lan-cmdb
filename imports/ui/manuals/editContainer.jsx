@@ -41,6 +41,7 @@ export default function EditManualContainer( props ) {
 
   const edit = ( title, body, updatedBy, dateUpdated ) => {
     editManual( editedManual, title, body, updatedBy, dateUpdated, ( error ) => console.log( error ) );
+    setShowDetail(true);
   }
 
   const remove = () => {

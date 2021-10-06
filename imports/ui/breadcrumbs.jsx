@@ -171,37 +171,39 @@ export default function Breadcrumbs( props ) {
     }
 
     if ( match.path.includes( "user" ) ) {
-      result = [];
+      result = [
+        {
+          link: "users",
+          label: "Users",
+        }
+      ];
+      if ( match.path === "/user" ) {
+        result.push( {
+          link: "currentUserEdit",
+          label: "Edit user",
+        } )
+      }
     }
 
     setBreadcrumbs( result );
   }, [ match.path, categoryID, categories, companyID, companies, itemID, items ] );
 
-  return ( <
-    StyledBreadcrumbs > {
-      breadcrumbs.map( ( crumb, index ) =>
-        ( <
-          span key = {
-            crumb.label + index
-          } >
-          <
-          LinkButton onClick = {
-            ( e ) => {
-              e.preventDefault();
-              history.push( getGoToLink( crumb.link, crumb.args ) );
-            }
-          } >
-          {
-            crumb.label
-          } <
-          /LinkButton> {
-            ( index + 1 ) !== breadcrumbs.length &&
-              ">"
-          } <
-          /span>
-        )
-      )
-    } <
-    /StyledBreadcrumbs>
+  return (
+    <StyledBreadcrumbs>
+      {
+        breadcrumbs.map( ( crumb, index ) =>(
+          <span key={crumb.label + index}>
+            <LinkButton onClick={(e) => {
+                e.preventDefault();
+                history.push( getGoToLink( crumb.link, crumb.args ) );
+              }}
+              >
+              { crumb.label }
+            </LinkButton>
+            { ( index + 1 ) !== breadcrumbs.length && ">" }
+          </span>
+        ))
+      }
+    </StyledBreadcrumbs>
   );
 };

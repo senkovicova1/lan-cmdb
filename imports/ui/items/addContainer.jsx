@@ -15,11 +15,9 @@ import Select from 'react-select';
 import {
   ItemsCollection
 } from '/imports/api/itemsCollection';
-import {
-  AddressesCollection
-} from '/imports/api/addressesCollection';
 
-import {addNewAddress, NO_CHANGE, ADDED, EDITED, DELETED} from '../addresses/addressesHandlers';
+import {addNewAddress} from '../addresses/addressesHandlers';
+import {addNewPassword} from '../passwords/passwordsHandlers';
 
 import ItemForm from './form';
 
@@ -28,7 +26,7 @@ import {
 } from '/imports/other/styles/selectStyles';
 import {
   Form,
-  ButtonCol,
+  ButtonRow,
   FullButton,
 } from "/imports/other/styles/styledComponents";
 import {
@@ -76,7 +74,7 @@ useEffect(() => {
     }
   }, [categoryID, companyID]);
 
-  const addNew = ( name, status, company, placement, installationDate, expirationDate, description, backupDescription, monitoringDescription, updatedDate, updatedBy, originalItemId, addresses, category, createdDate, createdBy ) => {
+  const addNew = ( name, status, company, placement, installationDate, expirationDate, description, backupDescription, monitoringDescription, updatedDate, updatedBy, originalItemId, addresses, passwords, category, createdDate, createdBy ) => {
     ItemsCollection.insert( {
       name,
       status,
@@ -99,6 +97,10 @@ useEffect(() => {
       } else {
         addresses.forEach((address, i) => {
           addNewAddress(address.nic, address.ip, address.mask, address.gateway, address.dns, address.vlan, address.note, _id );
+        });
+
+        passwords.forEach((password, i) => {
+          addNewPassword(password.title, password.login, password.password, password.ipUrl, password.note, _id );
         });
 
         history.push( getGoToLink( "viewItem", {
@@ -149,15 +151,15 @@ useEffect(() => {
                   />
             </section>
           }
-            <ButtonCol>
-              <FullButton colour="grey" onClick={(e) => {e.preventDefault(); close()}}>Cancel</FullButton>
+            <ButtonRow>
               <FullButton
                 colour=""
                 onClick={(e) => {e.preventDefault(); setModalOpen(false);}}
                 >
                 Continue
               </FullButton>
-            </ButtonCol>
+              <FullButton colour="grey" onClick={(e) => {e.preventDefault(); close()}}>Cancel</FullButton>
+            </ButtonRow>
           </Form>
         </ModalBody>
       </Modal>

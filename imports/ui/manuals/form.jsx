@@ -18,7 +18,7 @@ import Loader from '/imports/ui/other/loadingScreen';
 import {
   Form,
   Input,
-  ButtonCol,
+  ButtonRow,
   FullButton,
 } from "/imports/other/styles/styledComponents";
 import {
@@ -59,7 +59,7 @@ export default function ManualForm( props ) {
   }, [ manualTitle, manualBody ] );
 
   return (
-    <Form>
+    <Form fullPadding={true}>
 
       <section>
         <label htmlFor="title">Title</label>
@@ -81,9 +81,7 @@ export default function ManualForm( props ) {
         editorIndex={0}
         />
 
-      <ButtonCol>
-        <FullButton colour="grey" onClick={(e) => {e.preventDefault(); onCancel()}}>Back</FullButton>
-        {onRemove && <FullButton colour="red" onClick={(e) => {e.preventDefault(); onRemove()}}>Delete</FullButton>}
+      <ButtonRow>
         <FullButton
           colour=""
           onClick={(e) => {e.preventDefault(); onSubmit(
@@ -97,7 +95,9 @@ export default function ManualForm( props ) {
           >
           Save
         </FullButton>
-      </ButtonCol>
+        <FullButton colour="grey" onClick={(e) => {e.preventDefault(); onCancel()}}>Back</FullButton>
+        {onRemove && <FullButton colour="red" onClick={(e) => {e.preventDefault(); onRemove()}}>Delete</FullButton>}
+      </ButtonRow>
 
     </Form>
   );

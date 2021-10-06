@@ -60,8 +60,6 @@ export default function DescriptionView( props ) {
       if (userCannotView){
         history.push(getGoToLink());
       }
-    } else {
-      history.push(getGoToLink());
     }
   }, [company, companyID, userId]);
 
@@ -79,6 +77,7 @@ export default function DescriptionView( props ) {
           {
             userCanEdit &&
             <LinkButton
+              fit={true}
               onClick={(e) => {e.preventDefault(); history.push(getGoToLink("descriptionEdit", {companyID}));}}
               style={{marginLeft: "auto", width: "80px"}}
               >

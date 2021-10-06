@@ -1,5 +1,10 @@
 export const namePlaceholder = "Enter name";
 
+export const NO_CHANGE = 0;
+export const ADDED = 1;
+export const EDITED = 2;
+export const DELETED = 3;
+
 const countryList = [
   "Afghanistan",
   "Albania",

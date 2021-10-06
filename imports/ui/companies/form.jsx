@@ -11,7 +11,7 @@ import Select from 'react-select';
 import {
   Form,
   Input,
-  ButtonCol,
+  ButtonRow,
   FullButton,
   Textarea
 } from "/imports/other/styles/styledComponents";
@@ -203,11 +203,7 @@ const usersToSelect = useMemo( () => {
       </section>
     }
 
-      <ButtonCol>
-        <FullButton colour="grey" onClick={(e) => {e.preventDefault(); onCancel();}}>Cancel</FullButton>
-        {onRemove &&
-          <FullButton colour="red" onClick={(e) => {e.preventDefault(); onRemove();}}>Delete</FullButton>
-        }
+      <ButtonRow>
         <FullButton
           colour=""
           onClick={(e) => {
@@ -228,7 +224,11 @@ const usersToSelect = useMemo( () => {
           >
           Save
         </FullButton>
-      </ButtonCol>
+        <FullButton colour="grey" onClick={(e) => {e.preventDefault(); onCancel();}}>Cancel</FullButton>
+        {onRemove &&
+          <FullButton colour="red" onClick={(e) => {e.preventDefault(); onRemove();}}>Delete</FullButton>
+        }
+      </ButtonRow>
 
     </Form>
   );

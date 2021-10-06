@@ -66,11 +66,12 @@ export default function ItemsList( props ) {
   const itemsInCategory = useMemo( () => {
     let itemsInCategory = items.filter( item => ( categoryID === "all-categories" || item.category === categoryID ) && ( companyID === "all-companies" || item.company === companyID ) );
     if ( (categoryID === "all-categories" || companyID == "all-companies") && categories.length > 1 && companies.length > 1) {
-      return itemsInCategory.map( item => ( {
+      return itemsInCategory.map( item => {
+        return ( {
         ...item,
-        categoryName: categories.find( category => category._id === item.category ).name,
-        companyName: companies.find( company => company._id === item.company ).name,
-      } ) );
+        categoryName: categoryID === "all-categories" ? categories.find( category => category._id === item.category ).name : item.category,
+        companyName: companyID == "all-companies" ? companies.find( company => company._id === item.company ).name : item.company,
+      } )} );
     }
     return itemsInCategory;
   }, [ items, categoryID, companyID, categories, companies ] );
@@ -143,24 +144,6 @@ export default function ItemsList( props ) {
           </tbody>
         </table>
       }
-      {
-        false &&
-          userCanAddItems &&
-          companyID !== "all-companies" &&
-          categoryID !== "all-categories" &&
-      <FloatingButton
-        onClick={() => history.push(getGoToLink("addItem", {companyID, categoryID}))}
-        >
-        <img
-          className="icon"
-          src={PlusIcon}
-          alt="Plus icon not found"
-          />
-        <span>
-          Item
-        </span>
-      </FloatingButton>
-    }
 
     </List>
   );

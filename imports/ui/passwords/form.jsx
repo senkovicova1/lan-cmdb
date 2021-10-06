@@ -11,7 +11,7 @@ import {
   Form,
   Input,
   Textarea,
-  ButtonCol,
+  ButtonRow,
   FullButton,
 } from "/imports/other/styles/styledComponents";
 
@@ -134,9 +134,7 @@ export default function PasswordForm( props ) {
           />
       </section>
 
-      <ButtonCol>
-        <FullButton colour="grey" onClick={(e) => {e.preventDefault(); onCancel()}}>Cancel</FullButton>
-        {onRemove && <FullButton colour="red" onClick={(e) => {e.preventDefault(); onRemove()}}>Delete</FullButton>}
+      <ButtonRow>
         <FullButton
           colour=""
           disabled={title.length === 0}
@@ -152,7 +150,9 @@ export default function PasswordForm( props ) {
           >
           Save
         </FullButton>
-      </ButtonCol>
+        <FullButton colour="grey" onClick={(e) => {e.preventDefault(); onCancel()}}>Cancel</FullButton>
+        {onRemove && <FullButton colour="red" onClick={(e) => {e.preventDefault(); onRemove()}}>Delete</FullButton>}
+      </ButtonRow>
 
     </Form>
   );

@@ -21,6 +21,7 @@ import { setUsers } from '/imports/redux/usersSlice';
 import { setSchemes } from '/imports/redux/schemesSlice';
 import { setDescriptions } from '/imports/redux/descriptionsSlice';
 import { setManuals } from '/imports/redux/manualsSlice';
+import { setCompany } from '/imports/redux/metadataSlice';
 import {
   CompaniesCollection
 } from '/imports/api/companiesCollection';
@@ -53,8 +54,9 @@ import Login from './login';
 import CategoryAdd from './categories/addContainer';
 import CategoryEdit from './categories/editContainer';
 import SchemeView from './schemes/view';
-import SchemeDraw from './schemes/drawScheme';
 import SchemeEdit from './schemes/editContainer';
+import DescriptionView from './descriptions/view';
+import DescriptionEdit from './descriptions/editContainer';
 import ItemAdd from './items/addContainer';
 import ItemEdit from './items/editContainer';
 import ItemsList from './items/list';
@@ -97,6 +99,7 @@ export default function MainPage( props ) {
           ]
         )
       );
+      dispatch(setCompany({label: "All companies", value: "all-companies"}));
   }, [companies]);
 
   const categories = useTracker( () => CategoriesCollection.find( {} ).fetch() );
@@ -147,6 +150,13 @@ export default function MainPage( props ) {
       dispatch(setSchemes(schemes));
     }
   }, [schemes]);
+
+  const descriptions = useTracker( () => DescriptionsCollection.find( { company:  { $in: companiesIds} } ).fetch() );
+  useEffect(() => {
+    if (descriptions.length > 0){
+      dispatch(setDescriptions(descriptions));
+    }
+  }, [descriptions]);
 
     const itemsIds = items.map(item => item._id);
     const addresses = useTracker( () => AddressesCollection.find( {item: {$in: itemsIds}} ).fetch() );
@@ -235,7 +245,6 @@ export default function MainPage( props ) {
                 getLink("schemeEdit"),
                 getLink("descriptionView"),
                 getLink("descriptionEdit"),
-                getLink("manuals"),
                 getLink("addItem"),
                 getLink("editItem"),
                 getLink("viewItem"),
@@ -302,7 +311,6 @@ export default function MainPage( props ) {
                 <Route exact path={getLink("viewItem")} component={ItemView}/>
 
                 <Route exact path={getLink("schemeView")} component={SchemeView}/>
-                <Route exact path={getLink("schemeDraw")} component={SchemeDraw}/>
                 <Route exact path={getLink("schemeEdit")} component={SchemeEdit}/>
 
                 <Route exact path={getLink("descriptionView")} component={DescriptionView}/>

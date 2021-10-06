@@ -51,7 +51,6 @@ export default function PasswordsList( props ) {
 
   const togglePasswordAdd = () => {setPasswordAdd(!passwordsAdd);};
   const togglePasswordEdit = (pass) => {
-    console.log("HI");
     if (passwordsEdit){
       setPasswordEdit(false);
       setEditedPassword(null);

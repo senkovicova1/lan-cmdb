@@ -54,11 +54,10 @@ useEffect(() => {
   }
 }, [company, userId]);
 
-  const editScheme = ( diagram, description, createdDate ) => {
+  const editScheme = ( diagram, createdDate ) => {
 
     SchemesCollection.insert( {
       diagram,
-      description,
       version: 0,
       company: companyID,
       createdDate,
@@ -88,6 +87,6 @@ useEffect(() => {
   }
 
   return (
-    <SchemeForm {...props} title={"Edit scheme"} {...currentScheme} onSubmit={editScheme} onCancel={close} />
+    <SchemeForm {...props} {...currentScheme} onSubmit={editScheme} onCancel={close} />
   );
 };

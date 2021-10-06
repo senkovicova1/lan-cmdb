@@ -5,6 +5,9 @@ import React, {
 import {
   useSelector
 } from 'react-redux';
+import moment from 'moment';
+
+import Breadcrumbs from '/imports/ui/breadcrumbs';
 
 import {
   PlusIcon
@@ -42,10 +45,8 @@ export default function ManualsList( props ) {
     return null;
   }, [ companies, companyID ] );
 
-  const manuals = useSelector( ( state ) => state.manuals.value );
-
   useEffect( () => {
-    if ( companyID !== "all-companies" && company ) {
+    if ( companyID && companyID !== "all-companies" && company ) {
       const userCannotView = !company.users.find( user => user._id === userId );
       if ( userCannotView ) {
         history.push( getGoToLink() );
@@ -53,14 +54,29 @@ export default function ManualsList( props ) {
     }
   }, [ company, companyID, userId ] );
 
+  const manuals = useSelector( ( state ) => state.manuals.value ).filter(manual => manual.company === companyID);
+  const users = useSelector( ( state ) => state.users.value );
+
+  const assignedManuals = useMemo(() => {
+    if (manuals.length === 0 || users.length === 0){
+      return [];
+    }
+    return manuals.map(manual => ({
+      ...manual,
+      createdBy: users.find(user => user._id === manual.createdBy),
+      updatedBy: users.find(user => user._id === manual.updatedBy),
+    }))
+  }, [manuals, users]);
+
   const userCanAddItems = true;
 
   return (
     <List style={{padding: "0px"}}>
+      <Breadcrumbs {...props} />
       {
         userCanAddItems &&
         <LinkButton
-          style={{padding: "0px 15px"}}
+          style={{height: "fit-content", padding: "0px 24.9px 24.9px 24.9px"}}
           onClick={() => {
             setAddManual(true);
             setEditedManual(null);
@@ -78,13 +94,13 @@ export default function ManualsList( props ) {
       }
 
       {
-        manuals.length === 0 &&
-        <span className="message" style={{paddingLeft: "15px"}}>This company has no manuals.</span>
+        assignedManuals.length === 0 &&
+        <span className="message" style={{paddingLeft: "24.9px"}}>This company has no manuals.</span>
       }
 
       {
-        manuals.length > 0 &&
-        manuals.map(manual => (
+        assignedManuals.length > 0 &&
+        assignedManuals.map(manual => (
           <ManualInfo
             key={manual._id}
             active={editedManual === manual._id}
@@ -96,8 +112,8 @@ export default function ManualsList( props ) {
             >
             <span className="title">{manual.title ? manual.title : "Untitled"}</span>
             <div className="info">
-              <span>{`Created by ${manual.createdBy} on ${manual.dateCreated}`}</span>
-              <span>{`Last updated by ${manual.updatedBy} on ${manual.dateUpdated}`}</span>
+              <span>{`Created by ${manual.createdBy.label} on ${moment.unix(manual.dateCreated).format("D.M.YYYY HH:mm:ss")}`}</span>
+              <span>{`Last updated by ${manual.updatedBy.label} on ${moment.unix(manual.dateUpdated).format("D.M.YYYY HH:mm:ss")}`}</span>
             </div>
           </ManualInfo>
         ))

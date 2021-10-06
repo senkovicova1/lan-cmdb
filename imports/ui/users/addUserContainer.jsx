@@ -43,7 +43,7 @@ export default function AddUserContainer( props ) {
 
   return (
     <div style={{borderBottom: "0px"}}>
-      <LinkButton onClick={toggleAddUserModal}>
+      <LinkButton onClick={toggleAddUserModal} fit={true} style={{marginBottom: "24.9px"}}>
       <img
         className="icon"
         style={{marginRight: "0.6em"}}

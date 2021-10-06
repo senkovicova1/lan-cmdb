@@ -46,6 +46,6 @@ export default function EditUserContainer( props ) {
   }
 
   return (
-        <UserForm title={"Edit user"} user={user} onSubmit={editUser} onCancel={onCancel}/>
+        <UserForm user={user} onSubmit={editUser} onCancel={onCancel}/>
   );
 };

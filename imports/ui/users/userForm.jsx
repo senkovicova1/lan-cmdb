@@ -14,7 +14,7 @@ import {
 import {
   Form,
   Input,
-  ButtonCol,
+  ButtonRow,
   FullButton,
 } from "../../other/styles/styledComponents";
 
@@ -100,7 +100,7 @@ export default function UserForm( props ) {
   return (
     <Form>
 
-      <h2>{title}</h2>
+      { title && <h2>{title}</h2> }
 
       <section>
         <label htmlFor="name">Name<span style={{color: "red"}}>*</span></label>
@@ -314,17 +314,7 @@ export default function UserForm( props ) {
         errorMessage &&
         <p>{errorMessage}</p>
       }
-      <ButtonCol>
-        {onCancel &&
-          <FullButton colour="grey" onClick={(e) => {e.preventDefault(); onCancel()}}>Back</FullButton>
-        }
-        {openLogIn &&
-          <FullButton colour="grey" onClick={(e) => {e.preventDefault(); openLogIn()}}>Cancel</FullButton>
-        }
-        {onRemove &&
-          false &&
-          <FullButton colour="red" onClick={(e) => {e.preventDefault(); onRemove(userId); onCancel();}}>Delete</FullButton>
-        }
+      <ButtonRow>
         <FullButton
           colour=""
           onClick={(e) => {
@@ -358,7 +348,17 @@ export default function UserForm( props ) {
           >
           { isSignIn ? "Sign in" : "Save changes"}
         </FullButton>
-      </ButtonCol>
+        {onCancel &&
+          <FullButton colour="grey" onClick={(e) => {e.preventDefault(); onCancel()}}>Back</FullButton>
+        }
+        {openLogIn &&
+          <FullButton colour="grey" onClick={(e) => {e.preventDefault(); openLogIn()}}>Cancel</FullButton>
+        }
+        {onRemove &&
+          false &&
+          <FullButton colour="red" onClick={(e) => {e.preventDefault(); onRemove(userId); onCancel();}}>Delete</FullButton>
+        }
+      </ButtonRow>
 
     </Form>
   );
