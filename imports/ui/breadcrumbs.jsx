@@ -133,9 +133,10 @@ export default function Breadcrumbs( props ) {
         } );
       }
     }
-    if ( itemID && items.length !== 0 ) {
+
+    if ( itemID ) {
       const item = items.find( item => item._id === itemID );
-      if ( item ) {
+      if ( item && !match.path.includes( "edit" ) ) {
         result.push( {
           link: "viewItem",
           label: item.name,
@@ -145,6 +146,7 @@ export default function Breadcrumbs( props ) {
             itemID
           }
         } );
+      }
         if ( match.path.includes( "edit" ) ) {
           result.push( {
             link: "editItem",
@@ -156,8 +158,9 @@ export default function Breadcrumbs( props ) {
             }
           } );
         }
-      }
+
     }
+
 
     if ( match.path.includes( "add-item" ) ) {
       result.push( {

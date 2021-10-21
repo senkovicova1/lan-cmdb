@@ -16,6 +16,7 @@ import {
 import AddressesList from '/imports/ui/addresses/list';
 import PasswordsList from '/imports/ui/passwords/list';
 import ItemHistory from '/imports/ui/items/historyView';
+import Breadcrumbs from '/imports/ui/breadcrumbs';
 
 import {
   PencilIcon,
@@ -69,57 +70,51 @@ const statuses = [ {
 const userCanEditItem = company?.users.find( user => user._id === userId ).level <= 1;
 
   return (
-    <div style={historyOpen ? { width: "calc(100% - 300px)"} : {width: "100%"}}>
+    <div style={historyOpen ? { width: "calc(100% - 300px)", paddingTop: "1em"} : {width: "100%", paddingTop: "1em"}}>
       <section className="row">
         <div>
-          <div className="title-and-btns">
-            <TitleInputView
-              type="text"
-              id="name"
-              name="name"
-              disabled={true}
-              value={item.name ? item.name : "Untitled"}
-              />
-            <span style={{display: "flex"}}>
-              {
-                userCanEditItem &&
-                itemID === item._id &&
-                <LinkButton
-                  fit={true}
-                  style={{marginRight: "0.6em", width: "80px", paddingRight: "15px"}}
-                  onClick={(e) => {e.preventDefault(); history.push(getGoToLink("editItem", {companyID: item.company, categoryID: item.category, itemID: item._id}));}}
-                  >
-                  <img
-                    src={PencilIcon}
-                    alt=""
-                    className="icon"
-                    style={{marginRight: "0.6em", width: "20px"}}
-                    />
-                  Edit
-                </LinkButton>
-              }
-
+          <div style={{display: "block"}}>
+          <Breadcrumbs {...props} />
+          <span style={{display: "flex", padding: "0px", marginTop: "0.6em"}}>
+            {
+              userCanEditItem &&
+              itemID === item._id &&
               <LinkButton
                 fit={true}
-                onClick={(e) => {e.preventDefault(); toggleHistory();}}
+                style={{marginRight: "0.6em", width: "80px", paddingRight: "15px"}}
+                onClick={(e) => {e.preventDefault(); history.push(getGoToLink("editItem", {companyID: item.company, categoryID: item.category, itemID: item._id}));}}
                 >
                 <img
-                  src={HourglassIcon}
-                  style={{marginRight: "0.0em"}}
+                  src={PencilIcon}
                   alt=""
                   className="icon"
+                  style={{marginRight: "0.6em", width: "20px"}}
                   />
-                History
+                Edit
               </LinkButton>
-            </span>
-          </div>
+            }
+
+            <LinkButton
+              fit={true}
+              onClick={(e) => {e.preventDefault(); toggleHistory();}}
+              >
+              <img
+                src={HourglassIcon}
+                style={{marginRight: "0.0em"}}
+                alt=""
+                className="icon"
+                />
+              History
+            </LinkButton>
+          </span>
+        </div>
+
           <div className="dates">
             <span>{`Created by ${users.length > 0 ? users.find(user => user._id === item.createdBy).label : "Unknown"} at ${moment.unix(item.createdDate).format("D.M.YYYY HH:mm:ss")}`}</span>
             <span>{`Updated by ${users.length > 0 ? users.find(user => user._id === item.updatedBy).label : "Unknown"} at ${moment.unix(item.updatedDate).format("D.M.YYYY HH:mm:ss")}`}</span>
 
           </div>
         </div>
-        <hr />
       </section>
 
       <section className="input-row-triple">

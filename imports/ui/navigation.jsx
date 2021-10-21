@@ -247,7 +247,6 @@ export default function MainPage( props ) {
                 getLink("descriptionEdit"),
                 getLink("addItem"),
                 getLink("editItem"),
-                getLink("viewItem"),
               ]}
               render={(props) => (
                 <Breadcrumbs

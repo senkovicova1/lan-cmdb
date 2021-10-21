@@ -621,10 +621,6 @@ export const Form = styled.form `
   width: -webkit-fill-available;
   min-width: ${(props) => props.scrollable ? "1200px" : ""};
 
-  section hr {
-    margin-top: ${elementOffset};
-  }
-
   section {
     margin: 0em 0em ${elementOffset} 0em;
       i {
@@ -703,11 +699,7 @@ export const Form = styled.form `
       section.row div>div.dates>span>span{
         font-weight
       }
-
-    section.row .title-and-btns{
-      display: block;
-    }
-
+      
     input[type=file] {
       margin-top: ${elementOffset};
     }
@@ -840,7 +832,7 @@ height: 2.5em !important;
   border: none;
   width: ${(props) => props.width ? props.width : "auto"};
   height: fit-content !important;
-  padding: 0em 0em ${elementOffset} 0em;
+  padding: 0em;
 
   &:hover{
     cursor: default;
