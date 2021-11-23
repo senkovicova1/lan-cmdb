@@ -24,7 +24,9 @@ import {
 } from "/imports/other/styles/icons";
 import {
   Form,
+  Card,
   LinkButton,
+  BorderedLinkButton,
 } from "/imports/other/styles/styledComponents";
 import {
   getGoToLink
@@ -97,7 +99,7 @@ export default function schemeView( props ) {
           createdDate: moment().unix(),
         }, (error, _id) => {
           if (error){
-            console.log(console.error());
+            console.log(error);
           }
         });
 
@@ -126,12 +128,10 @@ export default function schemeView( props ) {
   return (
     <Form>
 
-      <div className="heading">
-        <div style={{ display: "flex", alignItems: "center"}}>
-            {
+        <span style={{display: "flex", padding: "0px", marginTop: "1em", marginBottom: "1em"}}>
+          {
             userCanEdit &&
-            <LinkButton
-              style={{marginRight: "2em"}}
+            <BorderedLinkButton
               fit={true}
               onClick={(e) => {e.preventDefault(); history.push(getGoToLink("schemeEdit", {companyID}));}}
               >
@@ -142,12 +142,12 @@ export default function schemeView( props ) {
                 className="icon"
                 />
               Edit
-            </LinkButton>
+            </BorderedLinkButton>
           }
           {
             schemes.length > 0 &&
-            <LinkButton
-            fit={true}
+            <BorderedLinkButton
+              fit={true}
               onClick={(e) => {e.preventDefault(); historyViewToggle();}}
               >
               <img
@@ -157,13 +157,15 @@ export default function schemeView( props ) {
                 className="icon"
                 />
               History
-            </LinkButton>
+            </BorderedLinkButton>
           }
-        </div>
-    </div>
+        </span>
+
 
     <div className="scheme-content">
-      <div style={historyView ? { width: "calc(100% - 300px)"} : {}}>
+      <div style={historyView ? { width: "calc(100% - 300px)"} : {width: "100%"}}>
+      <Card>
+      <h2>Scheme</h2>
         {
           diagram &&
           <section>
@@ -179,17 +181,18 @@ export default function schemeView( props ) {
         </section>
         }
 
-        <Modal className="scheme" isOpen={enlargeScheme} toggle={enlargeSchemeToggle}>
-          <ModalBody>
-            <img className="enlarged-scheme" width="auto" src={diagram} alt="scheme"/>
-          </ModalBody>
-        </Modal>
-
+      </Card>
     </div>
-    <div>
-        {
-          historyView &&
-          <div className="scheme-sidebar">
+
+  <Modal className="scheme" isOpen={enlargeScheme} toggle={enlargeSchemeToggle}>
+    <ModalBody>
+      <img className="enlarged-scheme" width="auto" src={diagram} alt="scheme"/>
+    </ModalBody>
+  </Modal>
+  {
+    historyView &&
+    <div className="scheme-sidebar">
+  <Card>
             <h2>Previous versions</h2>
             {
               schemes.map(scheme => (
@@ -227,9 +230,9 @@ export default function schemeView( props ) {
                 </div>
               ))
             }
-          </div>
+        </Card>
+      </div>
       }
-          </div>
 
     </div>
     </Form>

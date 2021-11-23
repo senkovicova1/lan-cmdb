@@ -25,9 +25,11 @@ import {
 } from "/imports/other/styles/icons";
 import {
   Form,
+  Card,
   TitleInputView,
   ViewInput,
   LinkButton,
+  BorderedLinkButton
 } from "/imports/other/styles/styledComponents";
 import {
   getGoToLink
@@ -71,43 +73,59 @@ const userCanEditItem = company?.users.find( user => user._id === userId ).level
 
   return (
     <div style={historyOpen ? { width: "calc(100% - 300px)", paddingTop: "1em"} : {width: "100%", paddingTop: "1em"}}>
-      <section className="row">
-        <div>
-          <div style={{display: "block"}}>
-          <Breadcrumbs {...props} />
-          <span style={{display: "flex", padding: "0px", marginTop: "0.6em"}}>
-            {
-              userCanEditItem &&
-              itemID === item._id &&
-              <LinkButton
-                fit={true}
-                style={{marginRight: "0.6em", width: "80px", paddingRight: "15px"}}
-                onClick={(e) => {e.preventDefault(); history.push(getGoToLink("editItem", {companyID: item.company, categoryID: item.category, itemID: item._id}));}}
-                >
-                <img
-                  src={PencilIcon}
-                  alt=""
-                  className="icon"
-                  style={{marginRight: "0.6em", width: "20px"}}
-                  />
-                Edit
-              </LinkButton>
-            }
 
-            <LinkButton
-              fit={true}
-              onClick={(e) => {e.preventDefault(); toggleHistory();}}
-              >
-              <img
-                src={HourglassIcon}
-                style={{marginRight: "0.0em"}}
-                alt=""
-                className="icon"
-                />
-              History
-            </LinkButton>
-          </span>
-        </div>
+      <span style={{display: "flex", padding: "0px", marginTop: "0.0em", marginBottom: "1em"}}>
+        <BorderedLinkButton
+          fit={true}
+          onClick={(e) => {
+            e.preventDefault();
+            history.push(getGoToLink("listItemsInCategory", {companyID, categoryID}));
+          }}
+          >
+          <img
+            src={BackIcon}
+            alt=""
+            className="icon"
+            />
+          Back
+        </BorderedLinkButton>
+
+        {
+          userCanEditItem &&
+          itemID === item._id &&
+          <BorderedLinkButton
+            fit={true}
+            onClick={(e) => {e.preventDefault(); history.push(getGoToLink("editItem", {companyID, categoryID, itemID: item._id}));}}
+            >
+            <img
+              src={PencilIcon}
+              alt=""
+              className="icon"
+              style={{marginRight: "0.6em", width: "20px"}}
+              />
+            Edit
+          </BorderedLinkButton>
+        }
+
+        <BorderedLinkButton
+          fit={true}
+          onClick={(e) => {e.preventDefault(); toggleHistory();}}
+          >
+          <img
+            src={HourglassIcon}
+            style={{marginRight: "0.0em"}}
+            alt=""
+            className="icon"
+            />
+          History
+        </BorderedLinkButton>
+      </span>
+
+      <Card>
+
+      <section className="row">
+  <div>
+    <h2>{item.name}</h2>
 
           <div className="dates">
             <span>{`Created by ${users.length > 0 ? users.find(user => user._id === item.createdBy).label : "Unknown"} at ${moment.unix(item.createdDate).format("D.M.YYYY HH:mm:ss")}`}</span>
@@ -264,6 +282,7 @@ const userCanEditItem = company?.users.find( user => user._id === userId ).level
           </div>
         </div>
       </section>
+    </Card>
 
     </div>
   );

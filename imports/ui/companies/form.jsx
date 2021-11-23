@@ -87,7 +87,7 @@ const usersToSelect = useMemo( () => {
   const userCanChangeRights = users.find(user => user._id === userId)?.level === 0;
 
   return (
-    <Form>
+    <Form narrow={true}>
 
       <h1>{title}</h1>
 

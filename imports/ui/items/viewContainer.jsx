@@ -53,8 +53,11 @@ export default function ItemViewContainer( props ) {
   const userId = Meteor.userId();
   const users = useSelector( ( state ) => state.users.value );
 
-  const itemID = match.params.itemID;
+  const {itemID} = match.params;
   const items = useSelector( ( state ) => state.items.value );
+  const companies = useSelector( ( state ) => state.companies.value );
+  const categories = useSelector( ( state ) => state.categories.value );
+
   const currentlyUsedItem = useMemo( () => {
     if ( items.length > 0 ) {
         return items.find(item => item._id === itemID);
@@ -68,47 +71,40 @@ export default function ItemViewContainer( props ) {
   }
 
   const previousVersions = useTracker( () => PreviousItemsCollection.find( { originalItem: originalItemId } ).fetch() );
-  const displayedItem = useMemo( () => {
+  const {displayedItem, company, category} = useMemo( () => {
+    let displayedItem = null;
+    let company = null;
+    let category = null;
     if (!displayedItemId || displayedItemId === itemID){
-      return currentlyUsedItem;
+      displayedItem = currentlyUsedItem;
     }
     if ( previousVersions.length > 0 ) {
-        return previousVersions.find(item => item._id === displayedItemId);
+      const maybeDisplayedItem = previousVersions.find(item => item._id === displayedItemId);
+      if (maybeDisplayedItem){
+        displayedItem = maybeDisplayedItem;
+      }
     }
-    return currentlyUsedItem;
-  }, [ currentlyUsedItem, previousVersions, displayedItemId ] );
-
-  const companyID = match.params.companyID;
-  const companies = useSelector( ( state ) => state.companies.value );
-  const company = useMemo( () => {
     if ( companies.length > 0 && displayedItem ) {
-      return companies.find( company => company._id === displayedItem.company );
+      company = companies.find( company => company._id === displayedItem.company );
     }
-    return null;
-  }, [ companies, displayedItem ] );
-
+    if ( categories.length > 0 && displayedItem ) {
+      category = categories.find( category => category._id === displayedItem.category );
+    }
+    return {displayedItem, company, category};
+  }, [ currentlyUsedItem, previousVersions, displayedItemId, companies, categories ] );
 
   useEffect(() => {
-    if (companyID !== "all-companies" && company){
+    if (company){
       const userCannotViewItem = !company.users.find(user => user._id === userId);
       if (userCannotViewItem){
         history.push(getGoToLink());
       }
     }
-  }, [company, companyID, userId]);
+  }, [company, userId]);
 
   useEffect(() => {
     setDisplayedItemId(itemID);
   }, [itemID]);
-
-  const categoryID = match.params.categoryID;
-  const categories = useSelector( ( state ) => state.categories.value );
-  const category = useMemo( () => {
-    if ( categories.length > 0 && displayedItem ) {
-      return categories.find( category => category._id === displayedItem.category );
-    }
-    return null;
-  }, [ categories, displayedItem ] );
 
   const dbAddresses = useSelector( ( state ) => state.addresses.value );
   const addresses = useMemo(() => {
@@ -120,13 +116,14 @@ export default function ItemViewContainer( props ) {
     return dbPasswords.filter(password => password.item === itemID);
   }, [dbPasswords, itemID]);
 
+
   if (!displayedItem || !category || !company){
     return <Loader />
   }
 
   return (
     <Form scrollable={true}>
-    <div>
+    <div style={{display: "flex"}}>
       {
         <ItemView
           {...props}

@@ -14,12 +14,18 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 import CKEditorWithFileUpload from '/imports/ui/other/ckeditorWithFileUpload';
 
+import {
+  PencilIcon,
+  BackIcon,
+  DeleteIcon
+} from "/imports/other/styles/icons";
+
 import Loader from '/imports/ui/other/loadingScreen';
 import {
   Form,
+  Card,
   Input,
-  ButtonRow,
-  FullButton,
+  BorderedLinkButton,
 } from "/imports/other/styles/styledComponents";
 import {
   addImagesToText
@@ -59,8 +65,64 @@ export default function ManualForm( props ) {
   }, [ manualTitle, manualBody ] );
 
   return (
-    <Form fullPadding={true}>
+    <Form>
 
+        <span style={{display: "flex", padding: "0px", marginTop: "1em", marginBottom: "1em"}}>
+          <BorderedLinkButton
+            fit={true}
+            onClick={(e) => {e.preventDefault(); onSubmit(
+              title,
+              body,
+              userId,
+              moment().unix(),
+              userId,
+              moment().unix(),
+            );}}
+            >
+            <img
+              src={PencilIcon}
+              alt=""
+              className="icon"
+              />
+            Save
+          </BorderedLinkButton>
+          {
+            onCancel &&
+          <BorderedLinkButton
+            fit={true}
+            onClick={(e) => {
+              e.preventDefault();
+              onCancel()
+            }}
+            >
+            <img
+              src={BackIcon}
+              alt=""
+              className="icon"
+              />
+            Back
+          </BorderedLinkButton>
+        }
+          {
+            onRemove &&
+            <BorderedLinkButton
+              fit={true}
+              onClick={(e) => {
+                e.preventDefault();
+                onRemove()
+              }}
+              >
+              <img
+                src={DeleteIcon}
+                alt=""
+                className="icon"
+                />
+              Delete
+            </BorderedLinkButton>
+          }
+        </span>
+
+      <Card>
       <section>
         <label htmlFor="title">Title</label>
         <Input
@@ -80,24 +142,7 @@ export default function ManualForm( props ) {
         buttonId={"ckeditor-file-upload-button-0"}
         editorIndex={0}
         />
-
-      <ButtonRow>
-        <FullButton
-          colour=""
-          onClick={(e) => {e.preventDefault(); onSubmit(
-            title,
-            body,
-            userId,
-            moment().unix(),
-            userId,
-            moment().unix(),
-          );}}
-          >
-          Save
-        </FullButton>
-        <FullButton colour="grey" onClick={(e) => {e.preventDefault(); onCancel()}}>Back</FullButton>
-        {onRemove && <FullButton colour="red" onClick={(e) => {e.preventDefault(); onRemove()}}>Delete</FullButton>}
-      </ButtonRow>
+    </Card>
 
     </Form>
   );

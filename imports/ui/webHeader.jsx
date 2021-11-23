@@ -15,7 +15,7 @@ import { useDispatch } from 'react-redux';
 import { setCompanies } from '/imports/redux/companiesSlice';
 import { setItems } from '/imports/redux/itemsSlice';
 
-import {  MenuIcon, LogoutIcon, CloseIcon, SearchIcon, UserIcon, MenuIcon2} from  "/imports/other/styles/icons";
+import {  MenuIcon, LogoutIcon, CloseIcon, UserIcon, MenuIcon2} from  "/imports/other/styles/icons";
 
 import Menu from './sidebar';
 
@@ -25,7 +25,6 @@ import {
 import {
   PageHeader,
   LinkButton,
-  SearchSection,
   Input,
   Sort
 } from '../other/styles/styledComponents';
@@ -42,9 +41,8 @@ export default function WebHeader( props ) {
     match,
     location,
     history,
-    setSearch,
-    search,
     setParentOpenSidebar,
+    parentOpenSidebar,
     sortBy,
     setSortBy,
     sortDirection,
@@ -61,8 +59,13 @@ export default function WebHeader( props ) {
 
   const [ openSidebar, setOpenSidebar ] = useState(true);
   const [ openSort, setOpenSort ] = useState(false);
-  const [ openSearch, setOpenSearch ] = useState(true);
   const [ title, setTitle ] = useState("CMDB");
+
+  useEffect(() => {
+    if (!parentOpenSidebar && openSidebar){
+      setParentOpenSidebar(true);
+    }
+  }, [openSidebar, parentOpenSidebar]);
 
   const avatar = useMemo(() => {
     if (!currentUser || !currentUser.profile.avatar){
@@ -114,42 +117,6 @@ export default function WebHeader( props ) {
         }
         <h1 onClick={(e) => props.history.push(getGoToLink())}>{title}</h1>
       </section>
-
-      {
-        currentUser &&
-        <SearchSection>
-          <LinkButton
-            font="#0078d4"
-            searchButton
-            onClick={(e) => {}}
-            >
-            <img
-              className="search-icon"
-              src={SearchIcon}
-              alt="Search icon not found"
-              />
-          </LinkButton>
-          <Input
-            placeholder="Search"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            />
-          <LinkButton
-            font="#0078d4"
-            searchButton
-            onClick={(e) => {
-              e.preventDefault();
-              setSearch("");
-            }}
-            >
-            <img
-              className="search-icon"
-              src={CloseIcon}
-              alt="Close icon not found"
-              />
-          </LinkButton>
-        </SearchSection>
-      }
 
       <section className="header-section" style={{justifyContent: "flex-end"}}>
 

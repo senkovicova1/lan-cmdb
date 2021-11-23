@@ -37,34 +37,31 @@ export default function EditItemContainer( props ) {
 
   const userId = Meteor.userId();
 
-  const itemID = match.params.itemID;
-  const categoryID = match.params.categoryID;
+  const {itemID, companyID, categoryID} = match.params;
 
-  const companyID = match.params.companyID;
   const companies = useSelector( ( state ) => state.companies.value );
-  const company = useMemo( () => {
-    if ( companies.length > 0 ) {
-      return companies.find( company => company._id === companyID );
-    }
-    return null;
-  }, [ companies, companyID ] );
-
-useEffect(() => {
-  if (companyID !== "all-companies" && company){
-    const userCannotEditItem = company.users.find(user => user._id === userId).level > 1;
-    if (userCannotEditItem){
-      history.push(getGoToLink());
-    }
-  }
-}, [company, companyID, userId]);
 
   const items = useSelector( ( state ) => state.items.value );
-  const item = useMemo( () => {
+  const {item, company, category} = useMemo( () => {
+    let item = null;
+    let company = null;
     if ( items.length > 0 ) {
-      return items.find( item => item._id === itemID );
+      item = items.find( item => item._id === itemID );
     }
-    return {};
-  }, [ items, itemID ] );
+    if ( companies.length > 0 && item ) {
+      company = companies.find( company => company._id === item.company );
+    }
+    return {item, company};
+  }, [ items, itemID, companies ] );
+
+  useEffect(() => {
+    if (company){
+      const userCannotEditItem = company.users.find(user => user._id === userId).level > 1;
+      if (userCannotEditItem){
+        history.push(getGoToLink());
+      }
+    }
+  }, [company, userId]);
 
   const addresses = useSelector( ( state ) => state.addresses.value );
   const addressesInItem = useMemo( () => {
@@ -104,7 +101,7 @@ useEffect(() => {
       monitoringDescription,
       updatedDate,
       updatedBy,
-      category: categoryID,
+      category: item.category,
       createdDate: moment().unix(),
       createdBy: userId,
       originalItem: originalItemId,
@@ -151,7 +148,7 @@ useEffect(() => {
         });
 
         history.push( getGoToLink( "viewItem", {
-          companyID: company,
+          companyID,
           categoryID,
           itemID: _id
         } ) );
@@ -161,8 +158,8 @@ useEffect(() => {
         ItemsCollection.remove( {
           _id: itemID
         } );
-
   }
+
 
   const removeItem = () => {
     if ( window.confirm( "Are you sure you want to remove this item?" ) ) {
@@ -170,8 +167,8 @@ useEffect(() => {
         _id: itemID
       } );
       history.push( getGoToLink( "listItemsInCategory", {
-        companyID,
-        categoryID,
+        companyID: company._id,
+        categoryID: item.category._id,
       } ) );
     }
   };
@@ -180,7 +177,11 @@ useEffect(() => {
     history.goBack();
   }
 
+  if (!item || !company){
+    return <div></div>
+  }
+
   return (
-    <ItemForm {...props} companyID={companyID} categoryID={categoryID} {...item} addresses={addressesInItem} passwords={passwordsInItem} onSubmit={editItem} onRemove={removeItem} onCancel={close} />
+    <ItemForm {...props} companyID={item.company} categoryID={item.category} {...item} addresses={addressesInItem} passwords={passwordsInItem} onSubmit={editItem} onRemove={removeItem} onCancel={close} />
   );
 };

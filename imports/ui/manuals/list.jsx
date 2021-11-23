@@ -14,7 +14,8 @@ import {
 } from "/imports/other/styles/icons";
 import {
   List,
-  LinkButton,
+  Card,
+  BorderedLinkButton,
   ManualInfo
 } from "/imports/other/styles/styledComponents";
 import {
@@ -71,12 +72,12 @@ export default function ManualsList( props ) {
   const userCanAddItems = true;
 
   return (
-    <List style={{padding: "0px"}}>
-      <Breadcrumbs {...props} />
+    <List>
       {
         userCanAddItems &&
-        <LinkButton
-          style={{height: "fit-content", padding: "0px 24.9px 24.9px 24.9px"}}
+        <span style={{display: "flex", padding: "0px", marginTop: "1em", marginBottom: "1em"}}>
+        <BorderedLinkButton
+          fit={true}
           onClick={() => {
             setAddManual(true);
             setEditedManual(null);
@@ -90,12 +91,15 @@ export default function ManualsList( props ) {
           <span>
             Manual
           </span>
-        </LinkButton>
+        </BorderedLinkButton>
+      </span>
       }
 
+      <Card>
+        <h2>Manuals</h2>
       {
         assignedManuals.length === 0 &&
-        <span className="message" style={{paddingLeft: "24.9px"}}>This company has no manuals.</span>
+        <span className="message">This company has no manuals.</span>
       }
 
       {
@@ -118,6 +122,7 @@ export default function ManualsList( props ) {
           </ManualInfo>
         ))
       }
+    </Card>
 
     </List>
   );

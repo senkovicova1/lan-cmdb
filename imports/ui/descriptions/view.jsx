@@ -23,7 +23,8 @@ import {
 } from "/imports/other/styles/icons";
 import {
   Form,
-  LinkButton,
+  Card,
+  BorderedLinkButton,
 } from "/imports/other/styles/styledComponents";
 import {
   getGoToLink
@@ -72,27 +73,25 @@ export default function DescriptionView( props ) {
 
   return (
     <Form>
-      <div className="heading">
-        <div style={{ display: "flex", alignItems: "center"}}>
+      <span style={{display: "flex", padding: "0px", marginTop: "1em", marginBottom: "1em"}}>
           {
             userCanEdit &&
-            <LinkButton
+            <BorderedLinkButton
               fit={true}
               onClick={(e) => {e.preventDefault(); history.push(getGoToLink("descriptionEdit", {companyID}));}}
-              style={{marginLeft: "auto", width: "80px"}}
               >
               <img
                 src={PencilIcon}
-                style={{marginRight: "0.6em"}}
                 alt=""
                 className="icon"
                 />
               Edit
-            </LinkButton>
+            </BorderedLinkButton>
           }
-        </div>
-      </div>
+        </span>
 
+<Card>
+<h2>Description</h2>
     <div className="scheme-content">
       <div>
 
@@ -110,6 +109,7 @@ export default function DescriptionView( props ) {
 
     </div>
 
+  </Card>
 
     </Form>
   );

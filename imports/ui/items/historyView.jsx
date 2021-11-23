@@ -19,6 +19,7 @@ import {
 } from '/imports/api/addressesCollection';
 
 import {
+  Card,
   LinkButton,
 } from "/imports/other/styles/styledComponents";
 
@@ -115,7 +116,8 @@ export default function ItemHistory( props ) {
   }
 
   return (
-    <div className="scheme-sidebar">
+    <div className="scheme-sidebar" style={{paddingTop: "63.5px"}}>
+      <Card>
       <h2>Previous versions</h2>
         <div>
               <span
@@ -146,6 +148,7 @@ export default function ItemHistory( props ) {
           </div>
         ))
       }
+    </Card>
     </div>
   );
 };

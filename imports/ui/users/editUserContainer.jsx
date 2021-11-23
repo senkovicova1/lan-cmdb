@@ -6,6 +6,7 @@ import {
 import { useSelector } from 'react-redux';
 
 import UserForm from './userForm';
+import CurrentUserForm from './currentUserForm';
 
 import {
   getGoToLink
@@ -43,6 +44,12 @@ export default function EditUserContainer( props ) {
     } else {
       history.push(getGoToLink("listItemsInCategory", {categoryID: "all-categories", companyID: "all-companies"} ));
     }
+  }
+
+  if (!userID){
+    return (
+        <CurrentUserForm user={user} onSubmit={editUser} onCancel={onCancel}/>
+    )
   }
 
   return (

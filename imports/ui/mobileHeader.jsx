@@ -18,7 +18,6 @@ import {
   MenuIcon,
   LogoutIcon,
   CloseIcon,
-  SearchIcon,
   LeftArrowIcon,
   UserIcon,
   MenuIcon2
@@ -45,8 +44,6 @@ export default function MobileHeader( props ) {
     match,
     location,
     history,
-    setSearch,
-    search,
     setParentOpenSidebar,
     sortBy,
     setSortBy,
@@ -63,7 +60,6 @@ export default function MobileHeader( props ) {
 
   const [ openSidebar, setOpenSidebar ] = useState( false );
   const [ openSort, setOpenSort ] = useState(false);
-  const [ openSearch, setOpenSearch ] = useState( false );
   const [ title, setTitle ] = useState( "CMDB" );
 
   const avatar = useMemo( () => {
@@ -72,8 +68,6 @@ export default function MobileHeader( props ) {
     }
     return uint8ArrayToImg( currentUser.profile.avatar );
   }, [ currentUser ] );
-
-  const searchVisible = !openSearch && currentUser;
 
   document.addEventListener("click", (evt) => {
       const sortMenu = document.getElementById("sort-menu");
@@ -115,77 +109,7 @@ export default function MobileHeader( props ) {
             />
         </LinkButton>
       }
-      {
-        !openSearch &&
         <h1 onClick={(e) => history.push(getGoToLink())}>{title}</h1>
-      }
-
-      {
-        openSearch &&
-        currentUser &&
-        <LinkButton
-          font="white"
-          onClick={(e) => {
-            e.preventDefault();
-            setSearch("");
-            setOpenSearch(false);
-          }}
-          >
-          <img
-            className="icon"
-            src={LeftArrowIcon}
-            alt="Left arrow icon not found"
-            />
-        </LinkButton>
-      }
-      {
-        openSearch &&
-        currentUser &&
-        <div className="search-section">
-          <Input
-            placeholder="Search"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            />
-        </div>
-      }
-      {
-        openSearch &&
-        currentUser &&
-        <LinkButton
-          font="#0078d4"
-          searchButton
-          onClick={(e) => {
-            e.preventDefault();
-            setSearch("");
-          }}
-          >
-          <img
-            className="search-icon"
-            src={CloseIcon}
-            alt="Close icon not found"
-            />
-        </LinkButton>
-      }
-
-      {
-        !openSearch &&
-        currentUser &&
-        <LinkButton
-          style={{marginLeft: "auto"}}
-          font="white"
-          onClick={(e) => {
-            e.preventDefault();
-            setOpenSearch(true);
-          }}
-          >
-          <img
-            className="icon"
-            src={SearchIcon}
-            alt="Search icon not found"
-            />
-        </LinkButton>
-      }
 
       {
         currentUser &&
@@ -323,7 +247,7 @@ export default function MobileHeader( props ) {
               </span>
         </Sort>
       }
-      
+
     </PageHeader>
   );
 };

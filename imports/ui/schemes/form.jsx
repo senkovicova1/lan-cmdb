@@ -13,10 +13,16 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import CKEditorWithFileUpload from '/imports/ui/other/ckeditorWithFileUpload';
 
 import {
+  PencilIcon,
+  BackIcon,
+} from "/imports/other/styles/icons";
+
+import {
   Form,
+  Card,
   Input,
   ButtonRow,
-  FullButton,
+  BorderedLinkButton,
 } from "/imports/other/styles/styledComponents";
 import {
   uint8ArrayToImg,
@@ -65,6 +71,42 @@ export default function SchemeForm( props ) {
   return (
     <Form>
 
+      <span style={{display: "flex", padding: "0px", marginTop: "1em", marginBottom: "1em"}}>
+              <BorderedLinkButton
+                fit={true}
+                onClick={(e) => {
+                  e.preventDefault();
+                  onSubmit(
+                  diagram.buffer,
+                  moment().unix()
+                );
+              }}
+                >
+                <img
+                  src={PencilIcon}
+                  alt=""
+                  className="icon"
+                  />
+                Save
+              </BorderedLinkButton>
+              <BorderedLinkButton
+                fit={true}
+                onClick={(e) => {
+                  e.preventDefault();
+                  onCancel()
+                }}
+                >
+                <img
+                  src={BackIcon}
+                  alt=""
+                  className="icon"
+                  />
+                Cancel
+              </BorderedLinkButton>
+            </span>
+
+      <Card>
+        <h2>Edit scheme</h2>
         <section>
           <div>
             {
@@ -93,18 +135,7 @@ export default function SchemeForm( props ) {
           </div>
         </section>
 
-      <ButtonRow>
-        <FullButton
-          colour=""
-          onClick={(e) => {e.preventDefault(); onSubmit(
-            diagram.buffer,
-            moment().unix()
-          );}}
-          >
-          Save
-        </FullButton>
-        <FullButton colour="grey" onClick={(e) => {e.preventDefault(); onCancel()}}>Cancel</FullButton>
-      </ButtonRow>
+    </Card>
 
     </Form>
   );

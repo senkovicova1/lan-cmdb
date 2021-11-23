@@ -120,7 +120,7 @@ useEffect(() => {
     return (
       <Modal isOpen={modalOpen}>
         <ModalBody>
-          <Form>
+          <Form narrow={true}>
             {
               companyID === "all-companies" &&
             <section>
@@ -132,7 +132,7 @@ useEffect(() => {
                   onChange={(e) => {
                     setActualCompany(e);
                   }}
-                  options={companies}
+                  options={companies.slice(1)}
                   />
             </section>
           }
@@ -147,13 +147,14 @@ useEffect(() => {
                   onChange={(e) => {
                     setActualCategory(e);
                   }}
-                  options={categories}
+                  options={categories.slice(1)}
                   />
             </section>
           }
             <ButtonRow>
               <FullButton
                 colour=""
+                disabled={(companyID === "all-companies" && !actualCompany?._id) || (categoryID === "all-categories" && !actualCategory?._id)}
                 onClick={(e) => {e.preventDefault(); setModalOpen(false);}}
                 >
                 Continue

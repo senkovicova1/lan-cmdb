@@ -63,7 +63,7 @@ useEffect(() => {
       createdDate,
     }, (error, _id) => {
       if (error){
-        console.log(console.error());
+        console.log(error);
       }
     });
 

@@ -9,11 +9,19 @@ import {
 } from 'react-redux';
 
 import {
+  PencilIcon,
+  BackIcon,
+  DeleteIcon
+} from "/imports/other/styles/icons";
+
+import {
   Form,
+  Card,
   Input,
   ButtonRow,
   LinkButton,
-  FullButton,
+  BorderedLinkButton,
+  BorderedFullButton,
   UserEntry,
   Textarea
 } from "../../other/styles/styledComponents";
@@ -34,6 +42,7 @@ export default function CategoryForm( props ) {
     descriptionNote: categoryDescriptionNote,
     backupNote: categoryBackupNote,
     monitoringNote: categoryMonitoringNote,
+    title,
     onSubmit,
     onRemove,
     onCancel,
@@ -72,6 +81,63 @@ export default function CategoryForm( props ) {
   return (
     <Form>
 
+      <h2>{title}</h2>
+
+            <span className="command-bar">
+              <BorderedLinkButton
+                fit={true}
+                onClick={(e) => {
+                  e.preventDefault();
+                  onCancel();
+                }}
+                >
+                <img
+                  src={BackIcon}
+                  alt=""
+                  className="icon"
+                  />
+                Cancel
+              </BorderedLinkButton>
+              {
+                onRemove &&
+                <BorderedLinkButton
+                  fit={true}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onRemove();
+                  }}
+                  >
+                  <img
+                    src={DeleteIcon}
+                    alt=""
+                    className="icon"
+                    />
+                  Delete
+                </BorderedLinkButton>
+              }
+              <BorderedFullButton
+                fit={true}
+                disabled={name.length === 0}
+                onClick={(e) => {
+                  e.preventDefault();
+                  onSubmit(
+                    name,
+                    descriptionNote,
+                    backupNote,
+                    monitoringNote
+                  );
+                }}
+                >
+                <img
+                  src={PencilIcon}
+                  alt=""
+                  className="icon"
+                  />
+                Save
+              </BorderedFullButton>
+            </span>
+
+      <Card>
       <section>
         <label htmlFor="name">
           Name
@@ -125,44 +191,7 @@ export default function CategoryForm( props ) {
           />
       </section>
 
-      <ButtonRow>
-        <FullButton
-          colour=""
-          disabled={name.length === 0}
-          onClick={(e) => {
-            e.preventDefault();
-            onSubmit(
-              name,
-              descriptionNote,
-              backupNote,
-              monitoringNote
-            );
-          }}
-          >
-          Save
-        </FullButton>
-        <FullButton
-          colour="grey"
-          onClick={(e) => {
-            e.preventDefault();
-            onCancel();
-          }}
-          >
-          Cancel
-        </FullButton>
-        {
-          onRemove &&
-          <FullButton
-            colour="red"
-            onClick={(e) => {
-              e.preventDefault();
-              onRemove();
-            }}
-            >
-            Delete
-          </FullButton>
-        }
-      </ButtonRow>
+    </Card>
 
     </Form>
 );

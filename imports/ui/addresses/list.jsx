@@ -92,7 +92,7 @@ export default function AddressesList( props ) {
                 <th>DNS</th>
               <th>VLAN</th>
               <th>Note</th>
-              {edit && <th width="60px"></th>}
+              {edit && <th width="50px"></th>}
             </tr>
           </thead>
           <tbody>
@@ -123,7 +123,7 @@ export default function AddressesList( props ) {
                       >
                       <img
                         className="icon"
-                        style={{marginRight: "0.6em"}}
+                        style={{marginRight: "0em"}}
                         src={DeleteIcon}
                         alt=""
                         />

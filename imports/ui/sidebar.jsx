@@ -120,7 +120,7 @@ if (!selectedCompany){
       {
         selectedCompany.value !== "all-companies" &&
         <NavLink
-          className={location.pathname.includes("scheme") ? "active" : ""}
+          className={location.pathname.includes("scheme") ? "active black" : "black"}
           style={{width: "100%"}}
           key={"scheme"}
           to={getGoToLink("schemeView", {companyID: selectedCompany.value})}
@@ -137,7 +137,7 @@ if (!selectedCompany){
       {
         selectedCompany.value !== "all-companies" &&
         <NavLink
-          className={location.pathname.includes("description") ? "active" : ""}
+          className={location.pathname.includes("description") ? "active black" : "black"}
           style={{width: "100%"}}
           key={"description"}
           to={getGoToLink("descriptionView", {companyID: selectedCompany.value})}
@@ -154,7 +154,7 @@ if (!selectedCompany){
       {
         selectedCompany.value !== "all-companies" &&
         <NavLink
-          className={location.pathname.includes("manuals") ? "active" : ""}
+          className={location.pathname.includes("manuals") ? "active black" : "black"}
           style={{width: "100%"}}
           key={"manuals"}
           to={getGoToLink("manuals", {companyID: selectedCompany.value})}
@@ -179,10 +179,9 @@ if (!selectedCompany){
 
       {
         sortedCategories.map(category =>  (
-          <div className="nav" key={category.value}>
+          <div className="nav black" key={category.value}>
             <NavLink
               className={category.value === categoryID && !location.pathname.includes("add-item") && !location.pathname.includes("manuals") && !location.pathname.includes("description") && !location.pathname.includes("scheme")  && !location.pathname.includes("user")? "active" : ""}
-              style={category.value === "all-categories" || !userCanManageCategories ? {width: "100%"} : {}}
               key={category.value}
               to={getGoToLink("listItemsInCategory", {companyID: selectedCompany?.value, categoryID: category.value})}
               onClick={() => {
@@ -193,6 +192,17 @@ if (!selectedCompany){
               >
               <span>{category.label}</span>
             </NavLink>
+            {
+              (category.value === "all-categories" ||
+              !userCanManageCategories) &&
+            <LinkButton
+              style={{backgroundColor: "transparent"}}
+              onClick={(e) => {
+                e.preventDefault();
+              }}
+              >
+            </LinkButton>
+          }
             {
               category.value !== "all-categories" &&
               userCanManageCategories &&
@@ -212,8 +222,8 @@ if (!selectedCompany){
 <hr />
 {
     userCanAddItems &&
+    <div className="nav">
       <NavLink
-        style={{width: "100%"}}
         key={"add-item"}
         to={getGoToLink("addItem", {companyID: companyID ? companyID : "all-companies", categoryID: categoryID ? categoryID : "all-categories"})}
         onClick={() => {
@@ -229,12 +239,20 @@ if (!selectedCompany){
           />
         Item
       </NavLink>
+      <LinkButton
+                    style={{backgroundColor: "transparent"}}
+                    onClick={(e) => {
+                      e.preventDefault();
+                    }}
+                    >
+                  </LinkButton>
+    </div>
     }
 
     {
       userCanManageCategories &&
+      <div className="nav">
       <NavLink
-        style={{width: "100%"}}
         key={"add-item-category"}
         to={getGoToLink("addCategory")}
         onClick={() => {
@@ -250,6 +268,14 @@ if (!selectedCompany){
           />
         Item Category
       </NavLink>
+      <LinkButton
+        style={{backgroundColor: "transparent"}}
+        onClick={(e) => {
+          e.preventDefault();
+        }}
+        >
+      </LinkButton>
+    </div>
     }
 
     {userCanAddCompanies &&
@@ -286,9 +312,9 @@ if (!selectedCompany){
     }
 
     {userCanManageUsers &&
+      <div className="nav">
   <NavLink
     className={match.path === "/users/list" ? "active" : ""}
-    style={{width: "100%"}}
     key={"users"}
     to={getGoToLink("users")}
     onClick={() => {
@@ -304,7 +330,16 @@ if (!selectedCompany){
       />
     <span>Users</span>
   </NavLink>
-}
+  <LinkButton
+        style={{backgroundColor: "transparent"}}
+        onClick={(e) => {
+          e.preventDefault();
+        }}
+        >
+      </LinkButton>
+  </div>
+
+  }
 
       <Modal isOpen={companyAdd} toggle={toggleCompanyAdd}>
         <ModalBody>

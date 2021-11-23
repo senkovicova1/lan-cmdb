@@ -169,7 +169,7 @@ export default function MainPage( props ) {
     }, [passwords]);
 
   const [ search, setSearch ] = useState( "" );
-  const [ openSidebar, setOpenSidebar ] = useState( false );
+  const [ openSidebar, setOpenSidebar ] = useState( true );
   const [ sortBy, setSortBy ] = useState("name");
   const [ sortDirection, setSortDirection ] = useState("asc");
 
@@ -221,13 +221,13 @@ export default function MainPage( props ) {
           )}
           />
         {!currentUser &&
-          <Content style={{paddingLeft: "250px", paddingRight: "250px"}}>
+          <Content withSidebar={false} style={{paddingLeft: "250px", paddingRight: "250px"}}>
             <Route path={["/", getLink("login")]} component={Login} />
           </Content>
         }
         {
           currentUser &&
-          <Content>
+          <Content withSidebar={openSidebar}>
             <div style={{height: "calc(100vh - 50px)", position: "relative"}}>
 
             <Route
@@ -235,18 +235,6 @@ export default function MainPage( props ) {
               path={[
                 "/",
                 getLink("login"),
-                getLink("currentUserEdit"),
-                getLink("users"),
-                getLink("addCategory"),
-                getLink("editCategory"),
-                getLink("listItemsInCategory"),
-                getLink("schemeView"),
-                getLink("schemeDraw"),
-                getLink("schemeEdit"),
-                getLink("descriptionView"),
-                getLink("descriptionEdit"),
-                getLink("addItem"),
-                getLink("editItem"),
               ]}
               render={(props) => (
                 <Breadcrumbs
@@ -300,6 +288,7 @@ export default function MainPage( props ) {
                     render={(props) => (
                       <ItemsList
                         {...props}
+                        setSearch={setSearch}
                         search={search}
                         sortBy={sortBy}
                         sortDirection={sortDirection}

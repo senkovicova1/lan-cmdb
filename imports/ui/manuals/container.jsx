@@ -18,6 +18,7 @@ import {
 } from "/imports/other/styles/icons";
 import {
   ColumnContainer,
+  Card
 } from "/imports/other/styles/styledComponents";
 
 export default function ManualsContainer( props ) {
@@ -81,7 +82,9 @@ export default function ManualsContainer( props ) {
         }
         {
           !addManual && !editedManual &&
-          <p style={{padding: "24.9px", textAlign: "center"}}>No chosen manual</p>
+          <Card style={{margin: "63.5px 2em"}}>
+            <p style={{padding: "24.9px", textAlign: "center"}}>No chosen manual</p>
+          </Card>
         }
       </div>
     </ColumnContainer>

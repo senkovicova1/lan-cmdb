@@ -13,7 +13,7 @@ import {
   Accounts
 } from 'meteor/accounts-base';
 import {
-  LinkButton
+  BorderedLinkButton
 } from '/imports/other/styles/styledComponents';
 
 export default function AddUserContainer( props ) {
@@ -43,7 +43,7 @@ export default function AddUserContainer( props ) {
 
   return (
     <div style={{borderBottom: "0px"}}>
-      <LinkButton onClick={toggleAddUserModal} fit={true} style={{marginBottom: "24.9px"}}>
+      <BorderedLinkButton onClick={toggleAddUserModal} fit={true}>
       <img
         className="icon"
         style={{marginRight: "0.6em"}}
@@ -51,7 +51,7 @@ export default function AddUserContainer( props ) {
         alt=""
         />
        User
-     </LinkButton>
+     </BorderedLinkButton>
       <Modal isOpen={addUserModalOpen} toggle={toggleAddUserModal}>
         <ModalBody>
           <UserForm title={"Add user"} onSubmit={addNewUser} onCancel={closeModal}/>

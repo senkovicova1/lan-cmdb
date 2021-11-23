@@ -6,10 +6,14 @@ import {
   useSelector
 } from 'react-redux';
 
-import { PlusIcon } from  "/imports/other/styles/icons";
+import { PlusIcon, SearchIcon, CloseIcon } from  "/imports/other/styles/icons";
 import {
   List,
-  FloatingButton
+  Card,
+  FloatingButton,
+  SearchSection,
+  Input,
+  LinkButton,
 } from "/imports/other/styles/styledComponents";
 import {
   getGoToLink
@@ -20,6 +24,7 @@ export default function ItemsList( props ) {
   const {
     match,
     history,
+    setSearch,
     search,
     sortBy,
     sortDirection,
@@ -50,7 +55,7 @@ export default function ItemsList( props ) {
     if ( categories.length > 0 ) {
       return categories.find( category => category._id === categoryID );
     }
-    return {};
+    return {name: "All categories"};
   }, [ categories, categoryID ] );
 
   const addresses = useSelector( ( state ) => state.addresses.value );
@@ -115,6 +120,46 @@ export default function ItemsList( props ) {
 
   return (
     <List>
+
+      <h2>{category ? category.name : "All categories"}</h2>
+        <span className="command-bar">
+        <SearchSection>
+          <LinkButton
+            font="#0078d4"
+            searchButton
+            onClick={(e) => {}}
+            >
+            <img
+              className="search-icon"
+              src={SearchIcon}
+              alt="Search icon not found"
+              />
+          </LinkButton>
+          <Input
+            placeholder="Search"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            />
+          <LinkButton
+            font="#0078d4"
+            searchButton
+            onClick={(e) => {
+              e.preventDefault();
+              setSearch("");
+            }}
+            >
+            <img
+              className="search-icon"
+              src={CloseIcon}
+              alt="Close icon not found"
+              />
+          </LinkButton>
+        </SearchSection>
+      </span>
+
+
+      <Card>
+
       {
         sortedItems.length === 0 &&
         <span className="message">You have no items in this category.</span>
@@ -133,7 +178,7 @@ export default function ItemsList( props ) {
           <tbody>
             {
               searchedItems.map((item) => (
-                <tr key={item._id} onClick={() => history.push(getGoToLink("viewItem", {companyID: item.company, categoryID:item.category, itemID: item._id}))}>
+                <tr key={item._id} onClick={() => history.push(getGoToLink("viewItem", {companyID, categoryID, itemID: item._id}))}>
                   <td>{yellowMatch(item.name)}</td>
                   {categoryID === "all-categories" && <td>{yellowMatch(item.categoryName ? item.categoryName : item.type )}</td>}
                   {companyID === "all-companies" && <td>{yellowMatch(item.companyName)}</td>}
@@ -145,6 +190,7 @@ export default function ItemsList( props ) {
         </table>
       }
 
+    </Card>
     </List>
   );
 };

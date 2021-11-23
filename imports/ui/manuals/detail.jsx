@@ -10,9 +10,10 @@ import {
 } from "/imports/other/styles/icons";
 import {
   Form,
+  Card,
   FullButton,
   TitleInputView,
-  LinkButton
+  BorderedLinkButton
 } from "/imports/other/styles/styledComponents";
 import {
   addImagesToText,
@@ -35,28 +36,28 @@ export default function ManualDetail( props ) {
   }, [ editedManual, manuals ] );
 
   return (
-    <Form fullPadding={true}>
+    <Form>
+      <span style={{display: "flex", padding: "0px", marginTop: "1em", marginBottom: "1em"}}>
+        <BorderedLinkButton
+          fit={true}
+          onClick={(e) => {e.preventDefault(); setShowDetail(false);}}
+          >
+          <img
+            src={PencilIcon}
+            alt=""
+            className="icon"
+            />
+          Edit
+        </BorderedLinkButton>
+      </span>
 
+      <Card>
       <section>
           <h2>
             {manual && manual.title ? manual.title : "Untitled"}
           </h2>
         </section>
 
-        <section>
-          <LinkButton
-            fit={true}
-            onClick={(e) => {e.preventDefault(); setShowDetail(false);}}
-            >
-            <img
-              src={PencilIcon}
-              alt=""
-              className="icon"
-              style={{marginRight: "0.6em", width: "20px"}}
-              />
-            Edit
-          </LinkButton>
-      </section>
 
       <section>
         <div
@@ -66,6 +67,7 @@ export default function ManualDetail( props ) {
           >
         </div>
       </section>
+    </Card>
 
     </Form>
   );

@@ -17,12 +17,22 @@ import CKEditorWithFileUpload from '/imports/ui/other/ckeditorWithFileUpload';
 import AddressesList from '/imports/ui/addresses/list';
 import PasswordsList from '/imports/ui/passwords/list';
 import Loader from '/imports/ui/other/loadingScreen';
+
+import {
+  DeleteIcon,
+  BackIcon,
+  PencilIcon
+} from  "/imports/other/styles/icons";
 import {
   Form,
+  Card,
   Input,
   Textarea,
   ButtonRow,
   FullButton,
+  BorderedLinkButton,
+  BorderedFullButton,
+  CommandRow
 } from "/imports/other/styles/styledComponents";
 import {
   selectStyle
@@ -53,6 +63,7 @@ export default function ItemForm( props ) {
     onSubmit,
     onRemove,
     onCancel,
+    narrow,
   } = props;
 
   const userId = Meteor.userId();
@@ -147,10 +158,11 @@ if (itemId &&
   (itemMonitoringDescription.length > 0 && monitoringDescription.length === 0) || (itemBackupDescription.length > 0 && backupDescription.length === 0))){
   return <Loader />
 }
-
+console.log(narrow);
   return (
-    <Form scrollable={true}>
+    <Form scrollable={true}  narrow={narrow} style={{paddingTop: "1em"}}>
 
+      <Card>
       <section>
         <label htmlFor="name">Name</label>
         <Input
@@ -271,35 +283,68 @@ if (itemId &&
         editorIndex={2}
         />
 
-      <ButtonRow>
-        <FullButton
-          colour=""
-          disabled={name.length === 0}
-          onClick={(e) => {e.preventDefault(); onSubmit(
-            name,
-            status.value,
-            company._id,
-            placement,
-            installationDate,
-            expirationDate,
-            description,
-            backupDescription,
-            monitoringDescription,
-            moment().unix(),
-            userId,
-            itemOriginalItemId ? itemOriginalItemId : itemId,
-            addresses,
-            passwords,
-            categoryID,
-            moment().unix(),
-            userId,
-          );}}
-          >
-          Save
-        </FullButton>
-        <FullButton colour="grey" onClick={(e) => {e.preventDefault(); onCancel()}}>Cancel</FullButton>
-        {onRemove && <FullButton colour="red" onClick={(e) => {e.preventDefault(); onRemove()}}>Delete</FullButton>}
-      </ButtonRow>
+    </Card>
+
+        <CommandRow>
+          <BorderedLinkButton
+            fit={true}
+            onClick={(e) => {e.preventDefault(); onCancel()}}
+            >
+            <img
+              src={BackIcon}
+              alt=""
+              className="icon"
+              />
+            Cancel
+          </BorderedLinkButton>
+          {
+            onRemove &&
+            <BorderedLinkButton
+              fit={true}
+              onClick={(e) => {
+                e.preventDefault();
+                onRemove()
+              }}
+              >
+              <img
+                src={DeleteIcon}
+                alt=""
+                className="icon"
+                />
+              Delete
+            </BorderedLinkButton>
+          }
+          <BorderedFullButton
+            fit={true}
+            disabled={name.length === 0}
+            onClick={(e) => {e.preventDefault(); onSubmit(
+              name,
+              status.value,
+              company._id,
+              placement,
+              installationDate,
+              expirationDate,
+              description,
+              backupDescription,
+              monitoringDescription,
+              moment().unix(),
+              userId,
+              itemOriginalItemId ? itemOriginalItemId : itemId,
+              addresses,
+              passwords,
+              categoryID,
+              moment().unix(),
+              userId,
+            );}}
+            >
+            <img
+              src={PencilIcon}
+              alt=""
+              className="icon"
+              />
+            Save
+          </BorderedFullButton>
+        </CommandRow>
 
     </Form>
   );

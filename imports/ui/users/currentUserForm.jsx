@@ -7,15 +7,22 @@ import {
 } from 'meteor/react-meteor-data';
 
 import {
+  PencilIcon,
+  BackIcon,
+} from "/imports/other/styles/icons";
+
+import {
   isEmail,
   uint8ArrayToImg
 } from '../../other/helperFunctions';
 
 import {
   Form,
+  Card,
   Input,
   ButtonRow,
-  FullButton,
+  BorderedLinkButton,
+  BorderedFullButton
 } from "../../other/styles/styledComponents";
 
 export default function UserForm( props ) {
@@ -98,9 +105,99 @@ export default function UserForm( props ) {
   }, [ user ] );
 
   return (
-    <Form narrow={true}>
+    <Form>
+    <h2>Edit user</h2>
 
-      { title && <h2>{title}</h2> }
+      <span className="command-bar">
+        {
+          onCancel &&
+          <BorderedLinkButton
+            fit={true}
+            onClick={(e) => {
+              e.preventDefault();
+              onCancel()
+            }}
+            >
+            <img
+              src={BackIcon}
+              alt=""
+              className="icon"
+              />
+            Back
+          </BorderedLinkButton>
+        }
+        {
+          openLogIn &&
+          <BorderedLinkButton
+            fit={true}
+            onClick={(e) => {
+              e.preventDefault();
+              openLogIn()
+            }}
+            >
+            <img
+              src={BackIcon}
+              alt=""
+              className="icon"
+              />
+            Cancel
+          </BorderedLinkButton>
+        }
+        {
+          onRemove &&
+          false &&
+          <BorderedLinkButton
+            fit={true}
+            onClick={(e) => {
+              e.preventDefault();
+              onRemove(userId);
+              onCancel();
+            }}
+            >
+            Delete
+          </BorderedLinkButton>
+        }
+        <BorderedFullButton
+          fit={true}
+          onClick={(e) => {
+            e.preventDefault();
+            let errors = [];
+            if (name.length === 0){
+              errors.push("name");
+            }
+            if (surname.length === 0){
+              errors.push("surname");
+            }
+            if (!user && !isEmail(email)){
+              errors.push("email");
+            }
+            if  ((!user && password1 !== password2) || (!user && password1.length < 7)){
+              errors.push("password");
+            }
+            if (name.length > 0 &&surname.length > 0 && (user || isEmail(email)) && (user || (password1 === password2 && password1.length >= 7)) ) {
+              onSubmit(
+                name,
+                surname,
+                avatar.buffer,
+                active,
+                rights,
+                email,
+                password1
+              );
+            }
+            setErrors(errors);
+          }}
+          >
+          <img
+            src={PencilIcon}
+            alt=""
+            className="icon"
+            />
+          { isSignIn ? "Sign in" : "Save changes"}
+        </BorderedFullButton>
+      </span>
+
+      <Card>
 
       <section>
         <label htmlFor="name">Name<span style={{color: "red"}}>*</span></label>
@@ -314,51 +411,8 @@ export default function UserForm( props ) {
         errorMessage &&
         <p>{errorMessage}</p>
       }
-      <ButtonRow>
-        <FullButton
-          colour=""
-          onClick={(e) => {
-            e.preventDefault();
-            let errors = [];
-            if (name.length === 0){
-              errors.push("name");
-            }
-            if (surname.length === 0){
-              errors.push("surname");
-            }
-            if (!user && !isEmail(email)){
-              errors.push("email");
-            }
-            if  ((!user && password1 !== password2) || (!user && password1.length < 7)){
-              errors.push("password");
-            }
-            if (name.length > 0 &&surname.length > 0 && (user || isEmail(email)) && (user || (password1 === password2 && password1.length >= 7)) ) {
-              onSubmit(
-                name,
-                surname,
-                avatar.buffer,
-                active,
-                rights,
-                email,
-                password1
-              );
-            }
-            setErrors(errors);
-          }}
-          >
-          { isSignIn ? "Sign in" : "Save changes"}
-        </FullButton>
-        {onCancel &&
-          <FullButton colour="grey" onClick={(e) => {e.preventDefault(); onCancel()}}>Back</FullButton>
-        }
-        {openLogIn &&
-          <FullButton colour="grey" onClick={(e) => {e.preventDefault(); openLogIn()}}>Cancel</FullButton>
-        }
-        {onRemove &&
-          false &&
-          <FullButton colour="red" onClick={(e) => {e.preventDefault(); onRemove(userId); onCancel();}}>Delete</FullButton>
-        }
-      </ButtonRow>
+
+    </Card>
 
     </Form>
   );
