@@ -84,7 +84,7 @@ export default function AddressForm( props ) {
   }, [  addrNic, addrIp, addrMask, addrGateway, addrDns, addrVlan, addrNote ] );
 
   return (
-    <Form>
+    <Form narrow={true}>
 
       <h1>{title}</h1>
 

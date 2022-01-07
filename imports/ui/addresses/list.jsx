@@ -91,7 +91,7 @@ export default function AddressesList( props ) {
                 <th>Gateway</th>
                 <th>DNS</th>
               <th>VLAN</th>
-              <th>Note</th>
+              <th width="25%">Note</th>
               {edit && <th width="50px"></th>}
             </tr>
           </thead>
@@ -105,7 +105,7 @@ export default function AddressesList( props ) {
                   <td>{address.gateway}</td>
                   <td>{address.dns}</td>
                   <td>{address.vlan}</td>
-                  <td>{address.note}</td>
+                  <td style={{lineHeight: "1.8em"}}>{address.note}</td>
                   {edit &&
                   <td style={{display: "flex"}}>
                     <LinkButton

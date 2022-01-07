@@ -26,6 +26,8 @@ import {
   Card,
   Input,
   BorderedLinkButton,
+  BorderedFullButton,
+  CommandRow
 } from "/imports/other/styles/styledComponents";
 import {
   addImagesToText
@@ -65,62 +67,7 @@ export default function ManualForm( props ) {
   }, [ manualTitle, manualBody ] );
 
   return (
-    <Form>
-
-        <span style={{display: "flex", padding: "0px", marginTop: "1em", marginBottom: "1em"}}>
-          <BorderedLinkButton
-            fit={true}
-            onClick={(e) => {e.preventDefault(); onSubmit(
-              title,
-              body,
-              userId,
-              moment().unix(),
-              userId,
-              moment().unix(),
-            );}}
-            >
-            <img
-              src={PencilIcon}
-              alt=""
-              className="icon"
-              />
-            Save
-          </BorderedLinkButton>
-          {
-            onCancel &&
-          <BorderedLinkButton
-            fit={true}
-            onClick={(e) => {
-              e.preventDefault();
-              onCancel()
-            }}
-            >
-            <img
-              src={BackIcon}
-              alt=""
-              className="icon"
-              />
-            Back
-          </BorderedLinkButton>
-        }
-          {
-            onRemove &&
-            <BorderedLinkButton
-              fit={true}
-              onClick={(e) => {
-                e.preventDefault();
-                onRemove()
-              }}
-              >
-              <img
-                src={DeleteIcon}
-                alt=""
-                className="icon"
-                />
-              Delete
-            </BorderedLinkButton>
-          }
-        </span>
+    <Form narrow={true} style={{paddingTop: "1em"}}>
 
       <Card>
       <section>
@@ -143,6 +90,61 @@ export default function ManualForm( props ) {
         editorIndex={0}
         />
     </Card>
+
+    <CommandRow>
+                {
+                  onCancel &&
+                <BorderedLinkButton
+                  fit={true}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onCancel()
+                  }}
+                  >
+                  <img
+                    src={BackIcon}
+                    alt=""
+                    className="icon"
+                    />
+                  Back
+                </BorderedLinkButton>
+              }
+                {
+                  onRemove &&
+                  <BorderedLinkButton
+                    fit={true}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      onRemove()
+                    }}
+                    >
+                    <img
+                      src={DeleteIcon}
+                      alt=""
+                      className="icon"
+                      />
+                    Delete
+                  </BorderedLinkButton>
+                }
+                <BorderedFullButton
+                  fit={true}
+                  onClick={(e) => {e.preventDefault(); onSubmit(
+                    title,
+                    body,
+                    userId,
+                    moment().unix(),
+                    userId,
+                    moment().unix(),
+                  );}}
+                  >
+                  <img
+                    src={PencilIcon}
+                    alt=""
+                    className="icon"
+                    />
+                  Save
+                </BorderedFullButton>
+    </CommandRow>
 
     </Form>
   );

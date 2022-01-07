@@ -73,7 +73,8 @@ export default function DescriptionView( props ) {
 
   return (
     <Form>
-      <span style={{display: "flex", padding: "0px", marginTop: "1em", marginBottom: "1em"}}>
+      <h2>Description</h2>
+      <span style={{display: "flex", padding: "0px", marginBottom: "1em"}}>
           {
             userCanEdit &&
             <BorderedLinkButton
@@ -91,7 +92,6 @@ export default function DescriptionView( props ) {
         </span>
 
 <Card>
-<h2>Description</h2>
     <div className="scheme-content">
       <div>
 

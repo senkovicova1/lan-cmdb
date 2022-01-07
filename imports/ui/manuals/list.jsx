@@ -72,10 +72,11 @@ export default function ManualsList( props ) {
   const userCanAddItems = true;
 
   return (
-    <List>
+    <List columns={true}>
+      <h2>Manuals</h2>
       {
         userCanAddItems &&
-        <span style={{display: "flex", padding: "0px", marginTop: "1em", marginBottom: "1em"}}>
+        <span style={{display: "flex", padding: "0px", marginBottom: "1em"}}>
         <BorderedLinkButton
           fit={true}
           onClick={() => {
@@ -96,7 +97,6 @@ export default function ManualsList( props ) {
       }
 
       <Card>
-        <h2>Manuals</h2>
       {
         assignedManuals.length === 0 &&
         <span className="message">This company has no manuals.</span>

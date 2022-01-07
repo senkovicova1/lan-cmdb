@@ -21,8 +21,9 @@ import {
   Form,
   Card,
   Input,
-  ButtonRow,
+  CommandRow,
   BorderedLinkButton,
+  BorderedFullButton,
 } from "/imports/other/styles/styledComponents";
 import {
   uint8ArrayToImg,
@@ -58,21 +59,22 @@ export default function DescriptionForm( props ) {
   return (
     <Form>
 
-        <span style={{display: "flex", padding: "0px", marginTop: "1em", marginBottom: "1em"}}>
-          <BorderedLinkButton
-            fit={true}
-            onClick={(e) => {e.preventDefault(); onSubmit(
-              description,
-              moment().unix()
-            );}}
-            >
-            <img
-              src={PencilIcon}
-              alt=""
-              className="icon"
-              />
-            Save
-          </BorderedLinkButton>
+      <h2>Edit description</h2>
+
+        <Card>
+
+        <CKEditorWithFileUpload
+            text={description}
+            setText={setDescription}
+            note={false}
+            buttonId={"ckeditor-file-upload-button-description"}
+            editorIndex={0}
+            />
+
+        </Card>
+
+        <CommandRow>
+
           <BorderedLinkButton
             fit={true}
             onClick={(e) => {
@@ -87,21 +89,23 @@ export default function DescriptionForm( props ) {
               />
             Cancel
           </BorderedLinkButton>
-        </span>
 
-        <Card>
+          <BorderedFullButton
+            fit={true}
+            onClick={(e) => {e.preventDefault(); onSubmit(
+              description,
+              moment().unix()
+            );}}
+            >
+            <img
+              src={PencilIcon}
+              alt=""
+              className="icon"
+              />
+            Save
+          </BorderedFullButton>
 
-          <h2>Edit description</h2>
-
-        <CKEditorWithFileUpload
-            text={description}
-            setText={setDescription}
-            note={false}
-            buttonId={"ckeditor-file-upload-button-description"}
-            editorIndex={0}
-            />
-
-        </Card>
+        </CommandRow>
 
     </Form>
   );

@@ -108,13 +108,19 @@ export default function ItemViewContainer( props ) {
 
   const dbAddresses = useSelector( ( state ) => state.addresses.value );
   const addresses = useMemo(() => {
-    return dbAddresses.filter(address => address.item === itemID);
-  }, [dbAddresses, itemID]);
+    if (displayedItem && displayedItem.addresses){
+      return displayedItem.addresses;
+    }
+    return dbAddresses.filter(address => address.item === (displayedItem ? displayedItem._id : displayedItemId));
+  }, [dbAddresses, displayedItem, displayedItemId]);
 
   const dbPasswords = useSelector( ( state ) => state.passwords.value );
   const passwords = useMemo(() => {
-    return dbPasswords.filter(password => password.item === itemID);
-  }, [dbPasswords, itemID]);
+    if (displayedItem && displayedItem.passwords){
+      return displayedItem.passwords;
+    }
+    return dbPasswords.filter(password => password.item === (displayedItem ? displayedItem._id : displayedItemId));
+  }, [dbPasswords, displayedItem]);
 
 
   if (!displayedItem || !category || !company){

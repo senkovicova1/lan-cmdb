@@ -36,7 +36,7 @@ export default function ManualDetail( props ) {
   }, [ editedManual, manuals ] );
 
   return (
-    <Form>
+    <Form narrow={true}>
       <span style={{display: "flex", padding: "0px", marginTop: "1em", marginBottom: "1em"}}>
         <BorderedLinkButton
           fit={true}

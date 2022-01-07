@@ -63,7 +63,7 @@ export default function EditCategoryContainer( props ) {
   };
 
   const removeCategory = () => {
-    if ( window.confirm( "Are you sure you want to remove this category?" ) ) {
+    if ( window.confirm( "Are you sure you want to remove this category along with all items in it?" ) ) {
       CategoriesCollection.remove( {
         _id: categoryID
       } );

@@ -130,7 +130,7 @@ if (!selectedCompany){
             }
           }}
           >
-          <span>Schema</span>
+          <span>Scheme</span>
         </NavLink>
       }
 

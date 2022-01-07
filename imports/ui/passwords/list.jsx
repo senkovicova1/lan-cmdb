@@ -89,7 +89,7 @@ export default function PasswordsList( props ) {
                 <th>Login</th>
                 <th>Password</th>
                 <th>IP/URL:PORT</th>
-              <th>Note</th>
+                <th width="25%">Note</th>
               {edit && <th width="50px"></th>}
             </tr>
           </thead>
@@ -101,7 +101,7 @@ export default function PasswordsList( props ) {
                   <td>{password.login}</td>
                   <td>{password.password}</td>
                   <td>{password.ipUrl}</td>
-                  <td>{password.note}</td>
+                  <td style={{lineHeight: "1.8em"}}>{password.note}</td>
                   {edit &&
                   <td style={{display: "flex"}}>
                     <LinkButton

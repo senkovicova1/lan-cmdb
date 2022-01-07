@@ -127,8 +127,9 @@ export default function schemeView( props ) {
 
   return (
     <Form>
+      <h2>Scheme</h2>
 
-        <span style={{display: "flex", padding: "0px", marginTop: "1em", marginBottom: "1em"}}>
+        <span style={{display: "flex", padding: "0px",  marginBottom: "1em"}}>
           {
             userCanEdit &&
             <BorderedLinkButton
@@ -165,7 +166,6 @@ export default function schemeView( props ) {
     <div className="scheme-content">
       <div style={historyView ? { width: "calc(100% - 300px)"} : {width: "100%"}}>
       <Card>
-      <h2>Scheme</h2>
         {
           diagram &&
           <section>

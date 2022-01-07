@@ -158,7 +158,7 @@ if (itemId &&
   (itemMonitoringDescription.length > 0 && monitoringDescription.length === 0) || (itemBackupDescription.length > 0 && backupDescription.length === 0))){
   return <Loader />
 }
-console.log(narrow);
+
   return (
     <Form scrollable={true}  narrow={narrow} style={{paddingTop: "1em"}}>
 

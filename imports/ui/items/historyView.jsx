@@ -17,6 +17,9 @@ import {
 import {
   AddressesCollection
 } from '/imports/api/addressesCollection';
+import {
+  PasswordsCollection
+} from '/imports/api/passwordsCollection';
 
 import {
   Card,
@@ -52,6 +55,11 @@ export default function ItemHistory( props ) {
       return addresses.filter(address => address.item === currentlyUsedItem._id);
     }, [ addresses, currentlyUsedItem ] );
 
+    const passwords = useSelector( ( state ) => state.passwords.value );
+    const passwordsInCurrentlyUsedItem = useMemo( () => {
+      return passwords.filter(password => password.item === currentlyUsedItem._id);
+    }, [ passwords, currentlyUsedItem ] );
+
   const restorePreviousVersion = (version) => {
     if ( window.confirm( "Are you sure you want to restore this version?" ) ) {
 
@@ -64,6 +72,7 @@ export default function ItemHistory( props ) {
           ...oldItem,
           originalItem: originalItem,
           addresses: [...addressesInCurrentlyUsedItem],
+          passwords: [...passwordsInCurrentlyUsedItem],
         }, ( error, _id ) => {
           if ( error ) {
             console.log( error );
@@ -80,13 +89,21 @@ export default function ItemHistory( props ) {
           });
         });
 
+        passwordsInCurrentlyUsedItem.forEach((pass, i) => {
+          PasswordsCollection.remove( {
+            _id: pass._id,
+          });
+        });
+
         let newItem = {...version};
         const addressesInNewItem = [...version.addresses];
-        delete version._id;
-        delete version.addresses
+        const passwordsInNewItem = [...version.passwords];
+        delete newItem._id;
+        delete newItem.addresses;
+        delete newItem.passwords;
 
         ItemsCollection.insert( {
-          ...version,
+          ...newItem,
           updatedDate: moment().unix(),
           updatedBy: userId,
           createdDate: moment().unix(),
@@ -98,9 +115,19 @@ export default function ItemHistory( props ) {
           }  else {
 
             addressesInNewItem.forEach((addr, i) => {
-              delete addr._id;
+              let addrToWrite = {...addr};
+              delete addrToWrite._id;
               AddressesCollection.insert( {
-                ...addr,
+                ...addrToWrite,
+                item: _id,
+              });
+            });
+
+            passwordsInNewItem.forEach((pass, i) => {
+              let passToWrite = {...pass};
+              delete passToWrite._id;
+              PasswordsCollection.insert( {
+                ...passToWrite,
                 item: _id,
               });
             });

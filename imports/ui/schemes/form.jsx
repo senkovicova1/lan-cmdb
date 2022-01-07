@@ -21,8 +21,9 @@ import {
   Form,
   Card,
   Input,
-  ButtonRow,
+  CommandRow,
   BorderedLinkButton,
+  BorderedFullButton
 } from "/imports/other/styles/styledComponents";
 import {
   uint8ArrayToImg,
@@ -71,44 +72,14 @@ export default function SchemeForm( props ) {
   return (
     <Form>
 
-      <span style={{display: "flex", padding: "0px", marginTop: "1em", marginBottom: "1em"}}>
-              <BorderedLinkButton
-                fit={true}
-                onClick={(e) => {
-                  e.preventDefault();
-                  onSubmit(
-                  diagram.buffer,
-                  moment().unix()
-                );
-              }}
-                >
-                <img
-                  src={PencilIcon}
-                  alt=""
-                  className="icon"
-                  />
-                Save
-              </BorderedLinkButton>
-              <BorderedLinkButton
-                fit={true}
-                onClick={(e) => {
-                  e.preventDefault();
-                  onCancel()
-                }}
-                >
-                <img
-                  src={BackIcon}
-                  alt=""
-                  className="icon"
-                  />
-                Cancel
-              </BorderedLinkButton>
-            </span>
-
+      <h2>Edit scheme</h2>
       <Card>
-        <h2>Edit scheme</h2>
         <section>
           <div>
+            {
+              !diagram.img &&
+              <label>No scheme</label>
+            }
             {
               diagram.img &&
               <img className="scheme" src={diagram.img} alt="scheme"/>
@@ -117,6 +88,7 @@ export default function SchemeForm( props ) {
               id="scheme"
               name="scheme"
               style={{display: "block"}}
+              width="100%"
               type="file"
               value={diagram.name}
               onChange={(e) =>  {
@@ -136,6 +108,40 @@ export default function SchemeForm( props ) {
         </section>
 
     </Card>
+
+          <CommandRow>
+            <BorderedLinkButton
+              fit={true}
+              onClick={(e) => {
+                e.preventDefault();
+                onCancel()
+              }}
+              >
+              <img
+                src={BackIcon}
+                alt=""
+                className="icon"
+                />
+              Cancel
+            </BorderedLinkButton>
+                  <BorderedFullButton
+                    fit={true}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      onSubmit(
+                      diagram.buffer,
+                      moment().unix()
+                    );
+                  }}
+                    >
+                    <img
+                      src={PencilIcon}
+                      alt=""
+                      className="icon"
+                      />
+                    Save
+                  </BorderedFullButton>
+                </CommandRow>
 
     </Form>
   );

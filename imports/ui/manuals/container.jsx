@@ -82,7 +82,7 @@ export default function ManualsContainer( props ) {
         }
         {
           !addManual && !editedManual &&
-          <Card style={{margin: "63.5px 2em"}}>
+          <Card style={{margin: "109px 1em"}}>
             <p style={{padding: "24.9px", textAlign: "center"}}>No chosen manual</p>
           </Card>
         }

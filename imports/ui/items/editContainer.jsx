@@ -89,6 +89,18 @@ export default function EditItemContainer( props ) {
       }
     } );
 
+    addressesInItem.forEach((addr, i) => {
+      AddressesCollection.remove( {
+        _id: addr._id,
+      });
+    });
+
+    passwordsInItem.forEach((pass, i) => {
+      PasswordsCollection.remove( {
+        _id: pass._id,
+      });
+    });
+
     ItemsCollection.insert( {
       name,
       status,
@@ -110,41 +122,11 @@ export default function EditItemContainer( props ) {
         console.log( error );
       }  else {
         addresses.forEach((address, i) => {
-          switch (address.change) {
-            case NO_CHANGE:
-              editAddress(address._id, address.nic, address.ip, address.mask, address.gateway, address.dns, address.vlan, address.note, _id );
-              break;
-            case ADDED:
-              addNewAddress(address.nic, address.ip, address.mask, address.gateway, address.dns, address.vlan, address.note, _id );
-              break;
-            case EDITED:
-              editAddress(address._id, address.nic, address.ip, address.mask, address.gateway, address.dns, address.vlan, address.note, _id );
-              break;
-            case DELETED:
-              removeAddress(address._id);
-              break;
-            default:
-              editAddress(address._id, address.nic, address.ip, address.mask, address.gateway, address.dns, address.vlan, address.note, _id );
-          }
+          addNewAddress(address.nic, address.ip, address.mask, address.gateway, address.dns, address.vlan, address.note, _id );
         });
 
         passwords.forEach((password, i) => {
-          switch (password.change) {
-            case NO_CHANGE:
-              editPassword(password._id, password.title, password.login, password.password, password.ipUrl, password.note, _id );
-              break;
-            case ADDED:
-              addNewPassword(password.title, password.login, password.password, password.ipUrl, password.note, _id );
-              break;
-            case EDITED:
-              editPassword(password._id, password.title, password.login, password.password, password.ipUrl, password.note, _id );
-              break;
-            case DELETED:
-              removePassword(password._id);
-              break;
-            default:
-              editPassword(password._id, password.title, password.login, password.password, password.ipUrl, password.note, _id );
-          }
+          addNewPassword(password.title, password.login, password.password, password.ipUrl, password.note, _id );
         });
 
         history.push( getGoToLink( "viewItem", {

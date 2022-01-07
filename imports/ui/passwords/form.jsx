@@ -70,7 +70,7 @@ export default function PasswordForm( props ) {
   }, [  passTitle, passLogin, passPassword, passIpUrl, passNote ] );
 
   return (
-    <Form>
+    <Form narrow={true}>
 
       <h1>{formTitle}</h1>
 

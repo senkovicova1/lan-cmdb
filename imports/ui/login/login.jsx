@@ -90,7 +90,7 @@ export default function LoginForm( props ) {
         <p>{errorMessage}</p>
       }
 
-      <FullButton type="submit" >Log In</FullButton>
+      <FullButton type="submit" style={{marginTop: "1.5em"}}>Log In</FullButton>
 
       <LinkButton
         disabled={email.length === 0}

@@ -620,7 +620,7 @@ position: sticky;
 `;
 
 export const List = styled.section `
-  width: 1200px;
+  width: ${(props) => props.columns ? 'auto' : '1200px'};
   padding: 0px 15px 15px 15px;
   margin: 0px auto !important;
 
@@ -652,7 +652,7 @@ export const List = styled.section `
     }
 
    & tr{
-     line-height: 47px;
+     line-height: 35px;
    }
 
     & tbody>tr{
@@ -673,7 +673,7 @@ export const List = styled.section `
       }
 
       table p{
-        line-height: 2em;
+        line-height: 1.5em;
         margin: 0px;
       }
 
@@ -959,6 +959,8 @@ export const Input = styled.input `
 
   &[type=checkbox]{
       vertical-align: middle;
+      width: 1.3em;
+      height: 1.3em;
   }
 `;
 
